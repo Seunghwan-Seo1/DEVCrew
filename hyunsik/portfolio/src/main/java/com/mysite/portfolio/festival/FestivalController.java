@@ -1,11 +1,10 @@
-//전현식
 package com.mysite.portfolio.festival;
 
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model; 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,23 +48,24 @@ public class FestivalController {
 		
 		return "festival/readdetail";
 	}
-	//update
-		@GetMapping("/update/{id}")
-		public String update(Model model, @PathVariable("id") Integer id) {
-			model.addAttribute("product", festivalService.readdetail(id));
-			return "festival/update";
-		}
+
+	// update
+	@GetMapping("/update/{id}")
+	public String update(Model model, @PathVariable("id") Integer id) {
+		model.addAttribute("festival", festivalService.readdetail(id)); 
+		return "festival/update";
+	}
 		
-		@PostMapping("/update")
-		public String update(@ModelAttribute Festival festival, MultipartFile file) throws IOException {
-			festivalService.update(festival, file);
-			return "product/readdetail/" + festival.getFid();
-		}
-		//delete
-		@GetMapping("/delete/{id}")
-		public String delete(@PathVariable("id") Integer id) {
-			
-			return "redirect:/festival/readlist";
-		}
-		
+	@PostMapping("/update")
+	public String update(@ModelAttribute Festival festival, @RequestParam("file") MultipartFile file) throws IOException {
+		festivalService.update(festival, file);
+		return "redirect:/festival/readdetail/" + festival.getFid(); 
+	}
+
+	// delete
+	@GetMapping("/delete/{id}")
+	public String delete(@PathVariable("id") Integer id) {
+		festivalService.delete(id); 
+		return "redirect:/festival/readlist";
+	}
 }

@@ -53,4 +53,9 @@ public class FestivalService {
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		
+	}
 }
