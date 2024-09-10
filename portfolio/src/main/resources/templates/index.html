@@ -51,7 +51,7 @@
 				<a href="/" class="logo m-0">축제숙박 <span class="text-primary">.</span></a>
 
 				<ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-right">
-					<li class="active"><a href="/">홈</a></li>
+					<li><a href="/">홈</a></li>
 					<li class="has-children">
 						<a href="#">축제소개</a>
 						<ul class="dropdown">
@@ -113,7 +113,7 @@
 					<li><a href="about.html">회원관리</a></li>
 					<li><a href="about.html">고객센터</a></li>
 					<li><a href="contact.html">로그인</a></li>
-					<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin">관리자 메뉴</a></li>
+					<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin/main">관리자 메뉴</a></li>
 				</ul>
 
 				<a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">
