@@ -1,3 +1,4 @@
+//전현식
 package com.mysite.portfolio.festival;
 
 import java.time.LocalDateTime;
@@ -6,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class FestivalService {
@@ -36,4 +38,19 @@ public class FestivalService {
 	        this.festivalRepository.save(festival);
 
 }
+
+	public void create1(Festival festival, MultipartFile file) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void create(Festival festival, MultipartFile file) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(Festival festival, MultipartFile file) {
+		// TODO Auto-generated method stub
+		
+	}
 }
