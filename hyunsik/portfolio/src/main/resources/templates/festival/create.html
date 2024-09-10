@@ -1,0 +1,81 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+    
+  			<form action="/fastival/create" method="post"
+				enctype="multipart/form-data">  
+          <h2 class="m-5">축제 등록</h2>
+          <div class="row">
+            <div class="col-lg-7 mb-4 mb-lg-0">
+
+
+				<div class="row g-4">
+					<div class="col-12">
+						<label
+							class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+							for="inputName">제품이름</label> <input class="form-control"
+							name="pname" type="text" />
+					</div>
+					<div class="col-12">
+						<label
+							class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+							for="inputName">제품코드</label> <input class="form-control"
+							name="pcode" type="text" />
+					</div>
+					<div class="col-12">
+						<label
+							class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+							for="inputAddress1">제품설명</label>
+						<textarea class="form-control" name="pdesc" id="summernote"
+							rows="5"></textarea>
+					</div>
+				</div>
+				<div class="col-12">
+					<label
+						class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+						for="inputName">제품가격</label> <input class="form-control"
+						name="pprice" type="text" />
+				</div>
+
+
+				<div class="mb-3">
+					<label
+						class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+						for="inputCountry">사진</label> 
+						<input class="form-control" type="file" name="file">
+				</div>
+
+
+				<div class="col-12">
+					<input type="submit" class="btn btn-primary px-8 px-sm-11 me-2"
+						value="등록">
+				</div>
+		</div>
+
+            </div>
+ 
+ </form>
+ 
+ 
+     <script>
+      $('#summernote').summernote({
+        placeholder: 'Hello stand alone ui',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+      });
+    </script>
+ 
+ </div>
+</html>
