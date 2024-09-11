@@ -1,0 +1,90 @@
+<!-- 슥소 상세페이지 -->
+
+<html layout:decorate="~{layout}">
+
+<style>
+.container3 {
+	position: absolute;
+	bottom: 0px;
+}
+
+.rvWrite {
+	padding: 28px 0 29px 0;
+    border: solid 1px #ebebeb;
+    background-color: #f8f8f8;
+}
+</style>
+<div layout:fragment="content">
+	<div class="hero hero-inner">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-6 mx-auto text-center">
+					<div class="intro-wrap">
+						<h1 class="mb-0">숙박</h1>
+						<p class="text-white">축제와 가깝고 편한 숙소를 소개합니다</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="filter-container"></div>
+			</div>
+		</div>
+	</div>
+	<div class="album py-5 bg-body-tertiary">
+		<div class="container">
+		
+		<div class="container2">
+		
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+				<div class="col">
+					<button type="button" class="btn btn-outline-primary">숙소 소개</button>
+					<button type="button" class="btn btn-outline-secondary">리뷰보기</button>
+					<button type="button" class="btn btn-outline-success">안내 사항</button>
+
+				</div>
+		
+		</div>
+
+
+				<!-- 버튼 옵션에 따른 내용 출력 -->
+				
+				<!-- 리뷰 -->
+				<!-- <div class="container3">
+					<form action="post" object="reviewForm" method="post">
+					<textarea class="form-control" rows="10" name="content" id="content"></textarea>
+					<textarea sec:authorize="isAuthenticated()"  class="form-control" rows="10" name="content" id="content"></textarea>
+					<input type="submit" value="리뷰등록" class="btn btn-secondary my-2">											
+					</form>
+				</div> -->
+				
+<div class="rvWrite">
+        <div class="rvWrite">
+            <span id="cmt_rating" class="rvCmt_rating">
+                별점
+                <span class="starGrp">
+                    <a href="javascript:void(0)" onclick="SetRatingStar(1);"><em class="bgGD rating_1 rating" id="rating_1">별 1점</em></a>
+                    <a href="javascript:void(0)" onclick="SetRatingStar(2);"><em class="bgGD rating_2 rating" id="rating_2">별 2점</em></a>
+                    <a href="javascript:void(0)" onclick="SetRatingStar(3);"><em class="bgGD rating_3 rating" id="rating_3">별 3점</em></a>
+                    <a href="javascript:void(0)" onclick="SetRatingStar(4);"><em class="bgGD rating_4 rating" id="rating_4">별 4점</em></a>
+                    <a href="javascript:void(0)" onclick="SetRatingStar(5);"><em class="bgGD rating_5 rating" id="rating_5">별 5점</em></a>
+                </span>
+            </span>
+        </div>
+        <div id="rvCmt" class="row_txtArea">
+            <span class="yesTxtArea m_size botIptMsg txtA_wSizeF">
+                <label for="comment">작성 글자 제한</label>
+                <span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
+                <textarea id="comment" autocomplete="off"></textarea>
+            </span>
+            <button title="등록" alt="등록" class="btn_login btnC xb_size btn_blue" onclick="" id="commentBtn"><span class="bWrap"><em class="txt">등록</em></span></button>
+        </div>
+    </div>
+
+			</div>
+		</div>
+	</div>
+</html>
