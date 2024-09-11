@@ -1,5 +1,5 @@
 // 생산자 : 이진호
-package com.mysite.portfolio.user;
+package com.mysite.portfolio.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
-public class UserController {
+public class MemberController {
 
 	@Autowired
-	private UserService userService;
+	private MemberService memberService;
 	
 	//회원 가입
 	@GetMapping("/signup")
@@ -22,8 +22,8 @@ public class UserController {
 		return "signup";
 	}
 	@PostMapping("/signup")
-	public String signup(SiteUser user) {
-		userService.create(user);
+	public String signup(Member member) {
+		memberService.create(member);
 		return "redirect:/signin";
 	}
 	
@@ -38,8 +38,8 @@ public class UserController {
 	public String readdetail(	@PathVariable("id") Integer id,
 								Model model
 								) {
-		model.addAttribute("user", userService.readdetail(id));
-		return "user/readdetail";
+		model.addAttribute("member", memberService.readdetail(id));
+		return "member/readdetail";
 	}
 	
 	//회원 정보 수정
@@ -47,20 +47,20 @@ public class UserController {
 	public String update(	@PathVariable("id") Integer id, 
 							Model model
 							) {
-		model.addAttribute("user", userService.readdetail(id));
-		return "user/update";
+		model.addAttribute("user", memberService.readdetail(id));
+		return "member/update";
 	}
 	
 	@PostMapping("/update/{id}")
-	public String update(@ModelAttribute SiteUser user) {
-		userService.update(user);
-		return "redirect:/readdail/" + user.getUid();
+	public String update(@ModelAttribute Member member) {
+		memberService.update(member);
+		return "redirect:/readdail/" + member.getMid();
 	}
 	
 	//회원 탈퇴
 	@GetMapping("/delete/{id}")
 	public String delete(@PathVariable("id") Integer id) {
-		userService.delete(id);
+		memberService.delete(id);
 		return "redirect:/";
 	}
 	

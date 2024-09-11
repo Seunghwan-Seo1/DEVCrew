@@ -1,5 +1,5 @@
 // 생산자 : 이진호
-package com.mysite.portfolio.user;
+package com.mysite.portfolio.member;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +12,11 @@ import lombok.Data;
 
 @Entity
 @Data
-public class SiteUser {
+public class Member {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer uid;
+	private Integer mid;
 	
 	//시큐리티 규격에 맞게 항상 4개는 항상 똑같이 넣어준다. 
 	private String username;  // 회원 아이디, 이메일 주소로 하면 많이 편하다. 
@@ -24,8 +24,8 @@ public class SiteUser {
 	private boolean enabled;
 	private String role;
 	
-	private String uaddr; // 연락처(전화번호)
+	private String maddr; // 연락처(전화번호)
 	
-	private LocalDateTime udate;
+	private LocalDateTime mdate;
 	
 }

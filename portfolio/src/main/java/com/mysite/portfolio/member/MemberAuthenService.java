@@ -1,5 +1,5 @@
 //생산자 : 이진호
-package com.mysite.portfolio.user;
+package com.mysite.portfolio.member;
 
 import java.util.Optional;
 
@@ -13,17 +13,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class UserAuthenService {
+public class MemberAuthenService {
 
-	private UserRepository userRepository;
+	private MemberRepository memberRepository;
 	
-	public SiteUser authen() {
+	public Member authen() {
 		//접속자 정보 추출
 		Authentication authentication = 
 				      SecurityContextHolder.getContext().getAuthentication();
 		UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
 		String username = userDetails.getUsername();
-		Optional<SiteUser> oc = userRepository.findByusername(username);
+		Optional<Member> oc = memberRepository.findByusername(username);
 		
 		return oc.get();
 	}
