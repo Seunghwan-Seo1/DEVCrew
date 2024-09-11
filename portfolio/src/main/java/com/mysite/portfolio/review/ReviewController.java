@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
-import com.mysite.portfolio.user.UserService;
+import com.mysite.portfolio.member.MemberService;
 
 @RequestMapping("/lodge")
 @Controller
@@ -21,7 +21,7 @@ public class ReviewController {
 	private ReviewService reviewService;
 	
 	@Autowired
-	private UserService userService;
+	private MemberService memberService;
 	
 	@Autowired
 	private S3Service s3Service;

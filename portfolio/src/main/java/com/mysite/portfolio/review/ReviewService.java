@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
-import com.mysite.portfolio.user.SiteUser;
 
 @Service
 public class ReviewService {
