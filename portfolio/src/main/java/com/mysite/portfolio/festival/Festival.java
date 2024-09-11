@@ -12,22 +12,17 @@ import lombok.Data;
 @Entity
 @Data
 public class Festival {
-	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer fid;
-    // 생성자, 게터 및 세터
-	
     private String fname;
-    
     private LocalDateTime fdate;
-    
     private String flocation;
-    
     private String fdescription;
 
     
-    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer fid;
+    // 생성자, 게터 및 세터
+
     
 
    
