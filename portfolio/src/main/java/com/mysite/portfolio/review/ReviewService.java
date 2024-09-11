@@ -1,11 +1,16 @@
 package com.mysite.portfolio.review;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.user.SiteUser;
 
 @Service
@@ -13,16 +18,26 @@ public class ReviewService {
 
 	@Autowired
 	private ReviewRepository reviewRepository;
-
-	/*
-	 * @Autowired private SiteUser siteUser;
-	 */
+	
+	//private final S3Service s3Service;
+	//private final SiteUser siteUser;
+	 
 
 	// 리뷰 작성
-	public void rvcreate(Review review) {
-		review.setUsername(null);
+	public void rvcreate(Review review, MultipartFile file) throws IOException {
+		String fileName = "";
+		if (!file.isEmpty()) {
+			// 기본 사진 이름을 uuid 처리 후 aws에 저장
+			UUID uuid = UUID.randomUUID();
+			fileName = uuid + "_" + file.getOriginalFilename();
+			//s3Service.uploadFile(file, fileName);
+		}
+		// 객체에 저장
+		review.setRpicture(fileName);
+		review.setRdate(LocalDateTime.now());
 
 		reviewRepository.save(review);
+
 	}
 
 	// 리뷰 리스트
@@ -36,12 +51,12 @@ public class ReviewService {
 		return ob.get();
 	}
 
-	public void rupdate(Review review) {
+	public void rvupdate(Review review) {
 		reviewRepository.save(review);
 	}
 
 	// 리뷰 삭제
-	public void rdelete(Integer uid) {
+	public void rvdelete(Integer uid) {
 		reviewRepository.deleteById(uid);
 	}
 
