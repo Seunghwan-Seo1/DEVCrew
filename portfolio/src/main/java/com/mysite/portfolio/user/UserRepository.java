@@ -1,10 +1,10 @@
+//생산자 : 이진호
 package com.mysite.portfolio.user;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-//생산자 : 이진호
 
 public interface UserRepository extends JpaRepository<SiteUser, Integer> {
 
