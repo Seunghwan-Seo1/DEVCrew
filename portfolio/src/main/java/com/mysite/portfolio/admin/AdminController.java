@@ -16,4 +16,9 @@ public class AdminController {
 		return "admin/main";
 	}
 	
+	@GetMapping("/userconfig")
+	public String userconfig() {
+		return "admin/userconfig";
+	}
+	
 }
