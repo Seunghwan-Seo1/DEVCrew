@@ -41,21 +41,22 @@ public class FestivalController {
 		return "festival/readlist";
 	}
 	
-	@GetMapping("/readdetail")              //축제내용 상세보기
-	public String readdetail() {
-		
-		return "festival/readdetail";
-	}
+	/*
+	 * @GetMapping("/readdetail") //축제내용 상세보기 public String readdetail() {
+	 * 
+	 * return "festival/readdetail"; }
+	 */
 	
 	// readdetail
-	/*@GetMapping("/readdetail/{id}")
+	@GetMapping("/readdetail/{id}")
 	public String readdetail(@PathVariable("id") Integer id, Model model) {
 		model.addAttribute("festival", festivalService.readdetail(id));
 		
 		String downpath = "여기에 다운받을 경로를 설정하세요"; 
 		model.addAttribute("downpath", "https://" + downpath);
 		
-		return "festival/readdetail";*/
+		return "festival/readdetail";
+	}
 	
 	//update
 		@GetMapping("/update/{id}")

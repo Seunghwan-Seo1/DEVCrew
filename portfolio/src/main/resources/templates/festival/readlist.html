@@ -27,7 +27,7 @@
 
     <div class="container px-4 py-5" id="featured-3">
     
-    <h1 class="visually-hidden">축제</h1>
+    <h1 class="visually-hidden">치킨 페스티벌</h1>
     <h2 class="pb-2 border-bottom">Columns with icons</h2>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
     
@@ -37,10 +37,11 @@
     
       <div class="feature col">
         <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-        <img src="/images/hero-slider-1.jpg" alt="Image" class="img-fluid active">
+          <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
         </div>
-        <h3 class="fs-2 text-body-emphasis">[[${festival.fname}]]</h3>
-        <p>[[${festival.fdescription}]]</p>
+        <h3 class="fs-2 text-body-emphasis">
+    <li><a href="/festival/readdetail/{id}">[[${festival.fname}]]</a></li></h3>
+        <div class="card-text" style="white-space: pre-line;" th:utext="${festival.fdescription}"></div>
         
       </div>
       
