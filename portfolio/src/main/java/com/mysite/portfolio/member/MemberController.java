@@ -34,11 +34,11 @@ public class MemberController {
 	}
 	
 	//회원 정보 조회
-	@GetMapping("/readdetail/{id}")
-	public String readdetail(	@PathVariable("id") Integer id,
+	@GetMapping("/readdetail/{mid}")
+	public String readdetail(	@PathVariable("mid") Integer mid,
 								Model model
 								) {
-		model.addAttribute("member", memberService.readdetail(id));
+		model.addAttribute("member", memberService.readdetail(mid));
 		return "member/readdetail";
 	}
 	

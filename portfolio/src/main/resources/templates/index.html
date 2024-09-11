@@ -110,7 +110,7 @@
 							</li>
 						</ul>
 					</li>
-					<li><a href="about.html">회원관리</a></li>
+					<li><a href="@{|/readdetail/${member.mid}|}">프로필</a></li>
 					<li><a href="about.html">고객센터</a></li>
 					<li><a sec:authorize="isAnonymous()" href="/signin">로그인</a></li>
 					<li><a sec:authorize="isAuthenticated()" href="/signout">로그아웃</a></li>

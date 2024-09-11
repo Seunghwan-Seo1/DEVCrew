@@ -56,8 +56,8 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	//회원 정보 조회
-	public Member readdetail(Integer id) {
-		Optional<Member> ob = memberRepository.findById(id);
+	public Member readdetail(Integer mid) {
+		Optional<Member> ob = memberRepository.findById(mid);
 		return ob.get();
 	}
 	
