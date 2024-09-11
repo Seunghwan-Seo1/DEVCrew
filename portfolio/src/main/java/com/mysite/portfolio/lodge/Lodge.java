@@ -4,6 +4,8 @@ package com.mysite.portfolio.lodge;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
@@ -11,7 +13,9 @@ import lombok.Data;
 @Data
 public class Lodge {
 	
-	@Id	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer lnum; // 숙소 등록 번호
 	private String lname; // 숙소 이름
 	
 	//숙소 유형

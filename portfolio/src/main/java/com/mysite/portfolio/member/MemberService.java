@@ -1,4 +1,5 @@
-package com.mysite.portfolio.user;
+// 생산자 : 이진호
+package com.mysite.portfolio.member;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,23 +17,22 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-// 생산자 : 이진호
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class MemberService implements UserDetailsService {
 
-	private final UserRepository userRepository;
+	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
 	
 	//회원 가입
-	public void create(SiteUser user) {
+	public void create(Member member) {
 		
-		user.setUdate(LocalDateTime.now());
-		user.setRole("ROLE_USER");
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		member.setMdate(LocalDateTime.now());
+		member.setRole("ROLE_USER");
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		
-		this.userRepository.save(user);
+		this.memberRepository.save(member);
 		
 	}
 	
@@ -40,34 +40,48 @@ public class UserService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		Optional<SiteUser> _user = this.userRepository.findByusername(username);
-        if (_user.isEmpty()) {
+		Optional<Member> _member = this.memberRepository.findByusername(username);
+        if (_member.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
-        SiteUser user = _user.get();
+        Member member = _member.get();
         List<GrantedAuthority> authorities = new ArrayList<>();
-        if ("ROLE_ADMIN".equals(user.getRole())) {
+        if ("ROLE_ADMIN".equals(member.getRole())) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } else {
             authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         }
-        return new User(user.getUsername(), user.getPassword(), authorities);
+        return new User(member.getUsername(), member.getPassword(), authorities);
         
 	}
 	
 	//회원 정보 조회
-	public Optional<SiteUser> readdetail(SiteUser user) {
-		return userRepository.findByusername(user.getUsername());
+	public Member readdetail(Integer id) {
+		Optional<Member> ob = memberRepository.findById(id);
+		return ob.get();
 	}
 	
 	//회원 정보 수정
-	public void update(SiteUser user) {
-		this.userRepository.save(user);
+	public void update(Member member) {
+		this.memberRepository.save(member);
 	}
 	
 	//회원 탈퇴
-	public void delete(SiteUser user) {
-		this.userRepository.deleteById(user.getUid());
+	public void delete(Integer id) {
+		this.memberRepository.deleteById(id);
 	}
+	
+	public List<Member> readlist() {
+		return memberRepository.findAll();
+	}
+	
+	public void updateUserRole(Integer mid, String newRole) {
+        Member member = memberRepository.findById(mid)
+                            .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+        member.setRole(newRole);  // 역할 변경
+        memberRepository.save(member);  // 변경 사항 저장
+    }
+	
+	
 
 }
