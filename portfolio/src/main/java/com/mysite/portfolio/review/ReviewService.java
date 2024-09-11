@@ -11,15 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.member.MemberService;
 
 @Service
 public class ReviewService {
 
 	@Autowired
 	private ReviewRepository reviewRepository;
-	
-	//private final S3Service s3Service;
-	//private final SiteUser siteUser;
+	@Autowired
+	private S3Service s3Service;
+	@Autowired
+	private MemberService memberService;
 	 
 
 	// 리뷰 작성
@@ -29,7 +31,7 @@ public class ReviewService {
 			// 기본 사진 이름을 uuid 처리 후 aws에 저장
 			UUID uuid = UUID.randomUUID();
 			fileName = uuid + "_" + file.getOriginalFilename();
-			//s3Service.uploadFile(file, fileName);
+			s3Service.uploadFile(file, fileName);
 		}
 		// 객체에 저장
 		review.setRpicture(fileName);

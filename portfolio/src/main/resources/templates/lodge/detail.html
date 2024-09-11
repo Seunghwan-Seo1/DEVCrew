@@ -2,6 +2,7 @@
 
 <html layout:decorate="~{layout}">
 
+<head>
 <style>
 .container3 {
 	position: absolute;
@@ -14,6 +15,10 @@
     background-color: #f8f8f8;
 }
 </style>
+</head>
+
+<body>
+
 <div layout:fragment="content">
 	<div class="hero hero-inner">
 		<div class="container">
@@ -63,7 +68,7 @@
 				
 <div class="rvWrite">
         <div class="rvWrite">
-            <span id="cmt_rating" class="rvCmt_rating">
+<!--             <span id="cmt_rating" class="rvCmt_rating">
                 별점
                 <span class="starGrp">
                     <a href="javascript:void(0)" onclick="SetRatingStar(1);"><em class="bgGD rating_1 rating" id="rating_1">별 1점</em></a>
@@ -72,7 +77,7 @@
                     <a href="javascript:void(0)" onclick="SetRatingStar(4);"><em class="bgGD rating_4 rating" id="rating_4">별 4점</em></a>
                     <a href="javascript:void(0)" onclick="SetRatingStar(5);"><em class="bgGD rating_5 rating" id="rating_5">별 5점</em></a>
                 </span>
-            </span>
+            </span> -->
         </div>
         <div id="rvCmt" class="row_txtArea">
             <span class="yesTxtArea m_size botIptMsg txtA_wSizeF">
@@ -80,11 +85,14 @@
                 <span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
                 <textarea id="comment" autocomplete="off"></textarea>
             </span>
-            <button title="등록" alt="등록" class="btn_login btnC xb_size btn_blue" onclick="" id="commentBtn"><span class="bWrap"><em class="txt">등록</em></span></button>
+            <input type="button" value="리뷰 등록" onclick="" id="commentBtn">
         </div>
     </div>
 
 			</div>
 		</div>
 	</div>
+	
+</body>
+
 </html>
