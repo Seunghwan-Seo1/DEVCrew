@@ -40,7 +40,7 @@
           <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
         </div>
         <h3 class="fs-2 text-body-emphasis">[[${festival.fname}]]</h3>
-        <p>[[${festival.fdescription}]]</p>
+        <div class="card-text" style="white-space: pre-line;" th:utext="${festival.fdescription}"></div>
         
       </div>
       
