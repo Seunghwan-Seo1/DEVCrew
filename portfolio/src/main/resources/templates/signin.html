@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
 
 	<form action="/signin" method="post">
         <div th:if="${param.error}">
@@ -18,5 +13,5 @@
 	   <p><input type="submit" value="로그인">
 	</form>
 
-</body>
+</div>
 </html>
