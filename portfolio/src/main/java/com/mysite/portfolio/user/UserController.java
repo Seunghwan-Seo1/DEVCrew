@@ -1,12 +1,15 @@
-// 생산자 : 이진호
 package com.mysite.portfolio.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
+// 생산자 : 이진호
+
+@RequestMapping("/user")
 @Controller
 public class UserController {
 
@@ -16,18 +19,18 @@ public class UserController {
 	//회원 가입
 	@GetMapping("/signup")
 	public String signup() {
-		return "signup";
+		return "user/signup";
 	}
 	@PostMapping("/signup")
 	public String signup(SiteUser user) {
 		userService.create(user);
-		return "redirect:/signin";
+		return "redirect:/user/signin";
 	}
 	
 	//로그인
 	@GetMapping("/signin")
 	public String signin() {
-		return "signin";
+		return "user/signin";
 	}
 	
 	//회원 정보 조회

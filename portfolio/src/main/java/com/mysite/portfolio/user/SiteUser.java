@@ -1,4 +1,3 @@
-// 생산자 : 이진호
 package com.mysite.portfolio.user;
 
 import java.time.LocalDateTime;
@@ -9,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
+// 생산자 : 이진호
 
 @Entity
 @Data
