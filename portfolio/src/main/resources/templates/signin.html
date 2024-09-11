@@ -1,0 +1,97 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+
+	<!-- 네이버 로그인용 -->
+	<script type="text/javascript"
+			src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
+			charset="utf-8"></script>
+	<script type="text/javascript"
+			src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<!-- 카카오 로그인용 -->
+	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+	
+	<div class="hero hero-inner">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mx-auto text-center">
+          <div class="intro-wrap">
+            <h1 class="mb-0">관리자 페이지</h1>
+            <p class="text-white">사용자 관리 및 빠른 축제정보 삭제/수정 숙박정보 삭제/수정을 위한 페이지입니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <form action="/signin" method="post">
+  <div class="centered-container mt-5 mb-5">
+        <div class="centered-div" style="width:550px;">
+         <div class="text-center mb-7">
+              <h3 class="text-body-highlight">Sign In</h3>
+              <p class="text-body-tertiary">Get access to your account</p>
+            </div>
+            
+            <div id="naver_id_login"></div>
+            <a href="javascript:kakaoLogin()"><img src="/images/kakaoLogin.jpg" style="width:210px;"></a>
+			
+            <div class="position-relative">
+              <hr class="bg-body-secondary mt-5 mb-4" />
+              <div class="divider-content-center">or use email</div>
+            </div>
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="mb-3 text-start">
+              <label class="form-label" for="email">Email address</label>
+              <div class="form-icon-container">
+                <input class="form-control form-icon-input" name="username" type="email" placeholder="name@example.com" /><span class="fas fa-user text-body fs-9 form-icon"></span>
+              </div>
+            </div>
+            <div class="mb-3 text-start">
+              <label class="form-label" for="password">Password</label>
+              <div class="form-icon-container">
+                <input class="form-control form-icon-input" name="password" type="password" placeholder="Password" /><span class="fas fa-key text-body fs-9 form-icon"></span>
+              </div>
+            </div>
+            <div class="row flex-between-center mb-7">
+              <div class="col-auto">
+                <div class="form-check mb-0">
+                  <input class="form-check-input" id="basic-checkbox" type="checkbox" checked="checked" />
+                  <label class="form-check-label mb-0" for="basic-checkbox">Remember me</label>
+                </div>
+              </div>
+            </div>
+            <input type="submit" class="btn btn-primary w-100 mb-3" value="로그인">
+            <div class="text-center"><a class="btn btn-primary w-100 mb-3" href="/signup">회원 가입</a></div>
+          </div>
+        </div>
+        
+    </form>  
+	
+	<!-- 네이버 로그인 버튼 노출 영역-->
+	<script type="text/javascript">
+	 	var naver_id_login = new naver_id_login("kz1RZYtgb9yp8QMx5Txp", "http://localhost:8080/naverlogin"); // (네이버 Client ID, 네이버 Callback URL)
+	 	var state = naver_id_login.getUniqState();
+	 	naver_id_login.setButton("green", 3, 45); //(버튼 색깔, 형태, 사이즈 설정)
+	 	naver_id_login.setDomain("http://localhost:8080/"); // (네이버 Service URL)	
+	 	naver_id_login.setState(state);
+	 	naver_id_login.setPopup();
+	 	naver_id_login.init_naver_id_login();
+	</script>
+	<!-- 카카오 로그인 버튼 노출 영역 -->
+	<script>
+		Kakao.init("95c57d568b957b98d5279123eed121b2"); // (카카오 앱 키)
+	  	
+		function kakaoLogin() {
+			window.Kakao.Auth.login({
+				// 개발자 사이트에서 체크한 항목들과 반드시 일치해야 한다. 
+				scope:'account_email',
+				success: function (authObj) {window.Kakao.API.request({url:'/v2/user/me',
+					success:res => {const kakaoAccount = res.kakao_account;
+					location.href='/logincheck?email=' + kakaoAccount.email;}
+					});
+				}
+			});
+		}
+	</script>
+	
+</div>
+</html>
