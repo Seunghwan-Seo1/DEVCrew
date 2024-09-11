@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 // 생산자 : 이진호
 
-@RequestMapping("/user")
 @Controller
 public class UserController {
 
@@ -19,7 +18,7 @@ public class UserController {
 	//회원 가입
 	@GetMapping("/signup")
 	public String signup() {
-		return "user/signup";
+		return "signup";
 	}
 	@PostMapping("/signup")
 	public String signup(SiteUser user) {
@@ -30,28 +29,26 @@ public class UserController {
 	//로그인
 	@GetMapping("/signin")
 	public String signin() {
-		return "user/signin";
+		return "signin";
 	}
 	
-	//회원 정보 조회
-	@GetMapping("/detail/{id}")
-	public String readdetail() {
-		
-		return "";
-	}
-	
-	//회원 정보 수정
-	@GetMapping("/update/{id}")
-	public String update() {
-		
-		return "";
-	}
-	
-	//회원 탈퇴
-	@GetMapping("/delete/{id}")
-	public String delete() {
-		
-		return "";
-	}
-	
+	/*
+	 * //회원 정보 조회
+	 * 
+	 * @GetMapping("/detail/{id}") public String readdetail() {
+	 * 
+	 * return ""; }
+	 * 
+	 * //회원 정보 수정
+	 * 
+	 * @GetMapping("/update/{id}") public String update() {
+	 * 
+	 * return ""; }
+	 * 
+	 * //회원 탈퇴
+	 * 
+	 * @GetMapping("/delete/{id}") public String delete() {
+	 * 
+	 * return ""; }
+	 */
 }

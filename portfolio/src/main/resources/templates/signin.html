@@ -1,7 +1,6 @@
-<html layout:decorate="~{layout}">
-<div layout:fragment="content">
 
-<form action="/signin" method="post">
+<div class=container>
+	<form action="/signin" method="post">
         <div th:if="${param.error}">
             <div class="alert alert-danger">
                 Please, Check your ID or Password...
@@ -12,6 +11,5 @@
 	<p>PW : <input type="password" name="password">
 	<p><input type="submit" value="Sign in">
 </form>
-
+<a href="/signup">회원가입</a>
 </div>
-</html>
