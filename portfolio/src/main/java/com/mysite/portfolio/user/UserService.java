@@ -56,8 +56,9 @@ public class UserService implements UserDetailsService {
 	}
 	
 	//회원 정보 조회
-	public Optional<SiteUser> readdetail(SiteUser user) {
-		return userRepository.findByusername(user.getUsername());
+	public SiteUser readdetail(Integer id) {
+		Optional<SiteUser> ob = userRepository.findById(id);
+		return ob.get();
 	}
 	
 	//회원 정보 수정
@@ -66,8 +67,8 @@ public class UserService implements UserDetailsService {
 	}
 	
 	//회원 탈퇴
-	public void delete(SiteUser user) {
-		this.userRepository.deleteById(user.getUid());
+	public void delete(Integer id) {
+		this.userRepository.deleteById(id);
 	}
 
 }
