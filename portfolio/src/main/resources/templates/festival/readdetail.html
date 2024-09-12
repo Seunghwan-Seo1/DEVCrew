@@ -18,18 +18,13 @@
         <div class="row">
            
            
-           <style>
-    .feature-icon img {
-        width: 100%; /* 가로폭을 100%로 설정 */
-        height: 100%; /* 세로폭을 100%로 설정 */
-        object-fit: cover; /* 비율을 유지하면서 크기를 맞춤 */
-    }
-            </style>
-             <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
 
             <div class="col-md-6">
+            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}"style="max-width: 70%; height: auto; margin: 0 auto; display: block;">
+                   </div>
+            <div class="col-md-6 d-flex flex-column justify-content-center">
                 <dl>
-                    <dt>행사명</dt>
+                    <dt>축제이름</dt>
                     <dd>[[${festival.fname}]]</dd>
                 </dl>
                 <dl>
@@ -44,18 +39,10 @@
                     <dt>축제참여비용</dt>
                     <dd>[[${festival.fprice}]]</dd>
                 </dl>
-                <dl>
-                    <dt>주최/주관</dt>
-                    <dd>합천군</dd>
-                </dl>
-                <dl>
-                    <dt>주요프로그램</dt>
-                    <dd>호러 어트랙션, 호러 공연, 고스트 호러 이벤트 등</dd>
-                </dl>
+               
             </div>
         </div>
     </section>
 
-    
 </div>
 </html>
