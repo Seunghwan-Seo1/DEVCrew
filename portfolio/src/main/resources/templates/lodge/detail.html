@@ -2,7 +2,11 @@
 
 <html layout:decorate="~{layout}">
 
+<head>
+
 <style>
+
+
 .container3 {
 	position: absolute;
 	bottom: 0px;
@@ -12,21 +16,36 @@
 	padding: 28px 0 29px 0;
     border: solid 1px #ebebeb;
     background-color: #f8f8f8;
+
+    margin-top : 10px;
 }
+
 </style>
+
+</head>
+
+<body>
+
+  
 <div layout:fragment="content">
 	<div class="hero hero-inner">
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-lg-6 mx-auto text-center">
 					<div class="intro-wrap">
-						<h1 class="mb-0">숙박</h1>
+
+						<h1 class="mb-0">나에게 맞는 숙소 찾기</h1>
+
 						<p class="text-white">축제와 가깝고 편한 숙소를 소개합니다</p>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+
+	
+	
+
 	<div class="container mt-4">
 		<div class="row">
 			<div class="col-md-3">
@@ -34,12 +53,56 @@
 			</div>
 		</div>
 	</div>
-	<div class="album py-5 bg-body-tertiary">
+
+	
+	
+	<!-- 숙소 사진, 지도 위치 -->
+<div class="untree_co-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <form class="contact-form" data-aos="fade-up" data-aos-delay="200">
+            <div class="row">
+              
+              외관 이미지 공간
+              
+              </div>
+          </form>
+        </div>
+        
+        <div class="col-lg-5 ml-auto">
+          <div class="quick-contact-item d-flex align-items-center mb-4">
+            
+            <form>
+              내부이미지
+            </form>
+           
+          </div>
+          <div class="quick-contact-item d-flex align-items-center mb-4">
+            
+            <form>
+            내부이미지 2
+            </form>
+            
+          </div>
+          <div class="quick-contact-item d-flex align-items-center mb-4">
+            
+           <form>
+           	지도
+           </form>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+	
+	<div class="album py-5">
 		<div class="container">
 		
 		<div class="container2">
-		
-			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+
 				<div class="col">
 					<button type="button" class="btn btn-outline-primary">숙소 소개</button>
 					<button type="button" class="btn btn-outline-secondary">리뷰보기</button>
@@ -48,6 +111,9 @@
 				</div>
 		
 		</div>
+
+		
+
 
 
 				<!-- 버튼 옵션에 따른 내용 출력 -->
@@ -61,30 +127,66 @@
 					</form>
 				</div> -->
 				
-<div class="rvWrite">
-        <div class="rvWrite">
-            <span id="cmt_rating" class="rvCmt_rating">
-                별점
-                <span class="starGrp">
+
+		<div class="rvWrite">
+         <div class="rvWrite">
+            <span id="cmt_rating" class="rvCmt_rating"> 별점 
+            <span class="starGrp">
+
                     <a href="javascript:void(0)" onclick="SetRatingStar(1);"><em class="bgGD rating_1 rating" id="rating_1">별 1점</em></a>
                     <a href="javascript:void(0)" onclick="SetRatingStar(2);"><em class="bgGD rating_2 rating" id="rating_2">별 2점</em></a>
                     <a href="javascript:void(0)" onclick="SetRatingStar(3);"><em class="bgGD rating_3 rating" id="rating_3">별 3점</em></a>
                     <a href="javascript:void(0)" onclick="SetRatingStar(4);"><em class="bgGD rating_4 rating" id="rating_4">별 4점</em></a>
                     <a href="javascript:void(0)" onclick="SetRatingStar(5);"><em class="bgGD rating_5 rating" id="rating_5">별 5점</em></a>
                 </span>
-            </span>
-        </div>
+
+            </span> 
         <div id="rvCmt" class="row_txtArea">
-            <span class="yesTxtArea m_size botIptMsg txtA_wSizeF">
+        
+  		<form  action="/lodge/detail" method="post"> 
                 <label for="comment">작성 글자 제한</label>
                 <span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
-                <textarea id="comment" autocomplete="off"></textarea>
-            </span>
-            <button title="등록" alt="등록" class="btn_login btnC xb_size btn_blue" onclick="" id="commentBtn"><span class="bWrap"><em class="txt">등록</em></span></button>
+                <textarea id="comment" name="rcontent" autocomplete="off"></textarea>          
+            <input type="submit" value="submit">
+        </form>
+
+
         </div>
-    </div>
+        </div> 
+    	</div>
+
 
 			</div>
 		</div>
 	</div>
+
+	
+	
+	<!-- 등록된 리뷰 보기 -->
+	<div>
+	
+	<div id="comments-list">
+  		
+    <div class="card m-2" id="comments-{{id}}">
+      <div class="card-header">
+  
+      </div>
+      <div class="card-body">
+
+      </div>
+    </div>
+
+</div>
+	
+	</div>
+	
+</body>
+
 </html>
+
+<script>
+function rvWrite() {
+	alert("해당 숙소의 리뷰가 등록되었습니다");
+}
+</script>
+

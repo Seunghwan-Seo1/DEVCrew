@@ -44,6 +44,7 @@ public class FestivalController {
 		return "festival/readlist";
 	}
 	
+
 	
 	  //readdetail
 	  
@@ -54,6 +55,7 @@ public class FestivalController {
 	 
 
 	
+
 	
 	 @GetMapping("/readdetail/{id}")
 	 public String readdetail(Model model, @PathVariable("id") Integer id) {
@@ -80,7 +82,15 @@ public class FestivalController {
 			return "redirect:/festival/readlist";
 		}
 		
-		
+
+
+		// 게시글 삭제 메서드
+	    @PostMapping("/deleteFestival")
+	    public String deleteUser(@RequestParam("fid") Integer fid) {
+	        festivalService.delete(fid);  // 사용자 삭제
+	        return "redirect:/admin/festivalconfig";  // 삭제 후 회원 목록으로 리다이렉트
+	    }
+
 }
 		
 

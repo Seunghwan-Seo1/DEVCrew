@@ -25,6 +25,7 @@
 
     <div class="container px-4 py-5" id="featured-3">
     
+
     <h1 class="visually-hidden">페스티벌</h1>
     <h2 class="pb-2 border-bottom">축제 목록</h2>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
@@ -103,6 +104,7 @@
 
 
 <!-- 사진 및 간단한설명--> 
+
   <th:block th:each="festival : ${festivals}">   
     
  
@@ -110,8 +112,10 @@
         <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
           <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
         </div>
+
         <h3 class="fs-2 text-body-emphasis">
       <a th:href="@{|/festival/readdetail/${festival.fid}|}" class="medium-text">[[${festival.fname}]]</a>
+
         
       </div>
       
