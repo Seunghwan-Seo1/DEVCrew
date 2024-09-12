@@ -47,17 +47,13 @@ public class FestivalController {
 	 * return "festival/readdetail"; }
 	 */
 	
-	// readdetail
+	//readdetail
 	@GetMapping("/readdetail/{id}")
-	public String readdetail(@PathVariable("id") Integer id, Model model) {
+	public String readdetail(Model model, @PathVariable("id") Integer id) {
 		model.addAttribute("festival", festivalService.readdetail(id));
-		
-		String downpath = "여기에 다운받을 경로를 설정하세요"; 
-		model.addAttribute("downpath", "https://" + downpath);
-		
 		return "festival/readdetail";
 	}
-	
+
 	//update
 		@GetMapping("/update/{id}")
 		public String update(Model model, @PathVariable("id") Integer id) {

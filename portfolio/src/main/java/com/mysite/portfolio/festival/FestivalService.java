@@ -24,8 +24,16 @@ public class FestivalService {
     private S3Service s3Service; // S3Service 주입
 
     // create
-    public void create(Festival festival, MultipartFile file) {
+    public void create(Festival festival, MultipartFile file) throws IOException {
+    	String fileName = "";
         festival.setFdate(LocalDateTime.now()); // 데이터를 등록
+      //기본 사진이름을 uuid 처리 후 aws에 저장
+		UUID uuid = UUID.randomUUID();
+		fileName = uuid + "_" + file.getOriginalFilename();
+		s3Service.uploadFile(file, fileName);
+		
+		festival.setFimg(fileName);
+    
         this.festivalRepository.save(festival);
     }
 
