@@ -4,10 +4,13 @@ package com.mysite.portfolio.review;
 
 import java.time.LocalDateTime;
 
+import com.mysite.portfolio.lodge.Lodge;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Entity
@@ -26,5 +29,10 @@ public class Review {
 	
 	private String ragree; // 공감
 	private String rdisagree; // 비공감
+	
+	
+	@ManyToOne
+	private Lodge lodge;
+	
 
 }

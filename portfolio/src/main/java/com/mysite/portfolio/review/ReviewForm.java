@@ -7,6 +7,6 @@ import lombok.Data;
 public class ReviewForm {
 	
 	@NotEmpty(message = "리뷰 내용과 별점은 필수 입력입니다")
-	private String rconten;
+	private String rcontent;
 
 }
