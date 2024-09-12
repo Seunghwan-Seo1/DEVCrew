@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -26,13 +27,31 @@ public class MemberService implements UserDetailsService {
 	private final PasswordEncoder passwordEncoder;
 	
 	//회원 가입
-	public void create(Member member) {
+	public void create(MemberForm memberForm) {
 		
+		//아이디 중복 방지
+	    Optional<Member> existingMember = memberRepository.findByusername(memberForm.getUsername());
+	    if (existingMember.isPresent()) {
+	        throw new IllegalArgumentException("이미 등록된 사용자입니다.");
+	    }
+		
+	    //비밀번호 확인
+		if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
+            throw new IllegalArgumentException("2개의 패스워드가 일치하지 않습니다.");
+        }
+		
+		Member member = new Member();
 		member.setMdate(LocalDateTime.now());
 		member.setRole("ROLE_USER");
-		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		member.setPassword(passwordEncoder.encode(memberForm.getPassword1()));
 		
-		this.memberRepository.save(member);
+		try {
+			memberRepository.save(member);
+        } catch (DataIntegrityViolationException e) {
+            throw new DataIntegrityViolationException(e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
 		
 	}
 	
@@ -45,6 +64,7 @@ public class MemberService implements UserDetailsService {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
         Member member = _member.get();
+        System.out.println("Loaded member: " + member); // 로그인 데이터 확인용 코드
         List<GrantedAuthority> authorities = new ArrayList<>();
         if ("ROLE_ADMIN".equals(member.getRole())) {
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
@@ -56,8 +76,8 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	//회원 정보 조회
-	public Member readdetail(Integer id) {
-		Optional<Member> ob = memberRepository.findById(id);
+	public Member readdetail(Integer mid) {
+		Optional<Member> ob = memberRepository.findById(mid);
 		return ob.get();
 	}
 	

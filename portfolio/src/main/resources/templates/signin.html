@@ -10,13 +10,12 @@
 	<!-- 카카오 로그인용 -->
 	<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 	
-	<div class="hero hero-inner">
+	<div class="hero">
     <div class="container">
       <div class="row align-items-center">
         <div class="col-lg-6 mx-auto text-center">
           <div class="intro-wrap">
-            <h1 class="mb-0">관리자 페이지</h1>
-            <p class="text-white">사용자 관리 및 빠른 축제정보 삭제/수정 숙박정보 삭제/수정을 위한 페이지입니다.</p>
+            <h1 class="mb-0">로그인 페이지</h1>
           </div>
         </div>
       </div>
@@ -36,17 +35,16 @@
 			
             <div class="position-relative">
               <hr class="bg-body-secondary mt-5 mb-4" />
-              <div class="divider-content-center">or use email</div>
             </div>
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="mb-3 text-start">
-              <label class="form-label" for="email">Email address</label>
+              <label class="form-label" for="email">아이디</label>
               <div class="form-icon-container">
                 <input class="form-control form-icon-input" name="username" type="email" placeholder="name@example.com" /><span class="fas fa-user text-body fs-9 form-icon"></span>
               </div>
             </div>
             <div class="mb-3 text-start">
-              <label class="form-label" for="password">Password</label>
+              <label class="form-label" for="password">비밀번호</label>
               <div class="form-icon-container">
                 <input class="form-control form-icon-input" name="password" type="password" placeholder="Password" /><span class="fas fa-key text-body fs-9 form-icon"></span>
               </div>
