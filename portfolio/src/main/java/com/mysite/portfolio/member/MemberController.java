@@ -2,12 +2,16 @@
 package com.mysite.portfolio.member;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import jakarta.validation.Valid;
 
 
 @Controller
@@ -18,12 +22,39 @@ public class MemberController {
 	
 	//회원 가입
 	@GetMapping("/signup")
-	public String signup() {
+	public String signup(MemberForm memberForm) {
 		return "signup";
 	}
 	@PostMapping("/signup")
-	public String signup(Member member) {
-		memberService.create(member);
+	public String signup(	@Valid MemberForm memberForm,
+							BindingResult bindingResult
+							) {
+		
+		if (bindingResult.hasErrors()) {
+            return "signup";
+        }
+
+        try {
+        	memberService.create(memberForm);
+        } catch (IllegalArgumentException e) {
+            if (e.getMessage().contains("이미 등록된 사용자")) {
+            	//아이디 중복 메세지
+                bindingResult.rejectValue("username", "usernameExists", e.getMessage());
+            } else if (e.getMessage().contains("2개의 패스워드")) {
+            	//비밀번호 확인 메세지
+                bindingResult.rejectValue("password2", "passwordMismatch", e.getMessage());
+            } else {
+                bindingResult.reject("signupFailed", e.getMessage());
+            }
+            return "signup";
+        } catch (DataIntegrityViolationException e) {
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "signup";
+        } catch (Exception e) {
+            bindingResult.reject("signupFailed", e.getMessage());
+            return "signup";
+        }
+
 		return "redirect:/signin";
 	}
 	
@@ -34,9 +65,10 @@ public class MemberController {
 	}
 	
 	//회원 정보 조회
-	@GetMapping("/readdetail/{mid}")
-	public String readdetail(	@PathVariable("mid") Integer mid,
-								Model model
+	@GetMapping("/member/readdetail/{mid}")
+	public String readdetail( 
+								  @PathVariable("mid") Integer mid, Model model
+								 
 								) {
 		model.addAttribute("member", memberService.readdetail(mid));
 		return "member/readdetail";
@@ -47,7 +79,7 @@ public class MemberController {
 	public String update(	@PathVariable("id") Integer id, 
 							Model model
 							) {
-		model.addAttribute("user", memberService.readdetail(id));
+		model.addAttribute("member", memberService.readdetail(id));
 		return "member/update";
 	}
 	
