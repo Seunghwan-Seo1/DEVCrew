@@ -41,18 +41,22 @@ public class FestivalController {
 		return "festival/readlist";
 	}
 	
-	/*
-	 * @GetMapping("/readdetail") //축제내용 상세보기 public String readdetail() {
-	 * 
-	 * return "festival/readdetail"; }
-	 */
 	
-	//readdetail
-	@GetMapping("/readdetail/{id}")
-	public String readdetail(Model model, @PathVariable("id") Integer id) {
-		model.addAttribute("festival", festivalService.readdetail(id));
-		return "festival/readdetail";
-	}
+	  //readdetail
+	  
+	  @GetMapping("/readdetail") //축제내용 상세보기 
+	  public String readdetail() { return
+	  "festival/readdetail"; 
+	  }
+	 
+
+	
+	
+//	@GetMapping("/readdetail/{id}")
+//	public String readdetail(Model model, @PathVariable("id") Integer id) {
+//		model.addAttribute("festival", festivalService.readdetail(id));
+//		return "festival/readdetail";
+//	}
 
 	//update
 		@GetMapping("/update/{id}")

@@ -3,6 +3,7 @@ package com.mysite.portfolio.festival;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +43,20 @@ public class FestivalService {
         return festivalRepository.findAll();
     }
 
-    // readdetail
-    public Festival readdetail(Integer fid) {
-        return festivalRepository.findById(fid)
-            .orElseThrow(() -> new RuntimeException("Festival not found"));
-    }
+   // readdetail
+	/*
+	 * public Festival readdetail(Integer fid) { return
+	 * festivalRepository.findById(fid) .orElseThrow(() -> new
+	 * RuntimeException("Festival not found")); }
+	 */
+    public  Festival readdetail(Integer fid) {
+		Optional<Festival> ob = festivalRepository.findById(fid);
+		return ob.get();
+	}
+    
+    
+    
+    
 
     // update
     public void update(Festival festival, MultipartFile file) throws IOException {
