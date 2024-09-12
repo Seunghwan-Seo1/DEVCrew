@@ -5,7 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.RequiredArgsConstructor;
+
 @RequestMapping("/lodge")
+@RequiredArgsConstructor
 @Controller
 public class LodgeController {
 	
@@ -27,6 +30,8 @@ public class LodgeController {
 		public String ldetail() {
 			return "/lodge/detail";
 		}
+		
+	
 
 	
 

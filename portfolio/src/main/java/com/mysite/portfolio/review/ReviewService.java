@@ -25,30 +25,40 @@ public class ReviewService {
 	 
 
 	// 리뷰 작성
-	public void rvcreate(Review review, MultipartFile file) throws IOException {
-		String fileName = "";
-		if (!file.isEmpty()) {
-			// 기본 사진 이름을 uuid 처리 후 aws에 저장
-			UUID uuid = UUID.randomUUID();
-			fileName = uuid + "_" + file.getOriginalFilename();
-			s3Service.uploadFile(file, fileName);
-		}
+//	public void rvcreate(Review review, MultipartFile file) throws IOException {
+//		String fileName = "";
+//		if (!file.isEmpty()) {
+//			// 기본 사진 이름을 uuid 처리 후 aws에 저장
+//			UUID uuid = UUID.randomUUID();
+//			fileName = uuid + "_" + file.getOriginalFilename();
+//			s3Service.uploadFile(file, fileName);
+//		}
+//		// 객체에 저장
+//		review.setRpicture(fileName);
+//		review.setRdate(LocalDateTime.now());
+//
+//		reviewRepository.save(review);
+//
+//	}
+
+	public void rvcreate(Review review) {
+
 		// 객체에 저장
-		review.setRpicture(fileName);
 		review.setRdate(LocalDateTime.now());
 
 		reviewRepository.save(review);
 
 	}
-
+	
+	
 	// 리뷰 리스트
 	List<Review> rvlist() {
 		return reviewRepository.findAll(); // 전체 목록 조회
 	}
 
 	// 리뷰 수정
-	public Review rvdetail(Integer uid) {
-		Optional<Review> ob = reviewRepository.findById(uid);
+	public Review rvdetail(Integer mid) {
+		Optional<Review> ob = reviewRepository.findById(mid);
 		return ob.get();
 	}
 
@@ -57,8 +67,8 @@ public class ReviewService {
 	}
 
 	// 리뷰 삭제
-	public void rvdelete(Integer uid) {
-		reviewRepository.deleteById(uid);
+	public void rvdelete(Integer mid) {
+		reviewRepository.deleteById(mid);
 	}
 
 }
