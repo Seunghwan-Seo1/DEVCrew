@@ -1,0 +1,56 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">지역 축제</h1>
+                        <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section class="summary">
+        <div class="row">
+           
+           
+
+            <div class="col-md-6">
+            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}"style="max-width: 70%; height: auto; margin: 0 auto; display: block;">
+                   </div>
+            <div class="col-md-6 d-flex flex-column justify-content-center">
+                <dl>
+                    <dt>축제이름</dt>
+                    <dd>[[${festival.fname}]]</dd>
+                </dl>
+                <dl>
+                    <dt>장소</dt>
+                    <dd>[[${festival.flocation}]]</dd>
+                </dl>
+                <dl>
+                
+                 <!-- <dl>
+                    <dt>축제기간</dt>
+                    <dd>[[${festival.fdate}]]</dd>
+                </dl> -->
+                
+                    <dt>축제설명</dt>
+                    <dd>[[${festival.fdescription}]]</dd>
+                
+              <!--   <dl>
+                    <dt>축제참여비용</dt>
+                    <dd>[[${festival.fprice}]]</dd>
+                </dl> -->
+               
+            </div>
+        </div>
+    </section>
+
+</div>
+</html>
+

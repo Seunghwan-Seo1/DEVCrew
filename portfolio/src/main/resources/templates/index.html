@@ -1,4 +1,4 @@
-
+<!-- 서승환 -->
 <!-- /*
 * Template Name: Tour
 * Template Author: Untree.co
@@ -84,37 +84,36 @@
 					<li class="has-children">
 						<a href="#">숙박</a>
 						<ul class="dropdown">
+
 							<li class="has-children">
-								<a href="#">1번 메뉴</a>
+								<a href="#">숙소 전체 보기</a>
 								<ul class="dropdown">
-									<li><a href="#">메뉴 1</a></li>
-									<li><a href="#">메뉴 2</a></li>
-									<li><a href="#">메뉴 3</a></li>
+									<li><a href="#">서울/경기</a></li>
+									<li><a href="#">부산</a></li>
+									
 								</ul>
 							</li>
 							<li class="has-children">
-								<a href="#">2번 메뉴</a>
+								<a href="#">지역별 보기</a>
+
 								<ul class="dropdown">
-									<li><a href="#">메뉴 1</a></li>
-									<li><a href="#">메뉴 2</a></li>
-									<li><a href="#">메뉴 3</a></li>
-								</ul>
-							</li>
-							<li class="has-children">
-								<a href="#">3번 메뉴</a>
-								<ul class="dropdown">
-									<li><a href="#">메뉴 1</a></li>
-									<li><a href="#">메뉴 2</a></li>
-									<li><a href="#">메뉴 3</a></li>
+									<li><a href="#">서울/경기/인천</a></li>
+									<li><a href="#">대전/충정</a></li>
+									<li><a href="#">부산/울산</a></li>
+									<li><a href="#">대구/경북</a></li>
+									<li><a href="#">광주/전라</a></li>
+									<li><a href="#">제주</a></li>
 								</ul>
 							</li>
 						</ul>
 					</li>
+
 					<li><a sec:authorize="isAnonymous()" href="/signin">프로필</a></li>
 					
 					<li><a sec:authorize="isAuthenticated()" th:href="@{|/member/readdetail/${member.mid}|}">프로필</a></li>
 					
 					<li><a href="about.html">고객센터</a></li>
+
 					<li><a sec:authorize="isAnonymous()" href="/signin">로그인</a></li>
 					<li><a sec:authorize="isAuthenticated()" href="/signout">로그아웃</a></li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin/main">관리자 메뉴</a></li>

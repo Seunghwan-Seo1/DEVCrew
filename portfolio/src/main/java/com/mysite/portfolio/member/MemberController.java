@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.validation.Valid;
 
@@ -95,5 +96,19 @@ public class MemberController {
 		memberService.delete(id);
 		return "redirect:/";
 	}
+	
+	@PostMapping("/updateRole")
+    public String updateRole(@RequestParam("mid") Integer memberId,
+                             @RequestParam("role") String newRole) {
+        memberService.updateUserRole(memberId, newRole);
+        return "redirect:/admin/userconfig";  // 변경 후 회원 목록으로 리다이렉트
+    }
+	
+	// 사용자 삭제 메서드
+    @PostMapping("/deleteUser")
+    public String deleteUser(@RequestParam("mid") Integer mid) {
+        memberService.delete(mid);  // 사용자 삭제
+        return "redirect:/admin/userconfig";  // 삭제 후 회원 목록으로 리다이렉트
+    }
 	
 }

@@ -90,5 +90,18 @@ public class MemberService implements UserDetailsService {
 	public void delete(Integer id) {
 		this.memberRepository.deleteById(id);
 	}
+	
+	public List<Member> readlist() {
+		return memberRepository.findAll();
+	}
+	
+	public void updateUserRole(Integer mid, String newRole) {
+        Member member = memberRepository.findById(mid)
+                            .orElseThrow(() -> new IllegalArgumentException("Invalid member ID"));
+        member.setRole(newRole);  // 역할 변경
+        memberRepository.save(member);  // 변경 사항 저장
+    }
+	
+	
 
 }
