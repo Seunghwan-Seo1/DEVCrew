@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,7 +48,7 @@ public class ReviewController {
 		return "lodge/detail";
 
 	}
-	
+
 	@GetMapping("/lodge/detail/rvlist")
 	public String rvlist(Model model) {
 		model.addAttribute("reviewList", reviewService.rvlist());
@@ -76,4 +77,5 @@ public class ReviewController {
 	 * Integer id) { reviewService.rvdelete(mid); return "redirect:lodge/detail"; }
 	 */
 
+ 
 }

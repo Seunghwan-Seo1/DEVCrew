@@ -17,6 +17,8 @@ import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.festival.FestivalService;
 import com.mysite.portfolio.member.MemberService;
 
+import com.mysite.portfolio.member.MemberService;
+
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/admin")
@@ -26,8 +28,8 @@ public class AdminController {
 	
 	private final MemberService memberService;
 	
-	private final FestivalService festivalService;
-	
+
+
 	@GetMapping("/main")
 	public String adminmain() {
 		return "admin/main";
@@ -40,7 +42,7 @@ public class AdminController {
 		model.addAttribute("members", memberService.readlist());
 		return "admin/userconfig";
 	}
-	
+
 	@GetMapping("/festivalconfig")
 	public String festival(Model model) {
 		model.addAttribute("festivals", festivalService.readlist());
@@ -56,4 +58,5 @@ public class AdminController {
 			}
 	    
 	}
+
 
