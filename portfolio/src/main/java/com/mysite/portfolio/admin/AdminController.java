@@ -17,8 +17,6 @@ import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.festival.FestivalService;
 import com.mysite.portfolio.member.MemberService;
 
-import com.mysite.portfolio.member.MemberService;
-
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/admin")
@@ -27,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 public class AdminController {
 	
 	private final MemberService memberService;
+	
+	private final FestivalService festivalService;
 	
 
 
