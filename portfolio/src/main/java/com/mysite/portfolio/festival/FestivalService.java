@@ -44,16 +44,17 @@ public class FestivalService {
     }
 
    // readdetail
+	
 	/*
 	 * public Festival readdetail(Integer fid) { return
 	 * festivalRepository.findById(fid) .orElseThrow(() -> new
 	 * RuntimeException("Festival not found")); }
 	 */
-    public  Festival readdetail(Integer fid) {
-		Optional<Festival> ob = festivalRepository.findById(fid);
-		return ob.get();
-	}
-    
+	
+	  public Festival readdetail(Integer fid) {
+		  Optional<Festival> ob =festivalRepository.findById(fid); 
+		  return ob.get(); }
+	
     
     
     

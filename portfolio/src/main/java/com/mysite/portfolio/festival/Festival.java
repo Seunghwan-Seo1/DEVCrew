@@ -25,7 +25,7 @@ public class Festival {
     private String flocation;  //축제 장소
     private String fdescription; //축제설명
     private String fimg; //축제사진
-    private String fprice; //축제참여비용
+    private Integer fprice; //축제참여비용
     
     
 

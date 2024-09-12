@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import lombok.RequiredArgsConstructor;
+
 @RequestMapping("/festival")
+@RequiredArgsConstructor
 @Controller
 public class FestivalController {
 	
@@ -52,11 +55,11 @@ public class FestivalController {
 
 	
 	
-//	@GetMapping("/readdetail/{id}")
-//	public String readdetail(Model model, @PathVariable("id") Integer id) {
-//		model.addAttribute("festival", festivalService.readdetail(id));
-//		return "festival/readdetail";
-//	}
+	 @GetMapping("/readdetail/{id}")
+	 public String readdetail(Model model, @PathVariable("id") Integer id) {
+		model.addAttribute("festival", festivalService.readdetail(id));
+		return "festival/readdetail";
+	 }
 
 	//update
 		@GetMapping("/update/{id}")
@@ -76,6 +79,8 @@ public class FestivalController {
 			
 			return "redirect:/festival/readlist";
 		}
+		
+		
 }
 		
 

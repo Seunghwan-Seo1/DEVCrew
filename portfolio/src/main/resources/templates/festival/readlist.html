@@ -92,7 +92,7 @@
     }
 
      .medium-text {
-        font-size: 28px; /* 원하는 크기로 조정 */
+        font-size: 15px; /* 원하는 크기로 조정 */
     }
      .small-text {
         font-size: 15px; /* 원하는 크기로 조정 */
@@ -110,25 +110,41 @@
           <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
         </div>
         <h3 class="fs-2 text-body-emphasis">
-    <a href="/festival/readdetail" class="medium-text">[[${festival.fname}]]</a>
+      <a th:href="@{|/festival/readdetail/${festival.fid}|}" class="medium-text">[[${festival.fname}]]</a>
+        <div class="card-text small-text" style="white-space: pre-line;"><span th:utext="${festival.flocation}"></span></div>
         <div class="card-text small-text" style="white-space: pre-line;"><span th:utext="${festival.fdescription}"></span></div>
-        
+        <div class="card-text small-text" style="white-space: pre-line;"><span th:utext="${festival.fprice}"></span></div>
       </div>
       
       
  </th:block>
  
  <!-- 사진 및 간단한설명-->  
-      
-      
-      
-      
-      
+</div>
+            </div>
+        </div>
     </div>
-  </div>
 
+    <script>
+        function filterFestivals() {
+            const input = document.getElementById('search').value.toLowerCase();
+            const festivalItems = document.querySelectorAll('.festival-item');
 
-  
+            festivalItems.forEach(item => {
+                const name = item.getAttribute('data-name').toLowerCase();
+                if (name.includes(input)) {
+                    item.style.display = '';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function resetFilter() {
+            document.getElementById('search').value = '';
+            filterFestivals();
+        }
+    </script>
 
 </div>
 </html>

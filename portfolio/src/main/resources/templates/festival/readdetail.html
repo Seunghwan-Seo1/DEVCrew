@@ -1,122 +1,61 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
 
-
-
-
-	<div class="hero hero-inner">
-		<div class="container">
-			<div class="row align-items-center">
-				<div class="col-lg-6 mx-auto text-center">
-					<div class="intro-wrap">
-						<h1 class="mb-0">지역 축제</h1>
-						<p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-
-
-
-                    <section class="summary">
-                        <div class="flex">
-                            <img src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
-                            <div class="cont">
-                                <dl>
-                                    <dt>행사명</dt>
-                                    <dd>고스트파크 어웨이크</dd>
-                                </dl>
-                                <dl>
-                                    <dt>장소</dt>
-                                    <dd>합천영상테마파크</dd>
-                                </dl>
-                                <dl>
-                                    <dt>운영기간</dt>
-                                    <dd>2024.07.29 ~ 2024.08.18</dd>
-                                </dl>
-                                <dl>
-                                    <dt>운영시간</dt>
-                                    <dd>오후 6시 ~ 오후 11시 30분</dd>
-                                </dl>
-                                <dl>
-                                    <dt>주최/주관</dt>
-                                    <dd>합천군</dd>
-                                </dl>
-                                <dl>
-                                    <dt>주요프로그램</dt>
-                                    <dd>호러 어트랙션, 호러 공연, 고스트 호러 이벤트 등</dd>
-                                </dl>
-                            </div>
-                        </div>
-                    </section>
-
-                    <div class="tit-wrap">
-                        <h3>캐릭터 소개</h3>
+    <div class="hero hero-inner">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mx-auto text-center">
+                    <div class="intro-wrap">
+                        <h1 class="mb-0">지역 축제</h1>
+                        <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
                     </div>
-
-
-
-
-
-
-
-<!-- 사진 및 간단한설명--> 
-  <th:block th:each="festival : ${festivals}">   
-    
- 
-      <div class="feature col">
-        <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-          <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
+                </div>
+            </div>
         </div>
-        <h3 class="fs-2 text-body-emphasis">
-    <a href="/festival/readdetail" class="medium-text">[[${festival.fname}]]</a>
-        <div class="card-text small-text" style="white-space: pre-line;"><span th:utext="${festival.fdescription}"></span></div>
-        
-      </div>
-      
-      
- </th:block>
-   </div>
-  </div>
- <!-- 사진 및 간단한설명-->  
+    </div>
 
-<style>
-    .feature-icon {
-        width: 100%; /* feature-icon의 너비를 100%로 설정 */
-        aspect-ratio: 1; /* 정사각형 비율 유지 */
-        overflow: hidden; /* 넘치는 부분 숨김 */
-        text-align: center; /* 텍스트 정렬 */
-        margin-top: 10px; /* 위쪽 여백 추가 */
-    }
-    
+    <section class="summary">
+        <div class="row">
+           
+           
+           <style>
     .feature-icon img {
         width: 100%; /* 가로폭을 100%로 설정 */
         height: 100%; /* 세로폭을 100%로 설정 */
         object-fit: cover; /* 비율을 유지하면서 크기를 맞춤 */
     }
+            </style>
+             <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
 
-     .medium-text {
-        font-size: 28px; /* 원하는 크기로 조정 */
-    }
-     .small-text {
-        font-size: 15px; /* 원하는 크기로 조정 */
-    }
+            <div class="col-md-6">
+                <dl>
+                    <dt>행사명</dt>
+                    <dd>[[${festival.fname}]]</dd>
+                </dl>
+                <dl>
+                    <dt>장소</dt>
+                    <dd>[[${festival.flocation}]]</dd>
+                </dl>
+                <dl>
+                    <dt>축제설명</dt>
+                    <dd>[[${festival.fdescription}]]</dd>
+                </dl>
+                <dl>
+                    <dt>축제참여비용</dt>
+                    <dd>[[${festival.fprice}]]</dd>
+                </dl>
+                <dl>
+                    <dt>주최/주관</dt>
+                    <dd>합천군</dd>
+                </dl>
+                <dl>
+                    <dt>주요프로그램</dt>
+                    <dd>호러 어트랙션, 호러 공연, 고스트 호러 이벤트 등</dd>
+                </dl>
+            </div>
+        </div>
+    </section>
+
     
-</style>
-
-
-
-      
-      
-      
-      
-      
-  
-
-
-  
-
 </div>
 </html>
