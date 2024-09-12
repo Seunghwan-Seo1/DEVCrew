@@ -29,7 +29,7 @@
     
     <h1 class="visually-hidden">치킨 페스티벌</h1>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-    <button class="btn btn-primary me-md-2" type="button" href="/festival/create">글 작성하기</button>
+    <a href="/festival/create" class="btn btn-primary">글 작성하기</a>
     </div>
     <h2 class="pb-2 border-bottom">Columns with icons</h2>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
@@ -46,7 +46,7 @@
         <div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
           <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" >
         </div>
-        <h3 class="fs-2 text-body-emphasis">[[${festival.fname}]]</h3>
+        <a th:href="@{|/readdetail/${festival.fid}|}" th:text="${festival.fname}"></a>
         <div class="card-text" style="white-space: pre-line;" th:utext="${festival.fdescription}"></div>
         
       </div>

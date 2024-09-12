@@ -41,21 +41,18 @@ public class FestivalController {
 		return "festival/readlist";
 	}
 	
-	@GetMapping("/readdetail")              //축제내용 상세보기
-	public String readdetail() {
-		
-		return "festival/readdetail";
-	}
+
 	
 	// readdetail
-	/*@GetMapping("/readdetail/{id}")
+	@GetMapping("/readdetail/{id}")
 	public String readdetail(@PathVariable("id") Integer id, Model model) {
 		model.addAttribute("festival", festivalService.readdetail(id));
 		
 		String downpath = "여기에 다운받을 경로를 설정하세요"; 
 		model.addAttribute("downpath", "https://" + downpath);
 		
-		return "festival/readdetail";*/
+		return "festival/readdetail";
+	}
 	
 	//update
 		@GetMapping("/update/{id}")
@@ -75,6 +72,13 @@ public class FestivalController {
 			
 			return "redirect:/festival/readlist";
 		}
+		
+		// 게시글 삭제 메서드
+	    @PostMapping("/deleteFestival")
+	    public String deleteUser(@RequestParam("fid") Integer fid) {
+	        festivalService.delete(fid);  // 사용자 삭제
+	        return "redirect:/admin/festivalconfig";  // 삭제 후 회원 목록으로 리다이렉트
+	    }
 }
 		
 
