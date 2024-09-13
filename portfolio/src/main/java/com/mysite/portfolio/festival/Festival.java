@@ -3,6 +3,7 @@ package com.mysite.portfolio.festival;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,8 +24,12 @@ public class Festival {
     private String fname; //축제이름
 
     private String flocation;  //축제 장소
+    
+    @Column(length = 4000)
     private String fdescription; //축제설명
+    
     private String fimg; //축제사진
+    
     private Integer fprice; //축제참여비용
     
     
