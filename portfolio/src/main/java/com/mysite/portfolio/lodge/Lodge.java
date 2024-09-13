@@ -38,6 +38,7 @@ public class Lodge {
 
 	// 숙소 필터 검색
 	private Integer lprice; // 숙소 가격
+	
 	private String breakfast;
 	private String swim;
 	private String wifi;
