@@ -37,11 +37,11 @@ public class AdminController {
 	
 	
 	
-	@GetMapping("/userconfig")
-	public String member(Model model) {
-		model.addAttribute("members", memberService.readlist());
-		return "admin/userconfig";
-	}
+	/*
+	 * @GetMapping("/userconfig") public String member(Model model) {
+	 * model.addAttribute("members", memberService.readlist()); return
+	 * "admin/userconfig"; }
+	 */
 
 	@GetMapping("/festivalconfig")
 	public String festival(Model model) {
