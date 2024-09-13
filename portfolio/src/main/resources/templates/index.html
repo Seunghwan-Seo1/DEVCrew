@@ -86,16 +86,15 @@
 						<ul class="dropdown">
 
 							<li class="has-children">
-								<a href="#">숙소 전체 보기</a>
-								<ul class="dropdown">
+								<a href="/lodge/main">숙소 전체 보기</a>
+<!-- 								<ul class="dropdown">
 									<li><a href="#">서울/경기</a></li>
 									<li><a href="#">부산</a></li>
 									
-								</ul>
+								</ul> -->
 							</li>
 							<li class="has-children">
-								<a href="#">지역별 보기</a>
-
+								<a href="/lodge/secondmain">지역별 보기</a>
 								<ul class="dropdown">
 									<li><a href="#">서울/경기/인천</a></li>
 									<li><a href="#">대전/충정</a></li>
@@ -107,8 +106,13 @@
 							</li>
 						</ul>
 					</li>
-					<li><a href="about.html">회원관리</a></li>
-					<li><a href="">View Details</a></li>
+
+					<li><a sec:authorize="isAnonymous()" href="/signin">프로필</a></li>
+					
+					<li><a sec:authorize="isAuthenticated()" >프로필</a></li>
+					
+					<li><a href="about.html">고객센터</a></li>
+
 					<li><a sec:authorize="isAnonymous()" href="/signin">로그인</a></li>
 					<li><a sec:authorize="isAuthenticated()" href="/signout">로그아웃</a></li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin/main">관리자 메뉴</a></li>
@@ -199,30 +203,21 @@
 
 				<div class="item">
 					<a class="media-thumb" href="images/hero-slider-1.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Pragser Wildsee</h3>
-							<span class="location">Italy</span>
-						</div>
+						
 						<img src="images/hero-slider-1.jpg" alt="Image" class="img-fluid">
 					</a> 
 				</div>
 
 				<div class="item">
 					<a class="media-thumb" href="images/hero-slider-2.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Oia</h3>
-							<span class="location">Greece</span>
-						</div>
+						
 						<img src="images/hero-slider-2.jpg" alt="Image" class="img-fluid">
 					</a> 
 				</div>
 
 				<div class="item">
 					<a class="media-thumb" href="images/hero-slider-3.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Perhentian Islands</h3>
-							<span class="location">Malaysia</span>
-						</div>
+						
 						<img src="images/hero-slider-3.jpg" alt="Image" class="img-fluid">
 					</a> 
 				</div>
@@ -230,30 +225,21 @@
 
 				<div class="item">
 					<a class="media-thumb" href="images/hero-slider-4.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Rialto Bridge</h3>
-							<span class="location">Italy</span>
-						</div>
+						
 						<img src="images/hero-slider-4.jpg" alt="Image" class="img-fluid">
 					</a> 
 				</div>
 
 				<div class="item">
 					<a class="media-thumb" href="images/hero-slider-5.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>San Francisco, United States</h3>
-							<span class="location">United States</span>
-						</div>
+						
 						<img src="images/hero-slider-5.jpg" alt="Image" class="img-fluid">
 					</a> 
 				</div>
 
 				<div class="item">
 					<a class="media-thumb" href="images/hero-slider-1.jpg" data-fancybox="gallery">
-						<div class="media-text">
-							<h3>Lake Thun</h3>
-							<span class="location">Switzerland</span>
-						</div>
+						
 						<img src="images/hero-slider-2.jpg" alt="Image" class="img-fluid">
 					</a> 
 				</div>
