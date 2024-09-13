@@ -21,8 +21,23 @@
            
 
             <div class="col-md-6">
-            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}"style="max-width: 70%; height: auto; margin: 0 auto; display: block;">
-                   </div>
+            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}"
+            style="width: 1000px; height: 1000px; object-fit: contain; margin: 0 auto; display: block;">
+            </div>
+           
+           <!-- 실험 -->
+        <!--    <section class="summary">
+        <div class="left">
+            <div class="col-md-3"> 4개의 작은 이미지를 위해 3씩 나누기
+          <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}"
+            style="width: 100px; height: 100px; object-fit: contain; margin: 0 auto; display: block;">
+  
+             
+           -->
+            
+          
+               <!-- 실험 -->    
+                   
             <div class="col-md-6 d-flex flex-column justify-content-center">
                 <dl>
                     <dt>축제이름</dt>
@@ -40,17 +55,64 @@
                 </dl> -->
                 
                     <dt>축제설명</dt>
+
                     <dd th:utext="${festival.fdescription}"></dd>
+
                 
               <!--   <dl>
                     <dt>축제참여비용</dt>
                     <dd>[[${festival.fprice}]]</dd>
                 </dl> -->
                
+               
+               <div id="map" style="width: 80%; height: 300px; margin: 20px 0;"></div>
+               
             </div>
         </div>
     </section>
+    
+    
+    <!--지도-->
 
+<!-- 카카오 지도 추가 -->
+  <!-- 전체 너비로 설정 -->
+
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
+    <script>
+        var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
+        var mapOption = { 
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심좌표
+            level: 3 // 지도의 확대 레벨
+        }; 
+        
+        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다 
+
+        var marker = new kakao.maps.Marker({
+            position: mapOption.center // 초기 마커 위치
+        });
+        marker.setMap(map); // 마커를 지도에 표시합니다
+
+        // 주소 설정 (축제 장소를 사용)
+        var address = "[[${festival.flocation}]]"; // 축제 장소 주소로 설정
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        // 주소 검색
+        geocoder.addressSearch(address, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+                map.setCenter(newPosition); // 지도 중심 이동
+                marker.setPosition(newPosition); // 마커 위치 변경
+                marker.setMap(map); // 마커를 지도에 표시
+            } else {
+                alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+            }
+        });
+    </script>
+
+
+    <!--지도-->
+    
+    
 </div>
 </html>
 
