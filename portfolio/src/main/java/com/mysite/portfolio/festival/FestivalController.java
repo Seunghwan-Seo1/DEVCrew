@@ -36,7 +36,7 @@ public class FestivalController {
 		festivalService.create(festival, file);
 		return "redirect:/festival/readlist";
 	}
-	
+
 	// readlist
 	@GetMapping("/readlist")                      //축제목록
 	public String readlist(Model model) {
@@ -66,7 +66,7 @@ public class FestivalController {
 	//update
 		@GetMapping("/update/{id}")
 		public String update(Model model, @PathVariable("id") Integer id) {
-			model.addAttribute("product", festivalService.readdetail(id));
+			model.addAttribute("festival", festivalService.readdetail(id));
 			return "festival/update";
 		}
 		

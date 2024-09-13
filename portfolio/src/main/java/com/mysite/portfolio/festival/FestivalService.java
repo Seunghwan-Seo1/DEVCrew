@@ -38,6 +38,10 @@ public class FestivalService {
         this.festivalRepository.save(festival);
     }
 
+    
+    
+    
+
     // readlist
     public List<Festival> readlist() {
         return festivalRepository.findAll();
