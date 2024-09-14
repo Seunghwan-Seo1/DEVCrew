@@ -1,74 +1,93 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
 
+
+
+
     <div class="hero hero-inner">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6 mx-auto text-center">
                     <div class="intro-wrap">
-                        <h1 class="mb-0">지역 축제</h1>
+                        <h1 class="mb-0">축제</h1>
                         <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
 
 
+  <!--사진-->
     <section class="summary">
         <div class="row">
            
-           
-
             <div class="col-md-6">
-            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}"
+            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}"
             style="width: 1000px; height: 1000px; object-fit: contain; margin: 0 auto; display: block;">
             </div>
-           
+           <!--사진-->
            <!-- 실험 -->
-        <!--    <section class="summary">
-        <div class="left">
-            <div class="col-md-3"> 4개의 작은 이미지를 위해 3씩 나누기
-          <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}"
-            style="width: 100px; height: 100px; object-fit: contain; margin: 0 auto; display: block;">
-  
-             
-           -->
+        
             
-          
-               <!-- 실험 -->    
-                   
-            <div class="col-md-6 d-flex flex-column justify-content-center">
-                <dl>
-                    <dt>축제이름</dt>
-                    <dd>[[${festival.fname}]]</dd>
-                </dl>
-                <dl>
-                    <dt>장소</dt>
-                    <dd>[[${festival.flocation}]]</dd>
-                </dl>
-                <dl>
-                
-                 <!-- <dl>
-                    <dt>축제기간</dt>
-                    <dd>[[${festival.fdate}]]</dd>
-                </dl> -->
-                
-                    <dt>축제설명</dt>
+               <!-- 실험 -->
 
-                    <dd th:utext="${festival.fdescription}"></dd>
 
-                
-              <!--   <dl>
+<!--설명-->
+			<div class="col-md-6 d-flex flex-column justify-content-center">
+				<dl>
+					<div class="festival-info">
+						<dl>
+							<dt>축제이름</dt>
+							<dd>[[${festival.fname}]]</dd>
+						</dl>
+						<dl>
+							<dt>장소</dt>
+							<dd>[[${festival.flocation}]]</dd>
+						</dl>
+						<dl>
+							<dt>축제설명</dt>
+							<dd th:utext="${festival.fdescription}"></dd>
+						</dl>
+					</div>
+
+					<style>
+.festival-info {
+	background-color: #f8f9fa; /* 연한 배경색 */
+	border: 1px solid #dee2e6; /* 테두리 색상 */
+	border-radius: 8px; /* 모서리 둥글게 */
+	padding: 20px; /* 내부 여백 */
+	margin-top: 20px; /* 위쪽 여백 */
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
+}
+
+.festival-info dt {
+	font-weight: bold; /* 제목 두껍게 */
+	margin-top: 10px; /* 제목 위쪽 여백 */
+	color: #007bff; /* 제목 색상 */
+}
+
+.festival-info dd {
+	margin: 0 0 10px; /* 아래쪽 마진 */
+	line-height: 1.6; /* 줄 간격 */
+	color: #333; /* 텍스트 색상 */
+}
+</style>
+<!--설명-->
+					<!--   <dl>
                     <dt>축제참여비용</dt>
                     <dd>[[${festival.fprice}]]</dd>
                 </dl> -->
-               
-               
-               <div id="map" style="width: 80%; height: 300px; margin: 20px 0;"></div>
-               
-            </div>
-        </div>
+
+
+					<!-- <dl>
+                    <dt>축제기간</dt>
+                    <dd>[[${festival.fdate}]]</dd>
+                </dl> -->
+					<div id="map" style="width: 80%; height: 300px; margin: 20px 0;"></div>
+			</div>
+		</div>
     </section>
     
     
@@ -111,6 +130,118 @@
 
 
     <!--지도-->
+    
+    
+            <!-- 추가사진 -->
+<div class="untree_co-section">
+    <div class="container">
+        <div class="row overflow-scroll">
+           <div class="col-6 col-md-6 col-lg-3">
+                <div class="media-1">
+                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}" alt="Image" class="img-fluid"></a>
+                    <div class="d-flex">
+                        <div></div>
+                    </div>
+                </div>
+            </div> 
+            <div class="col-6 col-md-6 col-lg-3">
+                <div class="media-1">
+                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg3}|}" alt="Image" class="img-fluid"></a>
+                    <div class="d-flex">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-6 col-lg-3">
+                <div class="media-1">
+                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg4}|}" alt="Image" class="img-fluid"></a>
+                    <div class="d-flex">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-6 col-lg-3">
+                <div class="media-1">
+                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg5}|}" alt="Image" class="img-fluid"></a>
+                    <div class="d-flex">
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+            
+<!-- 추가사진 -->
+<style>
+    .media-1 img {
+        width: 100%; /* 이미지의 너비를 부모 요소에 맞춤 */
+        height: 200px; /* 이미지의 높이를 고정하여 동일하게 설정 */
+        object-fit: cover; /* 비율을 유지하면서 잘라내기 */
+    }
+</style>
+    
+    
+    <!-- 리뷰 댓글 기능 추가 -->
+  <div class="review-section">
+    <h2>리뷰</h2>
+    <form id="reviewForm">
+        <div class="form-group">
+            <label for="reviewInput">리뷰 작성:</label>
+            <textarea class="form-control" id="reviewInput" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">리뷰 등록</button>
+    </form>
+    <div id="reviewList" class="mt-4">
+        <h3>리뷰 목록</h3>
+        <ul id="reviews"></ul>
+    </div>
+</div>
+
+<script>
+    let editingIndex = null; // 수정 중인 리뷰의 인덱스
+
+    document.getElementById('reviewForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const reviewText = document.getElementById('reviewInput').value;
+
+        if (editingIndex !== null) {
+            // 수정 중인 경우
+            const li = document.getElementById(`review-${editingIndex}`);
+            li.textContent = reviewText;
+            li.appendChild(createEditButton(editingIndex)); // 수정 버튼 추가
+            editingIndex = null; // 수정 완료 후 인덱스 초기화
+        } else {
+            // 새 리뷰 추가
+            const newIndex = document.getElementById('reviews').children.length;
+            const li = document.createElement('li');
+            li.id = `review-${newIndex}`; // 리뷰 ID 설정
+            li.textContent = reviewText;
+            li.appendChild(createEditButton(newIndex)); // 수정 버튼 추가
+            document.getElementById('reviews').appendChild(li);
+        }
+
+        document.getElementById('reviewInput').value = ''; // 입력 필드 초기화
+    });
+
+    function createEditButton(index) {
+        const editButton = document.createElement('button');
+        editButton.textContent = '수정';
+        editButton.className = 'btn btn-secondary btn-sm ml-2';
+        editButton.onclick = function () {
+            document.getElementById('reviewInput').value = document.getElementById(`review-${index}`).textContent.replace('수정', '').trim();
+            editingIndex = index; // 수정할 인덱스 설정
+        };
+        return editButton;
+    }
+     
+</script>
+
+    <!-- 리뷰 댓글 기능 추가 -->
+    
+    
+    
+   
+    
+    
     
     
 </div>
