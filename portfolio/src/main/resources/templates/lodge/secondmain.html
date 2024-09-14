@@ -16,11 +16,12 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     max-width: 300px;
-    margin: 0 auto;	
+    /* margin: 0 auto;	 */
+    margin : 3% 5% 5% 5%;
 }
 
 .album py-5{
-margin-right : 10px;
+	margin-right : 10px;
 	display: flex; 	
  	float : left;
 	overflow: hidden;
@@ -28,6 +29,11 @@ margin-right : 10px;
     padding: 0 78px 35px;
     background-color: #fff;
     border: 1px solid #e6e6e6;
+}
+
+.listcontainer {
+ 	width: 100%;
+    height: 100%;
 }
 
 
@@ -51,10 +57,7 @@ margin-right : 10px;
       </div>
     </div>
   </div>
-  
-  
-  
-  
+
    <div class="condition">
    <div class="container mt-4">
         <div class="row">
@@ -75,13 +78,13 @@ margin-right : 10px;
                      </select>
                  </div>
 		                   
-					<div class="form-group">       
+				<div class="form-group">       
 				<label for="serve">숙소 유형 선택</label><br>
 				<input type="checkbox" name="options" value="motel"> 모텔 <br>
 				<input type="checkbox" name="options" value="hotel"> 호텔 <br>
 				<input type="checkbox" name="options" value="resort"> 리조트 <br>
 				<input type="checkbox" name="options" value="geha"> 게스트 하우스 <br>
-				                </div>
+				</div>
                                        
                    <div class="form-group">
                        <label>숙소 예산</label>
@@ -109,17 +112,16 @@ margin-right : 10px;
                 <button type="submit" class="btn btn-primary">조건 재검색</button>
                </form>
                 </div>
-            
-            
+                
         </div>
-   </div>
+  	</div>
    
     </div>
 
    
-   <!-- footer -->
+   <!-- 숙소 리스트 -->
    
-    <div class="container">
+    <div class="listcontainer">
     <div class="album py-5">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -143,6 +145,12 @@ margin-right : 10px;
   </div>
   </div>
 </div>
+
+
+
+<!-- footer -->
+
+
 </body>
 
 </html>

@@ -47,6 +47,15 @@ public class LodgeController {
 	public String lodgeCreate(LodgeForm lodgeForm) {
 		return "/lodge/lgcreate";
 	}
+	
+	@PostMapping("/lgcreate")
+	public String lgcreate(@ModelAttribute Lodge lodge) {
+		lodgeService.lgcreate(lodge);
+		return "/lodge/main";
+	}
+	//alert 창 띄워주고 싶다
+	
+	
 
 	// 숙박 read list
 	@GetMapping("/lreadlist")
