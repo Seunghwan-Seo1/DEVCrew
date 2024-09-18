@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import com.mysite.portfolio.festival.Festival;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -117,5 +119,10 @@ public class MemberService implements UserDetailsService {
 	public void delete(Integer id) {
 		this.memberRepository.deleteById(id);
 	}
+	
+	 // readlist
+    public List<Member> readlist() {
+        return memberRepository.findAll();
+    }
 
 }
