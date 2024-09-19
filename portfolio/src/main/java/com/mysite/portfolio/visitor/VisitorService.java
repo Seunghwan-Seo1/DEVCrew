@@ -20,7 +20,8 @@ public class VisitorService {
             System.out.println("중복 방문입니다: " + ipAddress);
             return;
         }
-
+        
+        
         // 방문자 수 증가 및 방문자 데이터 업데이트
         Visitor visitor = visitorRepository.findById(1).orElse(new Visitor());
         if (visitor.getVcount() == null) {
@@ -49,6 +50,14 @@ public class VisitorService {
         return visitorRepository.findById(1)
                 .map(visitor -> visitor.getVcount() == null ? 0 : visitor.getVcount())
                 .orElse(0);
+    }
+    
+    public VisitorService(VisitorRepository visitorRepository) {
+        this.visitorRepository = visitorRepository;
+    }
+
+    public Integer getTotalVisitorCount() {
+        return visitorRepository.getTotalVisitorCount();
     }
 }
 

@@ -1,5 +1,6 @@
 package com.mysite.portfolio.visitor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
@@ -17,5 +18,6 @@ public class Visitor {
     private Integer vcount;
     private LocalDateTime vdate;
 
-    // Getters and Setters
+    // 방문 날짜 추가
+    private LocalDate visitDate; // 추가된 필드
 }
