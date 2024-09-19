@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.festival.Festival;
 
+import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -32,16 +33,22 @@ public class LodgeService {
 	}
 
 	// 숙소 정보 작성
-	public void lgcreate(Lodge lodge) {
-		lodge.setRegiDate(LocalDateTime.now());
+	public void lgcreate(Lodge lodge, MultipartFile file) throws IOException {
+		String fileName = "";
+        lodge.setRegiDate(LocalDateTime.now()); // 숙소 등록 일자로 데이터 등록
+        
+        UUID uuid = UUID.randomUUID();
+		fileName = uuid + "_" + file.getOriginalFilename();
+		s3Service.uploadFile(file, fileName);		
+		lodge.setAccomm(fileName); // 건물 외관 사진
 		
-		lodgeRepository.save(lodge);
+		this.lodgeRepository.save(lodge);
 	}
 	
 	
 	
 	//숙소 목록
-	List<Lodge> lglist() {
+	public List<Lodge> lglist() {
 		return lodgeRepository.findAll(); // 전체 목록 조회
 	}
 	
