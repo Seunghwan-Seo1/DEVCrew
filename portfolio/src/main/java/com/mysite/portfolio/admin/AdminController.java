@@ -3,6 +3,7 @@
 package com.mysite.portfolio.admin;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,14 +51,21 @@ public class AdminController {
 		return "admin/festivalconfig";
 	}
 	
-	@PostMapping("/festivalupdate")
-	public String festivalupdate(@ModelAttribute Festival festival , @RequestParam("file") MultipartFile File
-			) throws IOException  {
-			festivalService.update(festival, File);
-			
-			return "redirect:/admin/festivalconfig";
-			}
-	    
+	/*
+	 * @PostMapping("/festivalupdate") public String festivalupdate(@ModelAttribute
+	 * Festival festival , @RequestParam("file") MultipartFile File ) throws
+	 * IOException { festivalService.update(festival, File);
+	 * 
+	 * return "redirect:/admin/festivalconfig"; }
+	 */
+	 @PostMapping("/festivalupdate")
+	    public String festivalupdate(@ModelAttribute Festival festival, @RequestParam("files") List<MultipartFile> files) throws IOException {
+	        festivalService.update(festival, files);
+	        return "redirect:/admin/festivalconfig";
+	    }
+	
+	
+	
 	}
 
 
