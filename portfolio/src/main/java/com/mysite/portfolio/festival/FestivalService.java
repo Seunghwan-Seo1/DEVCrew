@@ -25,57 +25,89 @@ public class FestivalService {
     private S3Service s3Service; // S3Service 주입
 
     // create
-    public void create(Festival festival, MultipartFile file) throws IOException {
-    	String fileName = "";
-        festival.setFdate(LocalDateTime.now()); // 데이터를 등록
-      //기본 사진이름을 uuid 처리 후 aws에 저장
-		UUID uuid = UUID.randomUUID();
-		fileName = uuid + "_" + file.getOriginalFilename();
-		s3Service.uploadFile(file, fileName);
-		
-		festival.setFimg(fileName);
-    
-        this.festivalRepository.save(festival);
+    public void create(Festival festival, List<MultipartFile> files) throws IOException {
+        festival.setFdate(LocalDateTime.now());
+
+        String[] fileNames = new String[5];
+        for (int i = 0; i < files.size() && i < 5; i++) {
+            MultipartFile file = files.get(i);
+            if (!file.isEmpty()) {
+                UUID uuid = UUID.randomUUID();
+                String fileName = uuid + "_" + file.getOriginalFilename();
+                s3Service.uploadFile(file, fileName);
+                fileNames[i] = fileName;
+            }
+        }
+
+        // 각 이미지 필드에 저장
+        festival.setFimg(fileNames[0]);
+        festival.setFimg2(fileNames[1]);
+        festival.setFimg3(fileNames[2]);
+        festival.setFimg4(fileNames[3]);
+        festival.setFimg5(fileNames[4]);
+
+        try {
+            this.festivalRepository.save(festival);
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외 발생 시 스택 트레이스를 출력
+            throw new RuntimeException("Failed to save festival data.");
+        }
     }
 
-    
-    
-    
 
     // readlist
     public List<Festival> readlist() {
         return festivalRepository.findAll();
     }
 
-   // readdetail
-	
-	/*
-	 * public Festival readdetail(Integer fid) { return
-	 * festivalRepository.findById(fid) .orElseThrow(() -> new
-	 * RuntimeException("Festival not found")); }
-	 */
-	
-	  public Festival readdetail(Integer fid) {
-		  Optional<Festival> ob =festivalRepository.findById(fid); 
-		  return ob.get(); }
-	
-    
-    
-    
+    // readdetail
+    public Festival readdetail(Integer fid) {
+        Optional<Festival> ob = festivalRepository.findById(fid); 
+        return ob.orElseThrow(() -> new RuntimeException("Festival not found"));
+    }
 
     // update
-    public void update(Festival festival, MultipartFile file) throws IOException {
-        if (file != null && !file.isEmpty()) {
-            // 새 사진을 넣을 경우
-            UUID uuid = UUID.randomUUID();
-            String fileName = uuid + "_" + file.getOriginalFilename();
-            s3Service.uploadFile(file, fileName);
-            festival.setFimg(fileName); // 새로운 uuid 붙인 사진 넣기
-        } else {
-            // 기존 사진 이름을 그대로 사용
-            festival.setFimg(festival.getFimg());
+    public void update(Festival festival, List<MultipartFile> files) throws IOException {
+        // 기존 축제 정보를 가져와서 기존 이미지 유지
+        Festival existingFestival = festivalRepository.findById(festival.getFid())
+                .orElseThrow(() -> new RuntimeException("Festival not found"));
+
+        // 파일 이름을 저장할 리스트
+        String[] fileNames = new String[5];
+
+        for (int i = 0; i < files.size() && i < 5; i++) {
+            MultipartFile file = files.get(i);
+            if (!file.isEmpty()) {
+                UUID uuid = UUID.randomUUID();
+                String fileName = uuid + "_" + file.getOriginalFilename();
+                s3Service.uploadFile(file, fileName);
+                fileNames[i] = fileName; // 각 이미지 이름 저장
+            }
         }
-        festivalRepository.save(festival);
+
+        // 각 이미지 필드에 저장, 기존 이미지 유지
+        if (fileNames[0] != null) festival.setFimg(fileNames[0]);
+        else festival.setFimg(existingFestival.getFimg());
+
+        if (fileNames[1] != null) festival.setFimg2(fileNames[1]);
+        else festival.setFimg2(existingFestival.getFimg2());
+
+        if (fileNames[2] != null) festival.setFimg3(fileNames[2]);
+        else festival.setFimg3(existingFestival.getFimg3());
+
+        if (fileNames[3] != null) festival.setFimg4(fileNames[3]);
+        else festival.setFimg4(existingFestival.getFimg4());
+
+        if (fileNames[4] != null) festival.setFimg5(fileNames[4]);
+        else festival.setFimg5(existingFestival.getFimg5());
+
+        // 데이터베이스에 저장
+        try {
+            festivalRepository.save(festival);
+        } catch (Exception e) {
+            e.printStackTrace(); // 예외 발생 시 스택 트레이스를 출력
+            throw new RuntimeException("Failed to update festival data."); // 사용자 정의 예외 메시지
+        }
     }
 
     // delete
