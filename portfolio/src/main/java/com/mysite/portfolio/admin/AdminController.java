@@ -35,13 +35,15 @@ public class AdminController {
 	
 
 
-	@GetMapping("/main")
-	public String adminmain(Model model) {
-        Integer visitorCount = visitorService.getTotalVisitorCount(); // 총 방문자 수 가져오기
-        model.addAttribute("visitorCount", visitorCount); // 모델에 추가
-        return "admin/main";
-		
-	}
+    @GetMapping("/main")
+    public String showVisitorGraph(Model model) {
+        List<Integer> dailyVisitorCounts = visitorService.getLast7DaysVisitorCounts(); // 최근 7일간의 방문자 수
+        Integer totalVisitorCount = visitorService.getTotalVisitorCount(); // 총 방문자 수
+        model.addAttribute("dailyVisitorCounts", dailyVisitorCounts);
+        model.addAttribute("visitorCount", totalVisitorCount);
+        return "admin/main"; // admin/main.html로 이동
+    }
+
 	
 	
 	
