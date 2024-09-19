@@ -28,59 +28,68 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
-	private final MemberRepository memberRepository;
-	private final PasswordEncoder passwordEncoder;
-	
-	//회원 가입
-	public void create(MemberForm memberForm) {
-	    
-	    Member member = new Member();
-	    member.setUsername(memberForm.getUsername());
-	    member.setPassword(passwordEncoder.encode(memberForm.getPassword1()));
-	    member.setRole("ROLE_USER");
-	    member.setMdate(LocalDateTime.now());
-	    member.setMaddr(memberForm.getMaddr());
-	    
-	    this.memberRepository.save(member);
-	}
-	
-	//아이디 중복 방지 및 비밀번호 확인
-	public void validateMemberForm(MemberForm memberForm) {
-	    // 아이디 중복 방지
-	    Optional<Member> existingMember = memberRepository.findByusername(memberForm.getUsername());
-	    if (existingMember.isPresent()) {
-	        throw new IllegalArgumentException("이미 등록된 사용자입니다.");
-	    }
-	    
-	    // 비밀번호 확인
-	    if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
-	        throw new IllegalArgumentException("2개의 패스워드가 일치하지 않습니다.");
-	    }
-	}
-	
-	//회원 가입 에러 메세지
-	public void handleSignupException(Exception e, BindingResult bindingResult) {
-	    if (e instanceof IllegalArgumentException) {
-	        String message = e.getMessage();
-	        if (message.contains("이미 등록된 사용자")) {
-	            bindingResult.rejectValue("username", "usernameExists", message);
-	        } else if (message.contains("2개의 패스워드")) {
-	            bindingResult.rejectValue("password2", "passwordMismatch", message);
-	        } else {
-	            bindingResult.reject("signupFailed", message);
-	        }
-	    } else if (e instanceof DataIntegrityViolationException) {
-	        bindingResult.reject("signupFailed", "데이터 무결성 위반: " + e.getMessage());
-	    } else {
-	        bindingResult.reject("signupFailed", "회원가입 실패: " + e.getMessage());
-	    }
-	}
-	
-	//시큐리티 로그인
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		
-		Optional<Member> _member = this.memberRepository.findByusername(username);
+   private final MemberRepository memberRepository;
+   private final PasswordEncoder passwordEncoder;
+   
+   //회원 가입
+   public void create(MemberForm memberForm) {
+       
+       Member member = new Member();
+       member.setUsername(memberForm.getUsername());
+       member.setPassword(passwordEncoder.encode(memberForm.getPassword1()));
+       member.setRole("ROLE_USER");
+       member.setMdate(LocalDateTime.now());
+       member.setMaddr(memberForm.getMaddr());
+       
+       this.memberRepository.save(member);
+   }
+   
+   //아이디 중복 방지 및 비밀번호 확인
+   public void validateMemberForm(MemberForm memberForm) {
+       // 아이디 중복 방지
+       Optional<Member> existingMember = memberRepository.findByusername(memberForm.getUsername());
+       if (existingMember.isPresent()) {
+           throw new IllegalArgumentException("이미 등록된 사용자입니다.");
+       }
+       
+       // 비밀번호 확인
+       if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
+           throw new IllegalArgumentException("2개의 패스워드가 일치하지 않습니다.");
+       }
+       
+       // 연락처 중복 방지
+       Optional<Member> existingMemberByMaddr = memberRepository.findByMaddr(memberForm.getMaddr());
+       if (existingMemberByMaddr.isPresent()) {
+           throw new IllegalArgumentException("이미 등록된 연락처입니다.");
+       }
+
+   }
+   
+   //회원 가입 에러 메세지
+   public void handleSignupException(Exception e, BindingResult bindingResult) {
+       if (e instanceof IllegalArgumentException) {
+           String message = e.getMessage();
+           if (message.contains("이미 등록된 사용자")) {
+               bindingResult.rejectValue("username", "usernameExists", message);
+           } else if (message.contains("2개의 패스워드")) {
+               bindingResult.rejectValue("password2", "passwordMismatch", message);
+           } else if (message.contains("이미 등록된 연락처")) {
+               bindingResult.rejectValue("maddr", "maddrExists", message);
+           } else {
+               bindingResult.reject("signupFailed", message);
+           }
+       } else if (e instanceof DataIntegrityViolationException) {
+           bindingResult.reject("signupFailed", "데이터 무결성 위반: " + e.getMessage());
+       } else {
+           bindingResult.reject("signupFailed", "회원가입 실패: " + e.getMessage());
+       }
+   }
+   
+   //시큐리티 로그인
+   @Override
+   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+      
+      Optional<Member> _member = this.memberRepository.findByusername(username);
         if (_member.isEmpty()) {
             throw new UsernameNotFoundException("사용자를 찾을수 없습니다.");
         }
@@ -94,35 +103,35 @@ public class MemberService implements UserDetailsService {
         }
         return new User(member.getUsername(), member.getPassword(), authorities);
         
-	}
-	
-	//회원 정보 조회
-	public Member readdetail() {
-		
-		//접속자 정보 추출
-		Authentication authentication = 
-				      SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
-		String username = userDetails.getUsername();
-		Optional<Member> oc = memberRepository.findByusername(username);
-		
-		return oc.get();
+   }
+   
+   //회원 정보 조회
+   public Member readdetail() {
+      
+      //접속자 정보 추출
+      Authentication authentication = 
+                  SecurityContextHolder.getContext().getAuthentication();
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();   
+      String username = userDetails.getUsername();
+      Optional<Member> oc = memberRepository.findByusername(username);
+      
+      return oc.get();
 
-	}
-	
-	//회원 정보 수정
-	public void update(Member member) {
-		this.memberRepository.save(member);
-	}
-	
-	//회원 탈퇴
-	public void delete(Integer id) {
-		this.memberRepository.deleteById(id);
-	}
-	
-	 // readlist
-    public List<Member> readlist() {
-        return memberRepository.findAll();
-    }
+   }
+   
+   //회원 정보 수정
+   public void update(Member member) {
+      this.memberRepository.save(member);
+   }
+   
+   //회원 탈퇴
+   public void delete(Integer id) {
+      this.memberRepository.deleteById(id);
+   }
+   
+   // readlist
+   public List<Member> readlist() {
+       return memberRepository.findAll();
+   }
 
 }
