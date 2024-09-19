@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,8 @@ public class FestivalService {
     @Autowired
     private S3Service s3Service; // S3Service 주입
 
+    @Autowired
+	private MemberService memberService;
     // create
     public void create(Festival festival, List<MultipartFile> files) throws IOException {
         festival.setFdate(LocalDateTime.now());

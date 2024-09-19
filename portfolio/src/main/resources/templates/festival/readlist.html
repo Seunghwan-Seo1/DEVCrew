@@ -188,36 +188,38 @@
 	</div>
 
 	  <script>
-        function filterFestivals() {
-            const input = document.getElementById('search').value.toLowerCase();
-            const region = document.getElementById('region').value;
-            const category = document.getElementById('category').value;
-            const festivalItems = document.querySelectorAll('.festival-item');
+    function filterFestivals() {
+        const input = document.getElementById('search').value.toLowerCase(); // 검색창 입력 값
+        const region = document.getElementById('region').value; // 지역 필터 값
+        const category = document.getElementById('category').value; // 카테고리 필터 값
+        const festivalItems = document.querySelectorAll('.festival-item'); // 축제 목록
 
-            festivalItems.forEach(item => {
-                const name = item.getAttribute('data-name').toLowerCase();
-                const location = item.getAttribute('data-location').toLowerCase();
-                const matchesSearch = name.includes(input);
-                const matchesRegion = region === "전체" || location.includes(region);
-                const matchesCategory = category === "전체" || location.includes(category);
+        festivalItems.forEach(item => {
+            const name = item.getAttribute('data-name').toLowerCase(); // 축제 이름
+            const location = item.getAttribute('data-location').toLowerCase(); // 축제 위치
+            const itemCategory = item.getAttribute('data-category').toLowerCase(); // 축제 카테고리
+           
+            const matchesSearch = name.includes(input); // 검색어와 일치 여부
+            const matchesRegion = region === "전체" || location.includes(region); // 지역 필터와 일치 여부
+            const matchesCategory = category === "전체" || itemCategory.includes(category); // 카테고리 필터와 일치 여부
 
-                if (matchesSearch && matchesRegion && matchesCategory) {
-                    item.style.display = ''; // 일치하는 경우 표시
-                } else {
-                    item.style.display = 'none'; // 일치하지 않는 경우 숨김
-                }
-            });
-        }
+            // 조건에 맞는 항목만 보이게 설정
+            if (matchesSearch && matchesRegion && matchesCategory) {
+                item.style.display = ''; // 조건에 맞으면 표시
+            } else {
+                item.style.display = 'none'; // 조건에 맞지 않으면 숨김
+            }
+        });
+    }
 
-        function resetFilter() {
-            document.getElementById('search').value = '';
-            document.getElementById('region').selectedIndex = 0; // 지역 초기화
-            document.getElementById('category').selectedIndex = 0; // 카테고리 초기화
-            document.getElementById('startDate').value = ''; // 시작일 초기화
-            document.getElementById('endDate').value = ''; // 종료일 초기화
-            filterFestivals(); // 필터 재적용
-        }
-    </script>
+    function resetFilter() {
+        document.getElementById('search').value = ''; // 검색어 초기화
+        document.getElementById('region').selectedIndex = 0; // 지역 필터 초기화
+        document.getElementById('category').selectedIndex = 0; // 카테고리 필터 초기화
+        filterFestivals(); // 필터 재적용
+    }
+</script>
+
 
 </div>
 </html>
