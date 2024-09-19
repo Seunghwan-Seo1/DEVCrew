@@ -126,5 +126,16 @@ public class MemberService implements UserDetailsService {
 	public void delete(Integer id) {
 		this.memberRepository.deleteById(id);
 	}
+	
+	//아이디 찾기
+	public Optional<String> idsearch(String maddr) {
+        return memberRepository.findByMaddr(maddr)
+        		.map(Member::getUsername);
+    }
+
+	public Object readlist() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

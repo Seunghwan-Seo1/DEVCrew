@@ -1,6 +1,8 @@
 // 생산자 : 이진호
 package com.mysite.portfolio.member;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@RequestMapping("/memeber")
+@RequestMapping("/member")
 @Controller
 public class MemberController {
 
@@ -21,7 +23,7 @@ public class MemberController {
 	//회원 정보 조회
 	@GetMapping("/readdetail")
 	public String readdetail(Model model) {
-//		model.addAttribute("member", memberService.readdetail());
+		model.addAttribute("member", memberService.readdetail());
 		return "member/readdetail";
 	}
 	
@@ -46,5 +48,29 @@ public class MemberController {
 		memberService.delete(id);
 		return "redirect:/";
 	}
+	
+	//아이디 찾기
+	@GetMapping("/idsearch")
+    public String idsearch(Model model) {
+		model.addAttribute("member", new Member());
+        return "member/idsearch";
+    }
+
+	@PostMapping("/idsearch")
+	public String idsearch(	@ModelAttribute("maddr") Member member,
+							Model model
+							) {
+
+		Optional<String> searchId = memberService.idsearch(member.getMaddr());
+
+        if (searchId.isPresent()) {
+            model.addAttribute("username", searchId.get());
+        } else {
+            model.addAttribute("username", "존재하지 않습니다.");
+        }
+
+        model.addAttribute("showModal", true);
+        return "redirect:/idsearch";
+    }
 	
 }
