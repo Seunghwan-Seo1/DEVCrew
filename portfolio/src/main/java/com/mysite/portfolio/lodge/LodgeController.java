@@ -3,7 +3,6 @@ package com.mysite.portfolio.lodge;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -49,8 +49,8 @@ public class LodgeController {
 	}
 	
 	@PostMapping("/lgcreate")
-	public String lgcreate(@ModelAttribute Lodge lodge) {
-		lodgeService.lgcreate(lodge);
+	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("file") MultipartFile file) throws IOException {
+		lodgeService.lgcreate(lodge, file);
 		return "/lodge/main";
 	}
 	//alert 창 띄워주고 싶다
@@ -77,8 +77,8 @@ public class LodgeController {
 		return "lodge/lupdate";
 	}
 
-	@PostMapping("/lupdate2")
-	public String lupdate2(@ModelAttribute Lodge lodge, MultipartFile file) throws IOException {
+	@PostMapping("/lupdate")
+	public String lupdate(@ModelAttribute Lodge lodge, MultipartFile file) throws IOException {
 		lodgeService.lgupdate(lodge, file);
 		return "lodge/lreaddetail/" + lodge.getLnum();
 				
