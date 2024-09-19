@@ -35,6 +35,7 @@ public class AdminController {
 	
 
 
+
     @GetMapping("/main")
     public String showVisitorGraph(Model model) {
         List<Integer> dailyVisitorCounts = visitorService.getLast7DaysVisitorCounts(); // 최근 7일간의 방문자 수
@@ -44,14 +45,14 @@ public class AdminController {
         return "admin/main"; // admin/main.html로 이동
     }
 
+
 	
 	
-	
-	
-	  @GetMapping("/userconfig") public String member(Model model) {
-	  model.addAttribute("members", memberService.readlist()); 
-	  return "admin/userconfig"; }
-	 
+	@GetMapping("/userconfig")
+	public String member(Model model) {
+		model.addAttribute("members", memberService.readlist());
+		return "admin/userconfig";
+	}
 
 	@GetMapping("/festivalconfig")
 	public String festival(Model model) {
