@@ -27,6 +27,7 @@ public class Lodge {
 
 	private String lname; // 숙소 이름
 	private LocalDateTime regiDate; // 숙소 등록 일자
+	private String lwriter; // 작성자
 	
 	// 숙소 유형
 	private String motel;
