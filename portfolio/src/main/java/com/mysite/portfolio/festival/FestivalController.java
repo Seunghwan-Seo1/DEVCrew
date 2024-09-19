@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.member.MemberService;
+
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/festival")
@@ -24,6 +27,12 @@ public class FestivalController {
     @Autowired
     private FestivalService festivalService;
 
+    @Autowired
+	private MemberService memberService;
+    
+    @Autowired
+    private S3Service s3Service; // S3Service 주입
+    
     // create
     @GetMapping("/create")
     public String create() { // 축제 등록
