@@ -25,8 +25,9 @@ public class LodgeController {
 
 	// 숙박 메인페이지 (숙소 전체보기)
 	@GetMapping("/main")
-	public String lmain() {
-		return "/lodge/main";
+	public String lmain(Model model) {
+		model.addAttribute("lodges", lodgeService.getList());
+		return "lodge/main";
 	}
 
 	// 상세 필터 검색 페이지 (지역별 보기)
@@ -36,26 +37,26 @@ public class LodgeController {
 	}
 
 	// 숙박 상세 페이지 (정보, 리뷰, 안내사항 포함)
-	@GetMapping("/detail")
-	public String ldetail() {
-		return "/lodge/detail";
+	@GetMapping("/detail/{lnum}")
+	public String ldetail(@PathVariable ("lnum") Integer lnum, Model model) {
+		model.addAttribute("lodge", lodgeService.lgreaddetail(lnum));
+		return "lodge/detail";
 	}
 
 	// 숙박 create
 	//@PreAuthorize("isAuthenticated()") // 로그인 해야 작성 가능
 	@GetMapping("/lgcreate")
 	public String lodgeCreate(LodgeForm lodgeForm) {
-		return "/lodge/lgcreate";
+		return "lodge/lgcreate";
 	}
 	
 	@PostMapping("/lgcreate")
 	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("file") MultipartFile file) throws IOException {
 		lodgeService.lgcreate(lodge, file);
-		return "/lodge/main";
+		return "lodge/main";
 	}
 	//alert 창 띄워주고 싶다
-	
-	
+		
 
 	// 숙박 read list
 	@GetMapping("/lreadlist")
