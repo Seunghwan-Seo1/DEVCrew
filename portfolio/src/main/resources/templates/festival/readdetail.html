@@ -144,6 +144,7 @@
                     </div>
                 </div>
             </div> 
+            
             <div class="col-6 col-md-6 col-lg-3">
                 <div class="media-1">
                     <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg3}|}" alt="Image" class="img-fluid"></a>
@@ -179,61 +180,73 @@
 </style>
     
     
-    <!-- 리뷰 댓글 기능 추가 -->
-  <div class="review-section">
-    <h2>리뷰</h2>
-    <form id="reviewForm">
-        <div class="form-group">
-            <label for="reviewInput">리뷰 작성:</label>
-            <textarea class="form-control" id="reviewInput" rows="3" required></textarea>
+   <!-- 리뷰 댓글 기능 추가 -->
+    <div class="review-section">
+        <h2>리뷰</h2>
+        <form id="reviewForm">
+            <div class="form-group">
+                <label for="reviewInput">리뷰 작성:</label>
+                <textarea class="form-control" id="reviewInput" rows="3" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">리뷰 등록</button>
+        </form>
+        <div id="reviewList" class="mt-4">
+            <h3>리뷰 목록</h3>
+            <ul id="reviews"></ul>
         </div>
-        <button type="submit" class="btn btn-primary">리뷰 등록</button>
-    </form>
-    <div id="reviewList" class="mt-4">
-        <h3>리뷰 목록</h3>
-        <ul id="reviews"></ul>
     </div>
-</div>
 
-<script>
-    let editingIndex = null; // 수정 중인 리뷰의 인덱스
+    <script>
+        let editingIndex = null; // 수정 중인 리뷰의 인덱스
 
-    document.getElementById('reviewForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+        document.getElementById('reviewForm').addEventListener('submit', function (e) {
+            e.preventDefault();
 
-        const reviewText = document.getElementById('reviewInput').value;
+            const reviewText = document.getElementById('reviewInput').value;
 
-        if (editingIndex !== null) {
-            // 수정 중인 경우
-            const li = document.getElementById(`review-${editingIndex}`);
-            li.textContent = reviewText;
-            li.appendChild(createEditButton(editingIndex)); // 수정 버튼 추가
-            editingIndex = null; // 수정 완료 후 인덱스 초기화
-        } else {
-            // 새 리뷰 추가
-            const newIndex = document.getElementById('reviews').children.length;
-            const li = document.createElement('li');
-            li.id = `review-${newIndex}`; // 리뷰 ID 설정
-            li.textContent = reviewText;
-            li.appendChild(createEditButton(newIndex)); // 수정 버튼 추가
-            document.getElementById('reviews').appendChild(li);
+            if (editingIndex !== null) {
+                // 수정 중인 경우
+                const li = document.getElementById(`review-${editingIndex}`);
+                li.textContent = reviewText;
+                li.appendChild(createEditButton(editingIndex)); // 수정 버튼 추가
+                li.appendChild(createDeleteButton(editingIndex)); // 삭제 버튼 추가
+                editingIndex = null; // 수정 완료 후 인덱스 초기화
+            } else {
+                // 새 리뷰 추가
+                const newIndex = document.getElementById('reviews').children.length;
+                const li = document.createElement('li');
+                li.id = `review-${newIndex}`; // 리뷰 ID 설정
+                li.textContent = reviewText;
+                li.appendChild(createEditButton(newIndex)); // 수정 버튼 추가
+                li.appendChild(createDeleteButton(newIndex)); // 삭제 버튼 추가
+                document.getElementById('reviews').appendChild(li);
+            }
+
+            document.getElementById('reviewInput').value = ''; // 입력 필드 초기화
+        });
+
+        function createEditButton(index) {
+            const editButton = document.createElement('button');
+            editButton.textContent = '수정';
+            editButton.className = 'btn btn-secondary btn-sm ml-2';
+            editButton.onclick = function () {
+                document.getElementById('reviewInput').value = document.getElementById(`review-${index}`).textContent.replace('수정', '').replace('삭제', '').trim();
+                editingIndex = index; // 수정할 인덱스 설정
+            };
+            return editButton;
         }
 
-        document.getElementById('reviewInput').value = ''; // 입력 필드 초기화
-    });
-
-    function createEditButton(index) {
-        const editButton = document.createElement('button');
-        editButton.textContent = '수정';
-        editButton.className = 'btn btn-secondary btn-sm ml-2';
-        editButton.onclick = function () {
-            document.getElementById('reviewInput').value = document.getElementById(`review-${index}`).textContent.replace('수정', '').trim();
-            editingIndex = index; // 수정할 인덱스 설정
-        };
-        return editButton;
-    }
-     
-</script>
+        function createDeleteButton(index) {
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '삭제';
+            deleteButton.className = 'btn btn-danger btn-sm ml-2';
+            deleteButton.onclick = function () {
+                const li = document.getElementById(`review-${index}`);
+                li.parentNode.removeChild(li); // 리뷰 삭제
+            };
+            return deleteButton;
+        }
+    </script>
 
     <!-- 리뷰 댓글 기능 추가 -->
     

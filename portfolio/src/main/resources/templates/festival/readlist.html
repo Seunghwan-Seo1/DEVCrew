@@ -187,9 +187,10 @@
 		</div>
 	</div>
 
-	<script>
+	  <script>
         function filterFestivals() {
             const input = document.getElementById('search').value.toLowerCase();
+            const region = document.getElementById('region').value;
             const category = document.getElementById('category').value;
             const festivalItems = document.querySelectorAll('.festival-item');
 
@@ -197,21 +198,24 @@
                 const name = item.getAttribute('data-name').toLowerCase();
                 const location = item.getAttribute('data-location').toLowerCase();
                 const matchesSearch = name.includes(input);
-                const matchesCategory = category ? location.includes(category.toLowerCase()) : true;
+                const matchesRegion = region === "전체" || location.includes(region);
+                const matchesCategory = category === "전체" || location.includes(category);
 
-                if (matchesSearch && matchesCategory) {
-                    item.style.display = '';
+                if (matchesSearch && matchesRegion && matchesCategory) {
+                    item.style.display = ''; // 일치하는 경우 표시
                 } else {
-                    item.style.display = 'none';
+                    item.style.display = 'none'; // 일치하지 않는 경우 숨김
                 }
             });
         }
 
         function resetFilter() {
             document.getElementById('search').value = '';
-            document.getElementById('category').value = '';
-            document.getElementById('date').value = ''; // 날짜 초기화
-            filterFestivals();
+            document.getElementById('region').selectedIndex = 0; // 지역 초기화
+            document.getElementById('category').selectedIndex = 0; // 카테고리 초기화
+            document.getElementById('startDate').value = ''; // 시작일 초기화
+            document.getElementById('endDate').value = ''; // 종료일 초기화
+            filterFestivals(); // 필터 재적용
         }
     </script>
 
