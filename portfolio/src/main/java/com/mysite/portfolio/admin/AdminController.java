@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.festival.FestivalService;
 import com.mysite.portfolio.member.MemberService;
+import com.mysite.portfolio.visitor.VisitorService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,13 +30,22 @@ public class AdminController {
 	
 	private final FestivalService festivalService;
 	
+    private final VisitorService visitorService;
 
-
-	@GetMapping("/main")
-	public String adminmain() {
-		return "admin/main";
-	}
 	
+
+
+
+    @GetMapping("/main")
+    public String showVisitorGraph(Model model) {
+        List<Integer> dailyVisitorCounts = visitorService.getLast7DaysVisitorCounts(); // 최근 7일간의 방문자 수
+        Integer totalVisitorCount = visitorService.getTotalVisitorCount(); // 총 방문자 수
+        model.addAttribute("dailyVisitorCounts", dailyVisitorCounts);
+        model.addAttribute("visitorCount", totalVisitorCount);
+        return "admin/main"; // admin/main.html로 이동
+    }
+
+
 	
 	
 	@GetMapping("/userconfig")
@@ -50,6 +60,7 @@ public class AdminController {
 		return "admin/festivalconfig";
 	}
 	
+
 	/*
 	 * @PostMapping("/festivalupdate") public String festivalupdate(@ModelAttribute
 	 * Festival festival , @RequestParam("file") MultipartFile File ) throws
@@ -65,6 +76,7 @@ public class AdminController {
 	
 	
 	
+
 	}
 
 

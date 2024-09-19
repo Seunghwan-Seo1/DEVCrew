@@ -3,7 +3,6 @@ package com.mysite.portfolio.lodge;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.RequiredArgsConstructor;
@@ -25,8 +25,9 @@ public class LodgeController {
 
 	// 숙박 메인페이지 (숙소 전체보기)
 	@GetMapping("/main")
-	public String lmain() {
-		return "/lodge/main";
+	public String lmain(Model model) {
+		model.addAttribute("lodges", lodgeService.getList());
+		return "lodge/main";
 	}
 
 	// 상세 필터 검색 페이지 (지역별 보기)
@@ -36,17 +37,26 @@ public class LodgeController {
 	}
 
 	// 숙박 상세 페이지 (정보, 리뷰, 안내사항 포함)
-	@GetMapping("/detail")
-	public String ldetail() {
-		return "/lodge/detail";
+	@GetMapping("/detail/{lnum}")
+	public String ldetail(@PathVariable ("lnum") Integer lnum, Model model) {
+		model.addAttribute("lodge", lodgeService.lgreaddetail(lnum));
+		return "lodge/detail";
 	}
 
 	// 숙박 create
 	//@PreAuthorize("isAuthenticated()") // 로그인 해야 작성 가능
 	@GetMapping("/lgcreate")
 	public String lodgeCreate(LodgeForm lodgeForm) {
-		return "/lodge/lgcreate";
+		return "lodge/lgcreate";
 	}
+	
+	@PostMapping("/lgcreate")
+	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("file") MultipartFile file) throws IOException {
+		lodgeService.lgcreate(lodge, file);
+		return "lodge/main";
+	}
+	//alert 창 띄워주고 싶다
+		
 
 	// 숙박 read list
 	@GetMapping("/lreadlist")
@@ -68,8 +78,8 @@ public class LodgeController {
 		return "lodge/lupdate";
 	}
 
-	@PostMapping("/lupdate2")
-	public String lupdate2(@ModelAttribute Lodge lodge, MultipartFile file) throws IOException {
+	@PostMapping("/lupdate")
+	public String lupdate(@ModelAttribute Lodge lodge, MultipartFile file) throws IOException {
 		lodgeService.lgupdate(lodge, file);
 		return "lodge/lreaddetail/" + lodge.getLnum();
 				

@@ -31,6 +31,17 @@
 	<link rel="stylesheet" href="css/style.css">
 
 	<title>페이지 이름이 들어가는곳</title>
+	
+	<script>
+        // 페이지가 로드될 때 방문자 수를 증가시키는 요청을 보냅니다.
+        window.onload = function() {
+            fetch('/visitor/increment')
+                .then(response => response.text())
+                .then(data => console.log(data))
+                .catch(error => console.error('Error:', error));
+        };
+    </script>
+	
 </head>
 
 <body>
@@ -107,9 +118,9 @@
 						</ul>
 					</li>
 
-					<li><a sec:authorize="isAnonymous()" href="/signin">프로필</a></li>
+					<li><a sec:authorize="isAnonymous()">프로필</a></li>
 					
-					<li><a sec:authorize="isAuthenticated()" >프로필</a></li>
+					<li><a sec:authorize="isAuthenticated()" href="/member/readdetail">프로필</a></li>
 					
 					<li><a href="about.html">고객센터</a></li>
 
