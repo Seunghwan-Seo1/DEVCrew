@@ -19,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import com.mysite.portfolio.festival.Festival;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -56,6 +54,13 @@ public class MemberService implements UserDetailsService {
 	    if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
 	        throw new IllegalArgumentException("2개의 패스워드가 일치하지 않습니다.");
 	    }
+	    
+	    // 연락처 중복 방지
+	    Optional<Member> existingMemberByMaddr = memberRepository.findByMaddr(memberForm.getMaddr());
+	    if (existingMemberByMaddr.isPresent()) {
+	        throw new IllegalArgumentException("이미 등록된 연락처입니다.");
+	    }
+
 	}
 	
 	//회원 가입 에러 메세지
@@ -66,6 +71,8 @@ public class MemberService implements UserDetailsService {
 	            bindingResult.rejectValue("username", "usernameExists", message);
 	        } else if (message.contains("2개의 패스워드")) {
 	            bindingResult.rejectValue("password2", "passwordMismatch", message);
+	        } else if (message.contains("이미 등록된 연락처")) {
+	            bindingResult.rejectValue("maddr", "maddrExists", message);
 	        } else {
 	            bindingResult.reject("signupFailed", message);
 	        }
@@ -120,9 +127,15 @@ public class MemberService implements UserDetailsService {
 		this.memberRepository.deleteById(id);
 	}
 	
-	 // readlist
-    public List<Member> readlist() {
-        return memberRepository.findAll();
+	//아이디 찾기
+	public Optional<String> idsearch(String maddr) {
+        return memberRepository.findByMaddr(maddr)
+        		.map(Member::getUsername);
     }
+
+	public Object readlist() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
