@@ -4,46 +4,39 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.lodge.Lodge;
+import com.mysite.portfolio.lodge.LodgeRepository;
 import com.mysite.portfolio.member.MemberService;
 
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Service
 public class ReviewService {
 
-	@Autowired
-	private ReviewRepository reviewRepository;
-	@Autowired
-	private S3Service s3Service;
-	@Autowired
-	private MemberService memberService;
+	private final ReviewRepository reviewRepository;
+	private final S3Service s3Service;
+	private final MemberService memberService;
+	private final LodgeRepository lodgeRepository;
 	//private final SiteUser siteUser;
 	 
 	 
 	// 리뷰 작성
-	public void rvcreate(Review review, MultipartFile file, Integer mid) throws IOException {
-		String fileName = "";
-		if (!file.isEmpty()) {
-			// 기본 사진 이름을 uuid 처리 후 aws에 저장
-			UUID uuid = UUID.randomUUID();
-			//fileName = uuid + "_" + rcontent.getOriginalFilename();
-			s3Service.uploadFile(file, fileName);
-		}
-		// 객체에 저장
-		review.setRcontent(fileName);;
-//		review.setRstar(null);
-		review.setRnum(mid);;		
-		review.setRpicture(fileName);
+	public void rvcreate(Integer lnum, String rcontent) throws IOException {
+
+		// 객체에 저장		
+		Review review = new Review();
+		review.setRcontent(rcontent);;
 		review.setRdate(LocalDateTime.now());
 		
+		Optional<Lodge> ol = lodgeRepository.findById(lnum);
+		review.setLodge(ol.get());
+		
 		this.reviewRepository.save(review);
-
 	}
 
 	// 리뷰 리스트
@@ -57,7 +50,6 @@ public class ReviewService {
 		return ob.get();
 	}
 
-
 	public void rvupdate(Review review) {
 		reviewRepository.save(review);
 	}
@@ -66,7 +58,6 @@ public class ReviewService {
 
 	public void rvdelete(Integer uid) {
 		reviewRepository.deleteById(uid);
-
 	}
 
 }
