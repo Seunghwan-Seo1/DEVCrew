@@ -17,7 +17,6 @@ import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.lodge.LodgeService;
 import com.mysite.portfolio.member.MemberService;
 
-/*@RequestMapping("/lodge")*/
 @RequestMapping("/review")
 @Controller
 public class ReviewController {
@@ -43,22 +42,21 @@ public class ReviewController {
 	}
 
 	@PostMapping("/detail/{mid}")
-	public String rvcreate(@ModelAttribute Review review, 
-							@RequestParam MultipartFile file,
-							@PathVariable Integer mid) throws IOException {
-		reviewService.rvcreate(review, file, mid);
+	public String rvcreate(@ModelAttribute Review review,
+			@RequestParam MultipartFile file,
+			@PathVariable Integer mid) throws IOException {
+		// reviewService.rvcreate(review, file, mid);
 		return "lodge/detail";
+	}
 
+	@PostMapping("/rvcreate/{lnum}")
+	public String createReview(Model model, @PathVariable("lnum") Integer lnum,
+			@RequestParam("rcontent") String rcontent) throws IOException {
+		this.reviewService.rvcreate(lnum, rcontent);
+		return String.format("redirect:/lodge/detail/%s", lnum);
 	}
 
 	// 리뷰 수정..
-
-//	  @PostMapping("/detail") 
-//	  public String rvcreate(@ModelAttribute Review review)
-//	  { reviewService.rvcreate(review); return "lodge/detail";
-//	  
-//	  }
-
 	@GetMapping("/detail/rvlist")
 	public String rvlist(Model model) {
 		model.addAttribute("reviewList", reviewService.rvlist());
@@ -67,7 +65,6 @@ public class ReviewController {
 
 	@GetMapping("/detail/{mid}")
 	public String rvdetail(@PathVariable("mid") Integer mid, Model model) {
-
 		model.addAttribute("lodge", reviewService.rvdetail(mid));
 		return "lodge/detail";
 	}
@@ -83,22 +80,10 @@ public class ReviewController {
 	}
 
 	// 리뷰 삭제
-
 	@GetMapping("/delete/{mid}")
 	public String rvdelete(@PathVariable("mid") Integer mid) {
 		reviewService.rvdelete(mid);
 		return "redirect:lodge/detail";
 	}
-
-	/*
-	 * @PostMapping("/rvcreate/{rum}") public String createReview(Model
-	 * model, @PathVariable("rnum") Integer rum , @RequestParam(value="rcontent")
-	 * String rcontent) throws IOException { Lodge lodge =
-	 * this.lodgeService.lgreaddetail(rum); this.reviewService.rvcreate(lodge,
-	 * rcontent);
-	 * 
-	 * return String.format("redirect:/lodge/lgdetail/%s", rum);
-	 */
-//    }
 
 }

@@ -3,6 +3,7 @@ package com.mysite.portfolio.lodge;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,17 +23,25 @@ public class LodgeController {
 
 	@Autowired
 	private LodgeService lodgeService;
+	
+	@Value("${cloud.aws.s3.endpoint}")
+	private String downpath;
+	
 
 	// 숙박 메인페이지 (숙소 전체보기)
 	@GetMapping("/main")
 	public String lmain(Model model) {
 		model.addAttribute("lodges", lodgeService.getList());
+		model.addAttribute("downpath", "https://" + downpath);
+
 		return "lodge/main";
 	}
 
 	// 상세 필터 검색 페이지 (지역별 보기)
 	@GetMapping("/secondmain")
-	public String lsecmain() {
+	public String lsecmain(Model model) {
+		model.addAttribute("lodges", lodgeService.getList());
+		model.addAttribute("downpath", "https://" + downpath);
 		return "/lodge/secondmain";
 	}
 
@@ -40,6 +49,7 @@ public class LodgeController {
 	@GetMapping("/detail/{lnum}")
 	public String ldetail(@PathVariable ("lnum") Integer lnum, Model model) {
 		model.addAttribute("lodge", lodgeService.lgreaddetail(lnum));
+		model.addAttribute("downpath", "https://" + downpath);
 		return "lodge/detail";
 	}
 
@@ -53,7 +63,7 @@ public class LodgeController {
 	@PostMapping("/lgcreate")
 	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("file") MultipartFile file) throws IOException {
 		lodgeService.lgcreate(lodge, file);
-		return "lodge/main";
+		return "redirect:/lodge/secondmain";
 	}
 	//alert 창 띄워주고 싶다
 		
