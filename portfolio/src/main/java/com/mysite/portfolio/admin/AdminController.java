@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,20 +60,37 @@ public class AdminController {
 	}
 	
 
-	/*
-	 * @PostMapping("/festivalupdate") public String festivalupdate(@ModelAttribute
-	 * Festival festival , @RequestParam("file") MultipartFile File ) throws
-	 * IOException { festivalService.update(festival, File);
-	 * 
-	 * return "redirect:/admin/festivalconfig"; }
-	 */
-	 @PostMapping("/festivalupdate")
-	    public String festivalupdate(@ModelAttribute Festival festival, @RequestParam("files") List<MultipartFile> files) throws IOException {
-	        festivalService.update(festival, files);
-	        return "redirect:/admin/festivalconfig";
-	    }
+	// 축제 업데이트 요청 처리
+    @PostMapping("/festivalconfig")
+    public String updateFestival(
+        @RequestParam("fid") Integer fid, 
+        @RequestParam("fname") String fname, 
+        @RequestParam("flocation") String flocation,
+        @RequestParam("file") List<MultipartFile> files // 파일은 List로 받음
+    ) {
+        try {
+            // 기존 페스티벌 정보를 가져와서 수정
+            Festival festival = festivalService.readdetail(fid); // ID로 기존 페스티벌 정보를 불러옴
+            festival.setFname(fname); // 이름 업데이트
+            festival.setFlocation(flocation); // 가격 업데이트
+
+            // 파일과 기타 필드 업데이트
+            festivalService.update(festival, files); // 업데이트 메소드 호출
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "error"; // 에러 페이지로 이동
+        }
+
+        return "redirect:/admin/festivalconfig"; // 성공 시 목록 페이지로 리다이렉트
+    }
 	
-	
+    // 게시글 삭제 메서드
+    @PostMapping("/deleteFestival")
+    public String deleteUser(@RequestParam("fid") Integer fid) {
+        festivalService.delete(fid);  // 사용자 삭제
+        return "redirect:/admin/festivalconfig";  // 삭제 후 회원 목록으로 리다이렉트
+    }
 	
 
 	}

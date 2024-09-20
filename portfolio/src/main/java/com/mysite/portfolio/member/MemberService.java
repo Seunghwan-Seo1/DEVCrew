@@ -133,9 +133,8 @@ public class MemberService implements UserDetailsService {
         		.map(Member::getUsername);
     }
 
-	public Object readlist() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Member> readlist() {
+		return memberRepository.findAll();
 	}
 	
 	public Optional<Member> findByUsername(String username) {
