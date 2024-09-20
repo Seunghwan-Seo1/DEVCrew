@@ -1,23 +1,20 @@
 package com.mysite.portfolio;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mysite.portfolio.member.MemberService;
-
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 @Controller
 public class MainController {
 	
-	private final MemberService memberService;
+	@Autowired
+	private MailService mailService;
+	
 	
 	@GetMapping("/")
-	public String index(){/*@RequestParam("mid") Integer mid) {
-		
-		memberService.readdetail(mid);*/
+	public String index(){
 		return "index";
 	}
 	
@@ -25,5 +22,21 @@ public class MainController {
 	public String temp() {
 		return "temp";
 	}
+	
+	@GetMapping("/csr")
+	public String csr() {
+		return "csr";
+	}
+	
+	@PostMapping("/csr")
+	public String mailcreate(@RequestParam("title") String title, 
+			@RequestParam("content") String content, 
+			@RequestParam("senderName") String senderName ) {
+
+			mailService.create(title, content, senderName);
+			return "redirect:/csr";
+
+}
+
 }
 

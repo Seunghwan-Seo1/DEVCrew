@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+
 
 
 @RequestMapping("/member")
@@ -25,6 +27,7 @@ public class MemberController {
 	
 	@GetMapping("/readdetail/{username}")
     public String readdetail(@PathVariable("username") String username, Model model) {
+
         // 사용자 정보 조회
         Optional<Member> memberOptional = memberService.findByUsername(username);
         
@@ -37,8 +40,10 @@ public class MemberController {
     }
 	
 	//회원 정보 수정
+
 	@GetMapping("/update")
 	public String update(Model model) {
+
 		model.addAttribute("member", memberService.readdetail());
 		return "member/update";
 	}
@@ -70,7 +75,9 @@ public class MemberController {
     }
 
 	@PostMapping("/idsearch")
+
 	public String idsearch(@ModelAttribute("maddr") Member member, Model model) {
+
 		Optional<String> searchId = memberService.idsearch(member.getMaddr());
 
         if (searchId.isPresent()) {
@@ -80,7 +87,9 @@ public class MemberController {
         }
 
         model.addAttribute("showModal", true);
+
         return "member/idsearch";
+
     }
 	
 }
