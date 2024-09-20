@@ -15,7 +15,7 @@
 	</div>
 
 	<div class="container mt-5">
-		<form th:object="${member}" action="/member/idsearch" method="post">
+		<form th:object="${member}" th:action="@{/idsearch}" method="post">
             <div class="centered-container mt-5 mb-5">
                 <div class="centered-div" style="width:550px;">
                     <div class="text-center mb-7">
@@ -25,7 +25,7 @@
                     <div class="mb-3 text-start">
                         <label class="form-label" for="maddr">연락처</label>
                         <div class="form-icon-container">
-                            <input class="form-control form-icon-input" name="maddr" type="text" placeholder="전화번호를 입력해주세요" />
+                            <input class="form-control form-icon-input" th:field="*{maddr}" type="text" placeholder="전화번호를 입력해주세요" />
                             <span class="fas fa-key text-body fs-9 form-icon"></span>
                         </div>
                     </div>
