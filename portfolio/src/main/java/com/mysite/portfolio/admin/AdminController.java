@@ -87,11 +87,25 @@ public class AdminController {
 	
     // 게시글 삭제 메서드
     @PostMapping("/deleteFestival")
-    public String deleteUser(@RequestParam("fid") Integer fid) {
+    public String deleteFestival(@RequestParam("fid") Integer fid) {
         festivalService.delete(fid);  // 사용자 삭제
         return "redirect:/admin/festivalconfig";  // 삭제 후 회원 목록으로 리다이렉트
     }
 	
+    @PostMapping("/updateRole")
+    public String updateRole(@RequestParam("mid") Integer memberId,
+                             @RequestParam("role") String newRole) {
+        memberService.updateUserRole(memberId, newRole);
+        return "redirect:/admin/userconfig";  // 변경 후 회원 목록으로 리다이렉트
+    }
+	
+	// 사용자 삭제 메서드
+    @PostMapping("/deleteUser")
+    public String deleteUser(@RequestParam("mid") Integer mid) {
+        memberService.delete(mid);  // 사용자 삭제
+        return "redirect:/admin/userconfig";  // 삭제 후 회원 목록으로 리다이렉트
+    }
+    
 
 	}
 
