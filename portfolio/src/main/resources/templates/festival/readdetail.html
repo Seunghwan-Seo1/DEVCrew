@@ -24,7 +24,7 @@
         <div class="row">
            
             <div class="col-md-6">
-            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}"
+            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}"
             style="width: 1000px; height: 1000px; object-fit: contain; margin: 0 auto; display: block;">
             </div>
            <!--사진-->
@@ -38,6 +38,14 @@
 			<div class="col-md-6 d-flex flex-column justify-content-center">
 				<dl>
 					<div class="festival-info">
+					
+					     <dl>
+							<dt>작성자</dt>
+							<dd>[[${festival.username}]]</dd>
+						</dl>
+						<dl>
+					
+					
 						<dl>
 							<dt>축제이름</dt>
 							<dd>[[${festival.fname}]]</dd>
@@ -135,7 +143,7 @@
             <!-- 추가사진 -->
 <div class="untree_co-section">
     <div class="container">
-        <div class="row overflow-scroll">
+           <div class="row">
            <div class="col-6 col-md-6 col-lg-3">
                 <div class="media-1">
                     <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}" alt="Image" class="img-fluid"></a>
@@ -176,136 +184,121 @@
         height: 200px; /* 이미지의 높이를 고정하여 동일하게 설정 */
         object-fit: cover; /* 비율을 유지하면서 잘라내기 */
     }
-    .star {
-        cursor: pointer;
-        font-size: 24px;
-        color: gold; /* 별 색상 */
+  
+</style>
+
+
+    <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 20px;
     }
-    .star.selected {
-        color: gold; /* 선택된 별 색상 */
+
+    .review-form {
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .review-form h2 {
+        margin-top: 0;
+        color: #6a0dad; /* 보라색 */
+    }
+
+    .review-form input[type="text"] {
+        width: calc(100% - 110px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+        font-size: 16px;
+    }
+
+    .review-form input[type="submit"] {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        background-color: #8a2be2; /* 보라색 */
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .review-form input[type="submit"]:hover {
+        background-color: #7a1ea1; /* 어두운 보라색 */
+    }
+
+    .review-list {
+        margin-top: 20px;
+    }
+
+    .review-item {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .review-item a {
+        color: #6a0dad; /* 보라색 */
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .review-item a:hover {
+        text-decoration: underline;
+    }
+
+    .review-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .review-actions button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 3px;
+        background-color: #8a2be2; /* 보라색 */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .review-actions button:hover {
+        background-color: #7a1ea1; /* 어두운 보라색 */
     }
 </style>
 
-<!-- 리뷰 댓글 기능 추가 -->
-<div class="review-section">
-    <h2>리뷰</h2>
-    <form id="reviewForm">
-        <div class="form-group">
-            <label for="reviewInput">리뷰 작성:</label>
-            <textarea class="form-control" id="reviewInput" rows="3" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="rating">별점:</label>
-            <div id="rating" class="star-rating">
-                <span class="star" data-value="1">&#9733;</span>
-                <span class="star" data-value="2">&#9733;</span>
-                <span class="star" data-value="3">&#9733;</span>
-                <span class="star" data-value="4">&#9733;</span>
-                <span class="star" data-value="5">&#9733;</span>
-            </div>
-            <input type="hidden" id="reviewRating" value="0"> <!-- 별점을 저장할 hidden input -->
-        </div>
-        <button type="submit" class="btn btn-primary">리뷰 등록</button>
+<div class="review-form">
+    <h2>리뷰 남기기</h2>
+    <form action="/freview/create" method="post">
+        <input type="hidden" name="fid" th:value="${festival.fid}">
+        댓글 : <input type="text" name="frcontent" placeholder="여기에 댓글을 입력하세요" required>
+        <input type="submit" value="등록">
     </form>
-    <div id="reviewList" class="mt-4">
-        <h3>리뷰 목록</h3>
-        <ul id="reviews"></ul>
-    </div>
 </div>
 
-<script>
-    let editingIndex = null;
-
-    // 별점 클릭 이벤트
-    const stars = document.querySelectorAll('.star');
-    stars.forEach(star => {
-        star.addEventListener('click', function () {
-            const rating = this.getAttribute('data-value');
-            const currentRating = document.getElementById('reviewRating').value;
-
-            // 현재 별점이 선택된 별점과 같으면 해제
-            if (currentRating === rating) {
-                document.getElementById('reviewRating').value = '0'; // 별점 초기화
-                stars.forEach(s => s.classList.remove('selected')); // 모든 별 초기화
-            } else {
-                document.getElementById('reviewRating').value = rating; // 별점 설정
-                stars.forEach(s => s.classList.remove('selected')); // 모든 별 초기화
-                // 선택한 별까지 색상 변경
-                for (let i = 0; i < rating; i++) {
-                    stars[i].classList.add('selected'); // 선택한 별 색상 변경
-                }
-            }
-        });
-    });
-
-    document.getElementById('reviewForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-
-        const reviewText = document.getElementById('reviewInput').value;
-        const reviewRating = document.getElementById('reviewRating').value;
-
-        if (editingIndex !== null) {
-            // 수정 중인 경우
-            const li = document.getElementById(`review-${editingIndex}`);
-            li.innerHTML = `<span>${reviewText} (별점: ${reviewRating})</span>`;
-            li.appendChild(createEditButton(editingIndex));
-            li.appendChild(createDeleteButton(editingIndex));
-            editingIndex = null; // 수정 완료 후 인덱스 초기화
-        } else {
-            // 새 리뷰 추가
-            const newIndex = document.getElementById('reviews').children.length;
-            const li = document.createElement('li');
-            li.id = `review-${newIndex}`; // 리뷰 ID 설정
-            li.innerHTML = `<span>${reviewText} (별점: ${reviewRating})</span>`;
-            li.appendChild(createEditButton(newIndex)); // 수정 버튼 추가
-            li.appendChild(createDeleteButton(newIndex)); // 삭제 버튼 추가
-            document.getElementById('reviews').appendChild(li);
-        }
-
-        document.getElementById('reviewInput').value = ''; // 입력 필드 초기화
-        document.getElementById('reviewRating').value = '0'; // 별점 초기화
-        stars.forEach(s => s.classList.remove('selected')); // 별점 표시 초기화
-    });
-
-    function createEditButton(index) {
-        const editButton = document.createElement('button');
-        editButton.textContent = '수정';
-        editButton.className = 'btn btn-secondary btn-sm ml-2';
-        editButton.onclick = function () {
-            const li = document.getElementById(`review-${index}`);
-            const text = li.querySelector('span').textContent.replace(/ \(별점: \d\)/, '');
-            const rating = li.querySelector('span').textContent.match(/별점: (\d)/)[1];
-
-            document.getElementById('reviewInput').value = text;
-            document.getElementById('reviewRating').value = rating;
-
-            stars.forEach(s => {
-                s.classList.remove('selected');
-            });
-            for (let i = 0; i < rating; i++) {
-                stars[i].classList.add('selected'); // 선택한 별까지 색상 변경
-            }
-
-            editingIndex = index; // 수정할 인덱스 설정
-        };
-        return editButton;
-    }
-
-    function createDeleteButton(index) {
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = '삭제';
-        deleteButton.className = 'btn btn-danger btn-sm ml-2';
-        deleteButton.onclick = function () {
-            const li = document.getElementById(`review-${index}`);
-            li.parentNode.removeChild(li); // 리뷰 삭제
-        };
-        return deleteButton;
-    }
-</script>
 
 
-    <!-- 리뷰 댓글 기능 추가 -->
-    
+
+ <th:block th:each="freview : ${festival.freviewList}">
+
+	
+	<a th:text=${freview.frcontent}></a> <br>
+
+
+</th:block>
+    <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
     
     
    
