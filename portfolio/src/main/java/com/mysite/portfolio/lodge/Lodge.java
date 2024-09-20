@@ -23,7 +23,6 @@ public class Lodge {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer lnum; // 숙소 등록 번호
 	
-	private String llocation; // 숙소 위치
 
 	private String lname; // 숙소 이름
 	private LocalDateTime regiDate; // 숙소 등록 일자
@@ -53,6 +52,7 @@ public class Lodge {
 	private String accomm; // 건물외관사진
 	private String firstaccomm; //건물 내부사진1
 	private String secondaccomm; //건물 내부사진2
+	private String llocation; // 숙소 위치
 	private String linfo;
 	private String review;
 	private String notice;

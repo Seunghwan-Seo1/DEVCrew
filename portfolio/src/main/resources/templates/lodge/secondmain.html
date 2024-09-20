@@ -3,9 +3,6 @@
 <div layout:fragment="content">
 
 
-
-<script src="lgfunc.js"></script>
-
 <style>
 
 .condition {
@@ -31,17 +28,28 @@
    /*  border: 1px solid #e6e6e6; */
 }
 
+.input-group {
+	width: 50%;
+	/* justify-content: flex-end; */
+}
+
 .listcontainer {
  	width: 100%;
     height: 100%;
 }
 
-
+.filter-container {
+	border : 1px solid black;
+	padding : 10px;
+	border-radius : 10px;
+	max-width: 250px;
+	margin: 0 auto;
+    height: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    justify-content: flex-start;	
+}
 
 </style>
-
-
-
 
 <div class="hero hero-inner">
     <div class="container">
@@ -56,11 +64,27 @@
     </div>
   </div>
 
-   <div class="container mt-4">
-   <div class="condition">
-        <div class="row">
+<div class="container px-4 py-5" id="featured-3">
+    <h1 class="visually-hidden">숙박</h1>
+       <div class="d-flex justify-content-between align-items-center mb-4">
+         <h2 class="pb-2 border-bottom">숙소 목록</h2>
+         <a href="/lodge/lgcreate" class="btn btn-info">숙소 등록</a>
+       </div>
        
-           <div class="filter-container">
+<!-- 숙소 검색 버튼 -->
+<div class="input-group">
+  <input type="text" id="search" class="form-control" placeholder="검색할 숙소 정보를 입력하세요">
+  <button class="btn btn-primary" onclick="">검색</button>
+</div>
+</div>
+        
+ <div class="container">
+
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3">
+
+<!-- 필터 -->
+
+<div class="filter-container">
                <h5>검색 조건</h5>
                <form>
              
@@ -111,122 +135,132 @@
                </form>
                 </div>
                 
+
+
+
+
+
+
+<th:block th:each="lodge : ${lodges}">
+  
+        <div class="col">
+          <div class="card shadow-sm">
+                    
+<!--<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" 
+preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg> -->            					
+ 
+ <img th:src="@{|${downpath}/${lodge.accomm}|}">
+             
+            <div class="card-body">
+              <p class="card-text">[[${lodge.lname}]]</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a th:href="@{|/lodge/detail/${lodge.lnum}|}" class="btn btn-sm btn-outline-secondary">자세히 보기</a>
+                </div>
+                <small class="text-body-secondary">인기 많음</small>
+              </div>
+            </div>
+          </div>
+        </div> 
+ </th:block>
+
+
+
+
+ 
         </div>
   	</div>
    
     </div>
-<!-- 숙소 리스트 -->
+  </div>
+  </div>
 
-<div class="listcontainer">
-	<div class="col-md-9">
+
+
+
+<!-- <div class="listcontainer"> -->
+
+<div class="col-md-9">
 		<div class="row row-cols-1 row-cols-lg-3">
-			<div>				
+		
+			
+<!-- 		<th:block th:each="lodge : ${lodges}">				
+				<div class="feature col lodge-item" data-name="[[${lodge.lname}]]" data-location="[[${lodge.llocation}]]">
+					<div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+						<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${lodge.accomm}|}" />
+					</div>
+					<h3 class="fs-2 text-body-emphasis">
+					<a th:href="@{|/lodge/detail/${lodge.lnum}|}" class="medium-text">[[${lodge.lname}]]</a>
+					</h3>
+				</div>
+			</th:block> -->
+			
+			
+			
+		
+		
+		<!-- 사진 및 간단한설명 반복문-->
 
 					<th:block th:each="lodge : ${lodges}">
-						
-						<div class="feature col lodge-item" data-name="[[${lodge.lname}]]" data-location="[[${lodge.llocation}]]">
+						<div class="feature col festival-item"
+							data-name="[[${lodge.lname}]]">
 							<div class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-								<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${lodge.accomm}|}" />
+								<a th:href="@{|/lodge/lgdetail/${lodge.lnum}|}" style="text-decoration: none;">
+								<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${lodge.accomm}|}">
 							</div>
-							<h3 class="fs-2 text-body-emphasis">
-								<a th:href="@{|/lodge/detail/${lodge.lnum}|}" class="medium-text">[[${lodge.lname}]]</a>
-							</h3>
-						</div>
-					</th:block>
-					
-					<div>
-
-
-					</div>
-
-				
+							
+						 <h3 class="fs-2 text-body-emphasis" style="color: black; text-decoration: none;">
+                            <span class="medium-text" style="text-decoration: none;">[[${lodge.lname}]]</span>
+                             </h3>
+                          </div>
+						 </div>
+					    </th:block>
+					<!-- 사진 및 간단한설명 반복문-->
+		
+			
+			
+						
+			<div>
 			</div>
-		</div>
-
 	</div>
 </div>
-
-
-
-
-<!-- footer -->
-
-<!--   <div class="site-footer">
-    <div class="inner first">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-6 col-lg-4">
-            <div class="widget">
-              <h3 class="heading">About Tour</h3>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-            </div>
-            <div class="widget">
-              <ul class="list-unstyled social">
-                <li><a href="#"><span class="icon-twitter"></span></a></li>
-                <li><a href="#"><span class="icon-instagram"></span></a></li>
-                <li><a href="#"><span class="icon-facebook"></span></a></li>
-                <li><a href="#"><span class="icon-linkedin"></span></a></li>
-                <li><a href="#"><span class="icon-dribbble"></span></a></li>
-                <li><a href="#"><span class="icon-pinterest"></span></a></li>
-                <li><a href="#"><span class="icon-apple"></span></a></li>
-                <li><a href="#"><span class="icon-google"></span></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-2 pl-lg-5">
-            <div class="widget">
-              <h3 class="heading">Pages</h3>
-              <ul class="links list-unstyled">
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-2">
-            <div class="widget">
-              <h3 class="heading">Resources</h3>
-              <ul class="links list-unstyled">
-                <li><a href="#">Blog</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="widget">
-              <h3 class="heading">Contact</h3>
-              <ul class="list-unstyled quick-info links">
-                <li class="email"><a href="#">mail@example.com</a></li>
-                <li class="phone"><a href="#">+1 222 212 3819</a></li>
-                <li class="address"><a href="#">43 Raymouth Rd. Baltemoer, London 3910</a></li>
-              </ul>
+		
+	
+		
+<!-- <div class="album py-5 bg-body-tertiary">
+    <div class="container">
+      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">  
+ <th:block th:each="lodge : ${lodges}"> 
+        <div class="col">
+          <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em"></text></svg>
+            <div class="card-body">
+              <p class="card-text">[[${lodge.lname}]]</p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                  <a th:href="@{|/lodge/detail/${lodge.lnum}|}" class="btn btn-sm btn-outline-secondary">자세히 보기</a>
+                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                </div>
+                <small class="text-body-secondary">9 mins</small>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="inner dark">
-      <div class="container">
-        <div class="row text-center">
-          <div class="col-md-8 mb-3 mb-md-0 mx-auto">
-            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co" class="link-highlight">Untree.co</a> License information: https://untree.co/license/
-            </p>
-          </div>
-          
-        </div>
-      </div>
-    </div>
-  </div> -->
-  
+ </th:block>
+  </div>
+  </div>
+</div>
+ -->
 
 
-<script>
+
+<!-- </div>
 
 
-</script>
+		
+
+<script src="lgfunc.js"></script>
+
 
 </div>
-
-
-</html>
+</html> -->

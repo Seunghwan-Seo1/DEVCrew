@@ -133,9 +133,28 @@ public class MemberService implements UserDetailsService {
         		.map(Member::getUsername);
     }
 
-	public Object readlist() {
-		// TODO Auto-generated method stub
-		return null;
+
+	public List<Member> readlist() {
+		return memberRepository.findAll();
+
 	}
+	
+	public Optional<Member> findByUsername(String username) {
+	    return memberRepository.findByusername(username);
+	}
+
+	
+	public void updateUserRole(Integer memberId, String newRole) {
+	    Optional<Member> optionalMember = memberRepository.findById(memberId);
+	    if (optionalMember.isPresent()) {
+	        Member member = optionalMember.get();
+	        member.setRole(newRole); // 새로운 역할 설정
+	        memberRepository.save(member); // 변경 사항 저장
+	    } else {
+	        throw new IllegalArgumentException("회원 ID를 찾을 수 없습니다.");
+	    }
+	}
+
+
 
 }

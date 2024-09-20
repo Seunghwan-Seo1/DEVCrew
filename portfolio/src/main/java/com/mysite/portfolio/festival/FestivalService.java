@@ -32,9 +32,11 @@ public class FestivalService {
         festival.setFdate(LocalDateTime.now());
 
         String[] fileNames = new String[5];
+
         
         for (int i = 0; i < files.size() && i < 5; i++) {
             MultipartFile file = files.get(i+1);
+ 
             if (!file.isEmpty()) {
                 UUID uuid = UUID.randomUUID();
                 String fileName = uuid + "_" + file.getOriginalFilename();
@@ -44,6 +46,7 @@ public class FestivalService {
         }
 
         // 각 이미지 필드에 저장
+
         // 임시 확인용
         System.out.println(files.get(1));
         System.out.println(files.get(2));
@@ -60,6 +63,7 @@ public class FestivalService {
         System.out.println(fileNames[4]);
         
         
+
         festival.setFimg(fileNames[0]);
         festival.setFimg2(fileNames[1]);
         festival.setFimg3(fileNames[2]);

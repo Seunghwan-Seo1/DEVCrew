@@ -111,8 +111,12 @@
 							</li>
 						</ul>
 					</li>
-					<li><a href="@{|/readdetail/${member.mid}|}">프로필</a></li>
-					<li><a href="about.html">고객센터</a></li>
+					<li><a sec:authorize="isAnonymous()" href="/signin">프로필</a></li>
+					
+					<li><a sec:authorize="isAuthenticated()" th:href="@{'/member/readdetail/' + ${#authentication.name}}">프로필</a></li>
+					
+					<li><a href="/csr">고객센터</a></li>
+
 					<li><a sec:authorize="isAnonymous()" href="/signin">로그인</a></li>
 					<li><a sec:authorize="isAuthenticated()" href="/signout">로그아웃</a></li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin/main">관리자 메뉴</a></li>

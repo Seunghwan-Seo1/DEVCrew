@@ -21,7 +21,7 @@
   <tbody>
     <th:block th:each="member : ${members}">
       <tr>
-        <form action="/updateRole" method="post">
+        <form action="/admin/updateRole" method="post">
           <!-- 사용자 ID를 히든 필드로 전달 -->
           <input type="hidden" name="mid" th:value="${member.mid}">
           <th scope="row">[[${member.mid}]]</th>
@@ -47,7 +47,7 @@
           </td>
         </form>
         <td>
-        <form action="/deleteUser" method="post" style="display:inline;">
+        <form action="/admin/deleteUser" method="post" style="display:inline;">
             <input type="hidden" name="mid" th:value="${member.mid}">
             <input type="submit" class="btn btn-danger" value="삭제" style="width:100px;">
           </form>
