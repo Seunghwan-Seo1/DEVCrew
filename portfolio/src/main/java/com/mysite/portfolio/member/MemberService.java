@@ -133,13 +133,16 @@ public class MemberService implements UserDetailsService {
         		.map(Member::getUsername);
     }
 
+
 	public List<Member> readlist() {
 		return memberRepository.findAll();
+
 	}
 	
 	public Optional<Member> findByUsername(String username) {
 	    return memberRepository.findByusername(username);
 	}
+
 	
 	public void updateUserRole(Integer memberId, String newRole) {
 	    Optional<Member> optionalMember = memberRepository.findById(memberId);
@@ -151,6 +154,7 @@ public class MemberService implements UserDetailsService {
 	        throw new IllegalArgumentException("회원 ID를 찾을 수 없습니다.");
 	    }
 	}
+
 
 
 }

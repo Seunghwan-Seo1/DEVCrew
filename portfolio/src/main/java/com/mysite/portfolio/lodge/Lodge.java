@@ -23,6 +23,7 @@ public class Lodge {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer lnum; // 숙소 등록 번호
 	
+
 	private String lname; // 숙소 이름
 	private LocalDateTime regiDate; // 숙소 등록 일자
 	private String lwriter; // 작성자

@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.mysite.portfolio.S3Service;
+
 import com.mysite.portfolio.lodge.Lodge;
 import com.mysite.portfolio.lodge.LodgeRepository;
 import com.mysite.portfolio.member.MemberService;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ReviewService {
 
+
 	private final ReviewRepository reviewRepository;
 	private final S3Service s3Service;
 	private final MemberService memberService;
@@ -26,6 +28,7 @@ public class ReviewService {
 	 
 	 
 	// 리뷰 작성
+
 	public void rvcreate(Integer lnum, String rcontent) throws IOException {
 
 		// 객체에 저장		

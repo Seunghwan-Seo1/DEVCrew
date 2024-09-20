@@ -80,5 +80,4 @@ public class FestivalController {
         return "redirect:/festival/readlist";
     }
 
-    
 }

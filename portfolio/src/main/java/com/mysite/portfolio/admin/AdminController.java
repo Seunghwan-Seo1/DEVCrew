@@ -60,6 +60,7 @@ public class AdminController {
 	}
 	
 
+
 	// 축제 업데이트 요청 처리
     @PostMapping("/festivalconfig")
     public String updateFestival(
@@ -106,6 +107,7 @@ public class AdminController {
         return "redirect:/admin/userconfig";  // 삭제 후 회원 목록으로 리다이렉트
     }
     
+
 
 	}
 

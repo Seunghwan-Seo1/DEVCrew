@@ -17,6 +17,7 @@ import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.lodge.LodgeService;
 import com.mysite.portfolio.member.MemberService;
 
+
 @RequestMapping("/review")
 @Controller
 public class ReviewController {
@@ -42,10 +43,12 @@ public class ReviewController {
 	}
 
 	@PostMapping("/detail/{mid}")
+
 	public String rvcreate(@ModelAttribute Review review,
 			@RequestParam MultipartFile file,
 			@PathVariable Integer mid) throws IOException {
 		// reviewService.rvcreate(review, file, mid);
+
 		return "lodge/detail";
 	}
 
@@ -57,6 +60,7 @@ public class ReviewController {
 	}
 
 	// 리뷰 수정..
+
 	@GetMapping("/detail/rvlist")
 	public String rvlist(Model model) {
 		model.addAttribute("reviewList", reviewService.rvlist());
@@ -80,10 +84,12 @@ public class ReviewController {
 	}
 
 	// 리뷰 삭제
+
 	@GetMapping("/delete/{mid}")
 	public String rvdelete(@PathVariable("mid") Integer mid) {
 		reviewService.rvdelete(mid);
 		return "redirect:lodge/detail";
 	}
+
 
 }
