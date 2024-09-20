@@ -101,19 +101,19 @@ public class MemberService implements UserDetailsService {
         }
         return new User(member.getUsername(), member.getPassword(), authorities);
         
-	}
-	
-	//회원 정보 조회
-	public Member readdetail() {
-		
-		//접속자 정보 추출
-		Authentication authentication = 
-				      SecurityContextHolder.getContext().getAuthentication();
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();	
-		String username = userDetails.getUsername();
-		Optional<Member> oc = memberRepository.findByusername(username);
-		
-		return oc.get();
+   }
+   
+   //회원 정보 조회
+   public Member readdetail() {
+      
+      //접속자 정보 추출
+      Authentication authentication = 
+                  SecurityContextHolder.getContext().getAuthentication();
+      UserDetails userDetails = (UserDetails) authentication.getPrincipal();   
+      String username = userDetails.getUsername();
+      Optional<Member> oc = memberRepository.findByusername(username);
+      
+      return oc.get();
 
 	}
 	
@@ -136,6 +136,10 @@ public class MemberService implements UserDetailsService {
 	public Object readlist() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Optional<Member> findByUsername(String username) {
+	    return memberRepository.findByusername(username);
 	}
 
 }

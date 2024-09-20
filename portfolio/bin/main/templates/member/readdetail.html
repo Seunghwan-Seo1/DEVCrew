@@ -12,35 +12,38 @@
         		</div>
       		</div>
     	</div>
-  	</div>
-	
+  	</div>	
+
 	<div class="centered-container mt-5 mb-5">
-    	<div class="centered-div" style="width:550px;">
-        	<div class="text-center mb-7">
-             	<h3 class="text-body-highlight">회원 가입</h3>
-        	</div>
-
-            <div class="mb-3 text-start">
-              <label class="form-label" for="email">아이디</label>
-              <div class="form-icon-container">
-                <input class="form-control form-icon-input" name="username" type="email" th:text="${member.username}" /><span class="fas fa-user text-body fs-9 form-icon"></span>
-              </div>
-            </div>
-            <div class="mb-3 text-start">
-              <label class="form-label" for="password">연락처</label>
-              <div class="form-icon-container">
-                <input class="form-control form-icon-input" name="maddr" type="text" th:text="${member.maddr}" /><span class="fas fa-key text-body fs-9 form-icon"></span>
-              </div>
-            </div>
-            <div class="mb-3 text-start">
-              <label class="form-label" for="password">가입일</label>
-              <div class="form-icon-container">
-                <input class="form-control form-icon-input" name="mdate" type="text" th:text="${#temporals.format(member.mdate, 'yyyy-MM-dd HH:mm')}" /><span class="fas fa-key text-body fs-9 form-icon"></span>
-              </div>
-            </div>
-            
-            <input type="submit" class="btn btn-primary w-100 mb-3" value="">
-    	</div>
+	    <div class="centered-div" style="width:550px;">
+	    	<form th:action="@{|/member/update/${member.username}|}" method="post">
+		        <div class="text-center mb-7">
+		            <h3 class="text-body-highlight">프로필</h3>
+		        </div>
+		        
+		        <div class="mb-3 text-start">
+		            <label for="username" class="form-label">이메일 : </label>
+		            <p th:text="${member.username}">이메일</p>
+		        </div><br>    
+				
+		        <div class="mb-3 text-start">
+		            <label for="maddr" class="form-label">연락처 : </label>
+		            <input type="text" name="maddr" th:value="${member.maddr}" placeholder="연락처 수정" class="form-control" />
+		        </div><br>    
+		        
+		        <div class="mb-3 text-start">
+		            <label for="mdate" class="form-label">가입일 : </label>
+		            <p th:text="${#temporals.format(member.mdate, 'yyyy-MM-dd HH:mm:ss')}">가입일</p>
+		        </div>
+		        
+		        <div class="text-center mb-7">
+		            <input type="submit" class="btn btn-primary w-45 mb-3" value="프로필 수정">
+		            <a class="btn btn-danger w-45 mb-3" th:href="@{|/member/delete/${member.mid}|}">회원 탈퇴</a>
+		            <a class="btn btn-secondary w-45 mb-3" href="/">메인으로</a>
+		        </div>
+	        </form>
+	    </div>
 	</div>
-
+	
+</div>
 </html>

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
-
 import com.mysite.portfolio.member.MemberService;
 
 
@@ -24,53 +23,26 @@ public class ReviewService {
 	private S3Service s3Service;
 	@Autowired
 	private MemberService memberService;
-	 
-
-	// 리뷰 작성
-//	public void rvcreate(Review review, MultipartFile file) throws IOException {
-//		String fileName = "";
-//		if (!file.isEmpty()) {
-//			// 기본 사진 이름을 uuid 처리 후 aws에 저장
-//			UUID uuid = UUID.randomUUID();
-//			fileName = uuid + "_" + file.getOriginalFilename();
-//			s3Service.uploadFile(file, fileName);
-//		}
-//		// 객체에 저장
-//		review.setRpicture(fileName);
-//		review.setRdate(LocalDateTime.now());
-//
-//		reviewRepository.save(review);
-//
-//	}
-
-	public void rvcreate(Review review) {
-
-		// 객체에 저장
-		review.setRdate(LocalDateTime.now());
-
-		reviewRepository.save(review);
-
-	}
-	
-
-	//private final S3Service s3Service;
 	//private final SiteUser siteUser;
 	 
-
+	 
 	// 리뷰 작성
-	public void rvcreate(Review review, MultipartFile file) throws IOException {
+	public void rvcreate(Review review, MultipartFile file, Integer mid) throws IOException {
 		String fileName = "";
 		if (!file.isEmpty()) {
 			// 기본 사진 이름을 uuid 처리 후 aws에 저장
 			UUID uuid = UUID.randomUUID();
-			fileName = uuid + "_" + file.getOriginalFilename();
-			//s3Service.uploadFile(file, fileName);
+			//fileName = uuid + "_" + rcontent.getOriginalFilename();
+			s3Service.uploadFile(file, fileName);
 		}
 		// 객체에 저장
+		review.setRcontent(fileName);;
+//		review.setRstar(null);
+		review.setRnum(mid);;		
 		review.setRpicture(fileName);
 		review.setRdate(LocalDateTime.now());
-
-		reviewRepository.save(review);
+		
+		this.reviewRepository.save(review);
 
 	}
 

@@ -24,6 +24,7 @@ public class Festival {
     private Integer fid;
     // 생성자, 게터 및 세터
     
+    private String username;  // 회원 아이디, 이메일 주소로 하면 많이 편하다. 
     
     private String fname; //축제이름
 

@@ -23,42 +23,41 @@
     </div>
   </div>
   
-  <form action="/signin" method="post">
-  <div class="centered-container mt-5 mb-5">
-        <div class="centered-div" style="width:550px;">
-         <div class="text-center mb-7">
-              <h3 class="text-body-highlight">Sign In</h3>
-              <p class="text-body-tertiary">Get access to your account</p>
-            </div>
-            
-            <div id="naver_id_login"></div>
-            <a href="javascript:kakaoLogin()"><img src="/images/kakaoLogin.jpg" style="width:210px;"></a>
-			
-            <div class="position-relative">
-              <hr class="bg-body-secondary mt-5 mb-4" />
-            </div>
-            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            <div class="mb-3 text-start">
-              <label class="form-label" for="email">아이디</label>
-              <div class="form-icon-container">
-                <input class="form-control form-icon-input" name="username" type="email" placeholder="name@example.com" /><span class="fas fa-user text-body fs-9 form-icon"></span>
-              </div>
-            </div>
-            <div class="mb-3 text-start">
-              <label class="form-label" for="password">비밀번호</label>
-              <div class="form-icon-container">
-                <input class="form-control form-icon-input" name="password" type="password" placeholder="Password" /><span class="fas fa-key text-body fs-9 form-icon"></span>
-              </div>
-            </div>
-            <div class="mb-3 text-center">
-	            <a href="/member/idsearch">아이디 찾기|</a>
-	            <a href="/member/pwchange">비밀번호 변경|</a>
-	            <a href="/signup">회원 가입</a>
-            </div>
-            <input type="submit" class="btn btn-primary w-100 mb-3" value="로그인">
-          </div>
-        </div>
-    </form>  
+	<form action="/signin" method="post">
+  		<div class="centered-container mt-5 mb-5">
+	        <div class="centered-div" style="width:550px;">
+	         	<div class="text-center mb-7">
+	              <h3 class="text-body-highlight">Sign In</h3>
+	              <p class="text-body-tertiary">Get access to your account</p>
+	            </div>
+	            
+	            <div id="naver_id_login"></div>
+	            <a href="javascript:kakaoLogin()"><img src="/images/kakaoLogin.jpg" style="width:210px;"></a>
+				
+	            <div class="position-relative">
+	              <hr class="bg-body-secondary mt-5 mb-4" />
+	            </div>
+	            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+	            <div class="mb-3 text-start">
+	              <label class="form-label" for="email">아이디</label>
+	              <div class="form-icon-container">
+	                <input class="form-control form-icon-input" name="username" type="email" placeholder="name@example.com" /><span class="fas fa-user text-body fs-9 form-icon"></span>
+	              </div>
+	            </div>
+	            <div class="mb-3 text-start">
+	              <label class="form-label" for="password">비밀번호</label>
+	              <div class="form-icon-container">
+	                <input class="form-control form-icon-input" name="password" type="password" placeholder="Password" /><span class="fas fa-key text-body fs-9 form-icon"></span>
+	              </div>
+	            </div>
+	            <div class="mb-3 text-center">
+		            <a href="/member/idsearch">아이디 찾기|</a>
+		            <a href="/signup">회원 가입</a>
+	            </div>
+	            <input type="submit" class="btn btn-primary w-100 mb-3" value="로그인">
+	       </div>
+		</div>
+	</form>  
 	
 	<!-- 네이버 로그인 버튼 노출 영역-->
 	<script type="text/javascript">
