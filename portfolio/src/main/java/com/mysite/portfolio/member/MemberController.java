@@ -20,12 +20,18 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
-	//회원 정보 조회
-	@GetMapping("/readdetail")
-	public String readdetail(Model model) {
-		model.addAttribute("member", memberService.readdetail());
-		return "member/readdetail";
-	}
+	@GetMapping("/readdetail/{username}")
+    public String readDetail(@PathVariable("username") String username, Model model) {
+        // 사용자 정보 조회
+        Optional<Member> memberOptional = memberService.findByUsername(username);
+        
+        if (memberOptional.isPresent()) {
+            model.addAttribute("member", memberOptional.get());
+            return "member/readdetail";  // Thymeleaf 템플릿
+        } else {
+            return "error";  // 사용자를 찾을 수 없을 때
+        }
+    }
 	
 	//회원 정보 수정
 	@GetMapping("/update/{id}")

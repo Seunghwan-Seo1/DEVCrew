@@ -137,5 +137,9 @@ public class MemberService implements UserDetailsService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Optional<Member> findByUsername(String username) {
+	    return memberRepository.findByusername(username);
+	}
 
 }
