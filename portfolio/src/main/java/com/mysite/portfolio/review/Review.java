@@ -4,6 +4,7 @@ package com.mysite.portfolio.review;
 
 import java.time.LocalDateTime;
 
+import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.lodge.Lodge;
 
 import jakarta.persistence.Entity;
@@ -33,6 +34,8 @@ public class Review {
 	
 	@ManyToOne
 	private Lodge lodge;
+	
+	
 	
 
 }
