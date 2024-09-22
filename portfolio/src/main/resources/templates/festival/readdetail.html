@@ -277,6 +277,35 @@
     .review-actions button:hover {
         background-color: #7a1ea1; /* 어두운 보라색 */
     }
+    
+     .review-list {
+        margin-top: 20px;
+    }
+
+    .review-item {
+        background-color: #f9f5ff; /* 연한 보라색 배경 */
+        border: 1px solid #dcdcdc; /* 경계선 색 */
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        transition: box-shadow 0.3s;
+    }
+
+    .review-item:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 효과 */
+    }
+
+    .review-item a {
+        color: #6a0dad; /* 보라색 */
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .review-item a:hover {
+        text-decoration: underline;
+        color: #5a0c9f; /* 어두운 보라색 */
+    }
 </style>
 
 <div class="review-form">
@@ -291,13 +320,58 @@
 
 
 
- <th:block th:each="freview : ${festival.freviewList}">
+<div class="review-list">
+    <th:block th:each="freview : ${festival.freviewList}">
+        <div class="review-item">
+            <a th:text="${freview.frcontent}"></a>
+            <div class="review-actions">
+                <button class="edit-button" data-review-id="${freview.id}">수정</button>
+                <button class="delete-button" data-review-id="${freview.id}">삭제</button>
+            </div>
+        </div>
+    </th:block>
+</div>
 
-	
-	<a th:text=${freview.frcontent}></a> <br>
 
 
-</th:block>
+<!-- <script>
+    // 수정 버튼 클릭 시 이벤트 처리
+    document.querySelectorAll('.edit-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const reviewId = this.getAttribute('data-review-id');
+            editReview(reviewId);
+        });
+    });
+
+    // 삭제 버튼 클릭 시 이벤트 처리
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const reviewId = this.getAttribute('data-review-id');
+            deleteReview(reviewId);
+        });
+    });
+
+    function editReview(reviewId) {
+        // 수정 로직 구현 (예: 모달 열기 등)
+        alert('리뷰 수정 기능은 아직 구현되지 않았습니다. 리뷰 ID: ' + reviewId);
+    }
+
+    function deleteReview(reviewId) {
+        if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+            // 삭제 요청을 서버로 보내는 코드
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `/freview/delete`; // 실제 삭제 URL로 변경 필요
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'id'; // 서버에서 사용할 파라미터명
+            input.value = reviewId;
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
+</script> -->
     <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
     
     
