@@ -1,456 +1,335 @@
 <html layout:decorate="~{layout}">
-<div layout:fragment="content">
-
-
-
-
-    <div class="hero hero-inner">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mx-auto text-center">
-                    <div class="intro-wrap">
-                        <h1 class="mb-0">축제</h1>
-                        <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
+    <div layout:fragment="content">
+        <div class="hero hero-inner">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mx-auto text-center">
+                        <div class="intro-wrap">
+                            <h1 class="mb-0">축제</h1>
+                            <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    
 
+        <!-- 사진 -->
+        <section class="summary">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" 
+                    style="width: 1000px; height: 1000px; object-fit: contain; margin: 0 auto; display: block;">
+                </div>
 
-  <!--사진-->
-    <section class="summary">
-        <div class="row">
-           
-            <div class="col-md-6">
-            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}"
-            style="width: 1000px; height: 1000px; object-fit: contain; margin: 0 auto; display: block;">
+                <!-- 설명 -->
+                <div class="col-md-6 d-flex flex-column justify-content-center">
+                    <dl>
+                        <div class="festival-info">
+                            <dl>
+                                <dt>작성자</dt>
+                                <dd th:if="${festival.author != null}">[[${festival.author.username}]]</dd>
+                            </dl>
+                            <dl>
+                                <dt>축제이름</dt>
+                                <dd>[[${festival.fname}]]</dd>
+                            </dl>
+                            <dl>
+                                <dt>장소</dt>
+                                <dd>[[${festival.flocation}]]</dd>
+                            </dl>
+                            <dl>
+                                <dt>축제설명</dt>
+                                <dd th:utext="${festival.fdescription}"></dd>
+                            </dl>
+                        </div>
+                    </dl>
+
+                    <style>
+                        .festival-info {
+                            background-color: #f8f9fa;
+                            border: 1px solid #dee2e6;
+                            border-radius: 8px;
+                            padding: 20px;
+                            margin-top: 20px;
+                            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                        }
+                        .festival-info dt {
+                            font-weight: bold;
+                            margin-top: 10px;
+                            color: #007bff;
+                        }
+                        .festival-info dd {
+                            margin: 0 0 10px;
+                            line-height: 1.6;
+                            color: #333;
+                        }
+                    </style>
+
+                    <div id="map" style="width: 80%; height: 300px; margin: 20px 0;"></div>
+                </div>
             </div>
-           <!--사진-->
-           <!-- 실험 -->
-        
-            
-               <!-- 실험 -->
+        </section>
 
+        <!-- 지도 -->
+        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
+        <script>
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3
+            };
+            var map = new kakao.maps.Map(mapContainer, mapOption);
 
-<!--설명-->
-			<div class="col-md-6 d-flex flex-column justify-content-center">
-				<dl>
-					<div class="festival-info">
-					
-					     <dl>
-							<dt>작성자</dt>
-							<dd>[[${festival.username}]]</dd>
-						</dl>
-						<dl>
-					
-					
-						<dl>
-							<dt>축제이름</dt>
-							<dd>[[${festival.fname}]]</dd>
-						</dl>
-						<dl>
-							<dt>장소</dt>
-							<dd>[[${festival.flocation}]]</dd>
-						</dl>
-						<dl>
-							<dt>축제설명</dt>
-							<dd th:utext="${festival.fdescription}"></dd>
-						</dl>
-					</div>
+            var marker = new kakao.maps.Marker({
+                position: mapOption.center
+            });
+            marker.setMap(map);
 
-					<style>
-.festival-info {
-	background-color: #f8f9fa; /* 연한 배경색 */
-	border: 1px solid #dee2e6; /* 테두리 색상 */
-	border-radius: 8px; /* 모서리 둥글게 */
-	padding: 20px; /* 내부 여백 */
-	margin-top: 20px; /* 위쪽 여백 */
-	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 부드러운 그림자 효과 */
-}
+            var address = "[[${festival.flocation}]]";
+            var geocoder = new kakao.maps.services.Geocoder();
 
-.festival-info dt {
-	font-weight: bold; /* 제목 두껍게 */
-	margin-top: 10px; /* 제목 위쪽 여백 */
-	color: #007bff; /* 제목 색상 */
-}
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    map.setCenter(newPosition);
+                    marker.setPosition(newPosition);
+                } else {
+                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+                }
+            });
+        </script>
 
-.festival-info dd {
-	margin: 0 0 10px; /* 아래쪽 마진 */
-	line-height: 1.6; /* 줄 간격 */
-	color: #333; /* 텍스트 색상 */
-}
-</style>
-<!--설명-->
-					<!--   <dl>
-                    <dt>축제참여비용</dt>
-                    <dd>[[${festival.fprice}]]</dd>
-                </dl> -->
+        <!-- 추가 사진 -->
+        <div class="untree_co-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-md-6 col-lg-3">
+                        <div class="media-1">
+                            <a href="#" class="d-block mb-3">
+                                <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}" alt="Image" class="img-fluid">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-3">
+                        <div class="media-1">
+                            <a href="#" class="d-block mb-3">
+                                <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg3}|}" alt="Image" class="img-fluid">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-3">
+                        <div class="media-1">
+                            <a href="#" class="d-block mb-3">
+                                <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg4}|}" alt="Image" class="img-fluid">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-6 col-lg-3">
+                        <div class="media-1">
+                            <a href="#" class="d-block mb-3">
+                                <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg5}|}" alt="Image" class="img-fluid">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-
-					<!-- <dl>
-                    <dt>축제기간</dt>
-                    <dd>[[${festival.fdate}]]</dd>
-                </dl> -->
-					<div id="map" style="width: 80%; height: 300px; margin: 20px 0;"></div>
-			</div>
-		</div>
-    </section>
-    
-    
-    <!--지도-->
-
-<!-- 카카오 지도 추가 -->
-  <!-- 전체 너비로 설정 -->
-
-    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
-    <script>
-        var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
-        var mapOption = { 
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 기본 중심좌표
-            level: 3 // 지도의 확대 레벨
-        }; 
-        
-        var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다 
-
-        var marker = new kakao.maps.Marker({
-            position: mapOption.center // 초기 마커 위치
-        });
-        marker.setMap(map); // 마커를 지도에 표시합니다
-
-        // 주소 설정 (축제 장소를 사용)
-        var address = "[[${festival.flocation}]]"; // 축제 장소 주소로 설정
-        var geocoder = new kakao.maps.services.Geocoder();
-
-        // 주소 검색
-        geocoder.addressSearch(address, function(result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
-                map.setCenter(newPosition); // 지도 중심 이동
-                marker.setPosition(newPosition); // 마커 위치 변경
-                marker.setMap(map); // 마커를 지도에 표시
-            } else {
-                alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+        <style>
+            .media-1 img {
+                width: 100%;
+                height: 200px;
+                object-fit: cover;
             }
-        });
-    </script>
+        </style>
 
+        <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
+        <style>
+            .review-form {
+                background-color: #ffffff;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 20px;
+                max-width: 500px;
+                margin: 0 auto;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
 
-    <!--지도-->
-    
-    
-            <!-- 추가사진 -->
-<div class="untree_co-section">
-    <div class="container">
-           <div class="row">
-           <div class="col-6 col-md-6 col-lg-3">
-                <div class="media-1">
-                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}" alt="Image" class="img-fluid"></a>
-                    <div class="d-flex">
-                        <div></div>
-                    </div>
-                </div>
-            </div> 
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="media-1">
-                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg3}|}" alt="Image" class="img-fluid"></a>
-                    <div class="d-flex">
-                        <div></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="media-1">
-                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg4}|}" alt="Image" class="img-fluid"></a>
-                    <div class="d-flex">
-                        <div></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-6 col-lg-3">
-                <div class="media-1">
-                    <a href="#" class="d-block mb-3"><img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg5}|}" alt="Image" class="img-fluid"></a>
-                    <div class="d-flex">
-                        <div></div>
-                    </div>
-                </div>
-            </div>
-            
-<!-- 추가사진 -->
-<style>
-    .media-1 img {
-        width: 100%; /* 이미지의 너비를 부모 요소에 맞춤 */
-        height: 200px; /* 이미지의 높이를 고정하여 동일하게 설정 */
-        object-fit: cover; /* 비율을 유지하면서 잘라내기 */
-    }
-  
-</style>
+            .review-form h2 {
+                color: #6a0dad;
+            }
 
+            .review-form input[type="text"] {
+                width: calc(100% - 110px);
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                margin-right: 10px;
+                font-size: 16px;
+            }
 
+            .review-form input[type="submit"] {
+                padding: 10px 15px;
+                border: none;
+                border-radius: 4px;
+                background-color: #8a2be2;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
 
- <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
-    
- 
-<!-- 추천 / 비추천 기능 -->
+            .review-form input[type="submit"]:hover {
+                background-color: #7a1ea1;
+            }
 
-<div class="my-3">
-    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
-       th:data-uri="@{|/festival/vote/${festival.fid}|}">
-        추천
-        <span class="badge rounded-pill bg-success" 
-              th:text="${#lists.size(festival.voter)}">0</span> <!-- 기본 값 추가 -->
-    </a>
-</div>
+            .review-list {
+                margin-top: 20px;
+            }
 
-<script type="text/javascript">
-const recommend_elements = document.getElementsByClassName("recommend");
-Array.from(recommend_elements).forEach(function(element) {
-    element.addEventListener('click', function() {
-        if(confirm("정말로 추천하시겠습니까?")) {
-            location.href = this.dataset.uri;
-        };
-    });
-});
-</script>
-    
-   <!-- 축제 축제 비추천 기능 추가 -->
+            .review-item {
+                background-color: #f9f5ff;
+                border: 1px solid #dcdcdc;
+                border-radius: 8px;
+                padding: 15px;
+                margin-bottom: 10px;
+                transition: box-shadow 0.3s;
+            }
 
+            .review-item:hover {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            }
 
-    <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
+            .review-actions {
+                display: flex;
+                gap: 10px;
+            }
 
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-        margin: 0;
-        padding: 20px;
-    }
+            .review-actions button {
+                padding: 5px 10px;
+                border: none;
+                border-radius: 3px;
+                background-color: #8a2be2;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
 
-    .review-form {
-        background-color: #ffffff;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        max-width: 500px;
-        margin: 0 auto;
-    }
+            .review-actions button:hover {
+                background-color: #7a1ea1;
+            }
+        </style>
 
-    .review-form h2 {
-        margin-top: 0;
-        color: #6a0dad; /* 보라색 */
-    }
-
-    .review-form input[type="text"] {
-        width: calc(100% - 110px);
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        margin-right: 10px;
-        font-size: 16px;
-    }
-
-    .review-form input[type="submit"] {
-        padding: 10px 15px;
-        border: none;
-        border-radius: 4px;
-        background-color: #8a2be2; /* 보라색 */
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .review-form input[type="submit"]:hover {
-        background-color: #7a1ea1; /* 어두운 보라색 */
-    }
-
-    .review-list {
-        margin-top: 20px;
-    }
-
-    .review-item {
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .review-item a {
-        color: #6a0dad; /* 보라색 */
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .review-item a:hover {
-        text-decoration: underline;
-    }
-
-    .review-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .review-actions button {
-        padding: 5px 10px;
-        border: none;
-        border-radius: 3px;
-        background-color: #8a2be2; /* 보라색 */
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .review-actions button:hover {
-        background-color: #7a1ea1; /* 어두운 보라색 */
-    }
-    
-     .review-list {
-        margin-top: 20px;
-    }
-
-    .review-item {
-        background-color: #f9f5ff; /* 연한 보라색 배경 */
-        border: 1px solid #dcdcdc; /* 경계선 색 */
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 10px;
-        transition: box-shadow 0.3s;
-    }
-
-    .review-item:hover {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 효과 */
-    }
-
-    .review-item a {
-        color: #6a0dad; /* 보라색 */
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 16px;
-    }
-
-    .review-item a:hover {
-        text-decoration: underline;
-        color: #5a0c9f; /* 어두운 보라색 */
-    }
-    
-    .recommend-button, .disrecommend-button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    background-color: #8a2be2; /* 보라색 */
-    color: white;
-    cursor: pointer;
-    margin-right: 10px;
-    transition: background-color 0.3s;
-}
-
-.recommend-button:hover, .disrecommend-button:hover {
-    background-color: #7a1ea1; /* 어두운 보라색 */
-}
-</style>
-
-<div class="review-form">
-    <h2>리뷰 남기기</h2>
-    <form action="/freview/create" method="post">
-        <input type="hidden" name="fid" th:value="${festival.fid}">
-        댓글 : <input type="text" name="frcontent" placeholder="여기에 댓글을 입력하세요" required>
-        <input type="submit" value="등록">
-    </form>
-</div>
-
-
-
-
-<div class="review-list">
-    <th:block th:each="freview : ${festival.freviewList}">
-        <div class="review-item">
-            <p th:text="${freview.frcontent}"></p>
-            <div class="review-actions">
-                <button class="edit-button" data-review-id="${freview.frid}">수정</button>
-                <button class="delete-button" data-review-id="${freview.frid}">삭제</button>
-
-            </div>
+        <div>
+            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" th:data-uri="@{|/festival/vote/${festival.fid}|}">
+                추천
+                <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.voter)}"></span>
+            </a>
+            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-secondary" th:data-uri="@{|/festival/devote/${festival.fid}|}">
+                비추천
+                <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.devoter)}"></span>
+            </a>
         </div>
-    </th:block>
-</div>
-
-<script>
-    // 수정 버튼 클릭 시 이벤트 처리
-    document.querySelectorAll('.edit-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const reviewId = this.getAttribute('data-review-id');
-            editReview(reviewId);
-        });
-    });
-
-    // 삭제 버튼 클릭 시 이벤트 처리
-    document.querySelectorAll('.delete-button').forEach(button => {
-        button.addEventListener('click', function() {
-            const reviewId = this.getAttribute('data-review-id');
-            deleteReview(reviewId);
-        });
-    });
-
-    function editReview(reviewId) {
-        // 모달을 열고 수정 폼을 보여주는 로직 구현
-        const reviewContent = document.querySelector(`[data-review-id="${reviewId}"]`).parentElement.previousElementSibling.innerText;
-        const newContent = prompt("리뷰를 수정하세요:", reviewContent);
-        
-        if (newContent !== null) {
-            updateReview(reviewId, newContent);
-        }
-    }
-
-    function updateReview(reviewId, newContent) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/freview/update/${reviewId}`; // 수정 URL
-
-        const inputContent = document.createElement('input');
-        inputContent.type = 'hidden';
-        inputContent.name = 'frcontent'; // 서버에서 사용할 파라미터명
-        inputContent.value = newContent;
-        form.appendChild(inputContent);
-
-        // CSRF 토큰 추가
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = '${_csrf.parameterName}'; // CSRF 파라미터 이름
-        csrfInput.value = '${_csrf.token}'; // CSRF 토큰 값
-        form.appendChild(csrfInput);
-
-        document.body.appendChild(form);
-        form.submit();
-    }
-
-    function deleteReview(reviewId) {
-        if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = `/freview/delete/${reviewId}`; // 삭제 URL
-
-            // CSRF 토큰 추가
-            const csrfInput = document.createElement('input');
-            csrfInput.type = 'hidden';
-            csrfInput.name = '${_csrf.parameterName}'; // CSRF 파라미터 이름
-            csrfInput.value = '${_csrf.token}'; // CSRF 토큰 값
-            form.appendChild(csrfInput);
-
-            document.body.appendChild(form);
-            form.submit();
-        }
-    }
-</script>
 
 
-   
-    
-    
-    
-    
-</div>
+        <div class="review-form">
+            <h2>리뷰 남기기</h2>
+            <form action="/freview/create" method="post">
+                <input type="hidden" name="fid" th:value="${festival.fid}">
+                댓글 : <input type="text" name="frcontent" placeholder="여기에 댓글을 입력하세요" required>
+                <input type="submit" value="등록">
+            </form>
+        </div>
+
+        <div class="review-list">
+            <th:block th:each="freview : ${festival.freviewList}">
+                <div class="review-item">
+                    <p th:text="${freview.frcontent}"></p>
+                    <div class="review-actions">
+                        <button class="edit-button" data-review-id="${freview.frid}">수정</button>
+                        <button class="delete-button" data-review-id="${freview.frid}">삭제</button>
+                    </div>
+                </div>
+            </th:block>
+        </div>
+
+        <script>
+            document.querySelectorAll('.edit-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reviewId = this.getAttribute('data-review-id');
+                    editReview(reviewId);
+                });
+            });
+
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reviewId = this.getAttribute('data-review-id');
+                    deleteReview(reviewId);
+                });
+            });
+
+            function editReview(reviewId) {
+                const reviewContent = document.querySelector(`[data-review-id="${reviewId}"]`).parentElement.previousElementSibling.innerText;
+                const newContent = prompt("리뷰를 수정하세요:", reviewContent);
+
+                if (newContent !== null) {
+                    updateReview(reviewId, newContent);
+                }
+            }
+
+            function updateReview(reviewId, newContent) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/freview/update/${reviewId}`;
+
+                const inputContent = document.createElement('input');
+                inputContent.type = 'hidden';
+                inputContent.name = 'frcontent';
+                inputContent.value = newContent;
+                form.appendChild(inputContent);
+
+                const csrfInput = document.createElement('input');
+                csrfInput.type = 'hidden';
+                csrfInput.name = '${_csrf.parameterName}';
+                csrfInput.value = '${_csrf.token}';
+                form.appendChild(csrfInput);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            function deleteReview(reviewId) {
+                if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/freview/delete/${reviewId}`;
+
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '${_csrf.parameterName}';
+                    csrfInput.value = '${_csrf.token}';
+                    form.appendChild(csrfInput);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            const recommend_elements = document.getElementsByClassName("recommend");
+            Array.from(recommend_elements).forEach(function(element) {
+                element.addEventListener('click', function() {
+                    if(confirm("정말로 추천하시겠습니까?")) {
+                        location.href = this.dataset.uri;
+                    };
+                });
+            });
+
+            const recommend2_elements = document.getElementsByClassName("recommend2");
+            Array.from(recommend2_elements).forEach(function(element) {
+                element.addEventListener('click', function() {
+                    if(confirm("정말로 비추천하시겠습니까?")) {
+                        location.href = this.dataset.uri;
+                    };
+                });
+            });
+        </script>
+    </div>
 </html>
-

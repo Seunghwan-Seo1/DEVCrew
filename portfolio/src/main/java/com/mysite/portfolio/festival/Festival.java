@@ -7,7 +7,6 @@ import java.util.Set;
 
 import com.mysite.portfolio.member.Member;
 
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +14,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+
+import jakarta.persistence.ManyToOne;
+
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
@@ -28,7 +30,6 @@ public class Festival {
     private Integer fid;
     // 생성자, 게터 및 세터
     
-    private String username;  // 회원 아이디, 이메일 주소로 하면 많이 편하다. 
     
     private String fname; //축제이름
 
@@ -63,7 +64,20 @@ public class Festival {
     
     private LocalDateTime fmodifyDate;
     
+
+    @ManyToOne
+    private Member author;
+    
     @ManyToMany
     Set<Member> voter;
     
+    @ManyToMany
+    Set<Member> devoter;
+    
+ // 추천 수에서 비추천 수를 뺀 값 계산
+    public int getVoteScore() {
+        return this.voter.size() - this.devoter.size();
+    }
+    
+
 }

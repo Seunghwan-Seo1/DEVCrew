@@ -1,6 +1,7 @@
 package com.mysite.portfolio.festival;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,10 @@ public class FestivalController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Festival festival,
-                         @RequestParam("files") List<MultipartFile> files) throws IOException {
-        festivalService.create(festival, files);
+                         @RequestParam("files") List<MultipartFile> files, Principal principal) throws IOException {
+    	if (files.size() > 0 && files.get(0) != null) {
+        festivalService.create(festival, files, memberService.getMember(principal.getName()));
+    	}
         return "redirect:/festival/readlist";
     }
 
@@ -82,13 +85,26 @@ public class FestivalController {
         festivalService.delete(id);
         return "redirect:/festival/readlist";
     }
-   
-    @PreAuthorize("isAuthenticated()") //로그인한사람만 사용할수있도록
-    @GetMapping("/vote/{id}")
-    public String festivalVote(Principal principal, @PathVariable("id") Integer id) {
-    	Festival festival = this.festivalService.readdetail(id);
-        Member member = this.memberService.readdetail();
+
+    //추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{fid}")
+    public String festivalVote(Principal principal, @PathVariable("fid") Integer fid) {
+        Festival festival = this.festivalService.getFestival(fid);
+        Member member = this.memberService.getMember(principal.getName());
         this.festivalService.vote(festival, member);
-        return String.format("redirect:/festival/detail/%s", id);
+        return String.format("redirect:/festival/readdetail/%s", fid);
     }
+    
+  //비추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/devote/{fid}")
+    public String festivalDevote(Principal principal, @PathVariable("fid") Integer fid) {
+        Festival festival = this.festivalService.getFestival(fid);
+        Member member = this.memberService.getMember(principal.getName());
+        this.festivalService.devote(festival, member);
+        return String.format("redirect:/festival/readdetail/%s", fid);
+    }
+
 }
+
