@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,7 +89,10 @@ public class FestivalService {
 
     // readlist
     public List<Festival> readlist() {
-        return festivalRepository.findAll();
+        List<Festival> festivals = festivalRepository.findAll();
+        return festivals.stream()
+                        .sorted((f1, f2) -> Integer.compare(f2.getVoteScore(), f1.getVoteScore())) // getVoteScore 기준으로 내림차순 정렬
+                        .collect(Collectors.toList());
     }
 
     // readdetail

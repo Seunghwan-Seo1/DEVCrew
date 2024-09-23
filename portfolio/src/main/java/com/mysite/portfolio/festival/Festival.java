@@ -71,5 +71,10 @@ public class Festival {
     @ManyToMany
     Set<Member> devoter;
     
+ // 추천 수에서 비추천 수를 뺀 값 계산
+    public int getVoteScore() {
+        return this.voter.size() - this.devoter.size();
+    }
+    
 }
 
