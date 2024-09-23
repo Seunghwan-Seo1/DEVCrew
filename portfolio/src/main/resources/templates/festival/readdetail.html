@@ -223,9 +223,9 @@
                 추천
                 <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.voter)}"></span>
             </a>
-            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-secondary" th:data-uri="@{|/festival/devote/${festival.fid}|}">
+            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" th:data-uri="@{|/festival/devote/${festival.fid}|}">
                 비추천
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.devoter)}"></span>
+                <span class="badge rounded-pill bg-danger" th:text="${#lists.size(festival.devoter)}"></span>
             </a>
         </div>
 
@@ -240,16 +240,30 @@
         </div>
 
         <div class="review-list">
-            <th:block th:each="freview : ${festival.freviewList}">
-                <div class="review-item">
-                    <p th:text="${freview.frcontent}"></p>
-                    <div class="review-actions">
-                        <button class="edit-button" data-review-id="${freview.frid}">수정</button>
-                        <button class="delete-button" data-review-id="${freview.frid}">삭제</button>
-                    </div>
+    <th:block th:each="freview : ${festival.freviewList}">
+        <div class="review-item">
+            <p th:text="${freview.frcontent}"></p>
+            <div class="review-actions">
+                <button class="edit-button" data-review-id="${freview.frid}">수정</button>
+                <button class="delete-button" data-review-id="${freview.frid}">삭제</button>
+
+                <div>
+                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" 
+                       th:data-uri="@{|/festival/vote/${festival.fid}|}">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(freview.voter)}"></span>
+                    </a>
+                    <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" 
+                       th:data-uri="@{|/festival/devote/${festival.fid}|}">
+                        비추천
+                        <span class="badge rounded-pill bg-danger" th:text="${#lists.size(freview.devoter)}"></span>
+                    </a>
                 </div>
-            </th:block>
+            </div>
         </div>
+    </th:block>
+</div>
+
 
         <script>
             document.querySelectorAll('.edit-button').forEach(button => {

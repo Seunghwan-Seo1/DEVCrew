@@ -8,6 +8,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
 import jakarta.transaction.Transactional;
@@ -41,6 +42,12 @@ public class FreviewService {
 	}
 	
 	//r
+//	public Freview readdetail(Integer fid) {
+//		Optionnal<Freview> ob = freviewRepository.findById(fid);
+//		return ob.get();
+//	}
+//	
+	
 	
 	
 	// Update
@@ -64,4 +71,33 @@ public class FreviewService {
         
         freviewRepository.delete(existingFreview);
     }
+    //추천
+
+    public void vote(Freview freview, Member member) {
+    	freview.getVoter().add(member);
+        this.freviewRepository.save(freview);
+    }
+
+    
+    //비추천
+ 
+    public void devote(Freview freview, Member member) {
+        freview.getDevoter().add(member);
+        this.freviewRepository.save(freview);
+    }
+
+    public Freview getFreview(Integer fid) {
+        Optional<Freview> freview = this.freviewRepository.findById(fid);
+        return freview.orElseThrow(() -> new RuntimeException("Freview not found"));
+    }
+
+	public void vote(Freview freview, Class<? extends Object> member) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void devote(Freview freview, Class<? extends Object> member) {
+		// TODO Auto-generated method stub
+		
+	}
 }
