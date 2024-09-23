@@ -1,10 +1,10 @@
 package com.mysite.portfolio.lodge;
 
 import java.io.IOException;
+import java.util.List;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,8 +66,8 @@ public class LodgeController {
 	}
 	
 	@PostMapping("/lgcreate")
-	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("file") MultipartFile file) throws IOException {
-		lodgeService.lgcreate(lodge, file);
+	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("files") List<MultipartFile> files) throws IOException {
+		lodgeService.lgcreate(lodge, files);
 
 		return "redirect:/lodge/secondmain";
 

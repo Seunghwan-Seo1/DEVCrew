@@ -12,6 +12,9 @@
   			<form action="/festival/create" method="post"
 				enctype="multipart/form-data">  
 				
+				    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+				
+				
 				
 				
           <p class="m-5">축제 등록</p>
@@ -40,7 +43,13 @@
 							name="fdate" type="text" />
 					</div>
 					 -->
-				
+				<div class="mb-3">
+					<label
+						class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+						for="inputCountry">사진</label> 
+						<!-- <input class="form-control" type="file" name="file"  multiple required> -->
+							<input type="file" name="files" multiple required>
+				</div>
 					
 					<div class="col-12">
 						<label
@@ -58,13 +67,7 @@
 				</div> -->
 
 
-				<div class="mb-3">
-					<label
-						class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
-						for="inputCountry">사진</label> 
-						<!-- <input class="form-control" type="file" name="file"  multiple required> -->
-							<input type="file" name="files" multiple required>
-				</div>
+				
 				
 
 
@@ -80,19 +83,24 @@
  
  </div>
      <script>
-      $('#summernote').summernote({
-        placeholder: 'Hello stand alone ui',
-        tabsize: 2,
-        height: 120,
-        toolbar: [
-          ['style', ['style']],
-          ['font', ['bold', 'underline', 'clear']],
-          ['color', ['color']],
-          ['para', ['ul', 'ol', 'paragraph']],
-          ['insert', ['link', 'picture', 'video']],
-          ['view', ['fullscreen', 'codeview', 'help']]
-        ]
-      });
+     $('#summernote').summernote({
+    	    placeholder: 'Hello stand alone ui',
+    	    tabsize: 2,
+    	    height: 120,
+    	    toolbar: [
+    	      ['style', ['style']],
+    	      ['font', ['bold', 'underline', 'clear']],
+    	      ['color', ['color']],
+    	      ['para', ['ul', 'ol', 'paragraph']],
+    	      ['view', ['fullscreen', 'codeview', 'help']]
+    	    ],
+    	    callbacks: {
+    	        onImageUpload: function(files) {
+    	            // 이미지 파일을 전송하지 않도록 비워둠
+    	        }
+    	    }
+    	});
+
     </script>
  
  </div>

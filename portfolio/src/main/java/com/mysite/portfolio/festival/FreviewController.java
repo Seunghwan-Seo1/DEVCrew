@@ -2,6 +2,7 @@ package com.mysite.portfolio.festival;
 
 import java.io.IOException;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,5 +31,21 @@ public class FreviewController {
 	}
 	
 	
-	
+	//u
+	// Update
+    @PostMapping("/modify/{fid}")
+    public String update(@PathVariable("fid") Integer fid,
+                         @ModelAttribute Freview freview,
+                         @RequestParam("fid") Integer fid1) throws IOException {
+        freviewService.update(fid1, freview);
+        return "redirect:/festival/readdetail/" + fid1;
+    }
+
+    // Delete
+    @PostMapping("/freview/delete/{fid}")
+    public ResponseEntity<Void> deleteReview(@PathVariable Integer fid) {
+        freviewService.delete(fid);
+        return ResponseEntity.ok().build();
+    }
+
 }

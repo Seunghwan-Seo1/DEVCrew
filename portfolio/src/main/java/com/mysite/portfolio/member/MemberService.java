@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import com.mysite.portfolio.DataNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -147,5 +149,6 @@ public class MemberService implements UserDetailsService {
 	public Optional<Member> findByUsername(String username) {
 	    return memberRepository.findByusername(username);
 	}
+
 
 }
