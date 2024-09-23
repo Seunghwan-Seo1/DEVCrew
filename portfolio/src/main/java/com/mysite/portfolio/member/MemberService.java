@@ -42,11 +42,13 @@ public class MemberService implements UserDetailsService {
 	    this.memberRepository.save(member);
 	}
 	
-	//아이디 중복 방지 및 비밀번호 확인
+    // 아이디 중복 확인
+	
+	//회원 가입 시 폼 유효성 검사
 	public void validateMemberForm(MemberForm memberForm) {
-	    // 아이디 중복 방지
-	    Optional<Member> existingMember = memberRepository.findByusername(memberForm.getUsername());
-	    if (existingMember.isPresent()) {
+	    // 아이디 중복 확인
+	    Optional<Member> member = memberRepository.findByusername(memberForm.getUsername());
+	    if (member.isPresent()) {
 	        throw new IllegalArgumentException("이미 등록된 사용자입니다.");
 	    }
 	    
@@ -119,7 +121,11 @@ public class MemberService implements UserDetailsService {
 	
 	//회원 정보 수정
 	public void update(Member member) {
-		this.memberRepository.save(member);
+		Optional<Member> _member = memberRepository.findByusername(member.getUsername());
+		
+		Member memberData = _member.get();
+		memberData.setMaddr(member.getMaddr());
+		this.memberRepository.save(memberData);
 	}
 	
 	//회원 탈퇴
@@ -133,28 +139,13 @@ public class MemberService implements UserDetailsService {
         		.map(Member::getUsername);
     }
 
-
-	public List<Member> readlist() {
-		return memberRepository.findAll();
-
+	public Object readlist() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	public Optional<Member> findByUsername(String username) {
 	    return memberRepository.findByusername(username);
 	}
-
-	
-	public void updateUserRole(Integer memberId, String newRole) {
-	    Optional<Member> optionalMember = memberRepository.findById(memberId);
-	    if (optionalMember.isPresent()) {
-	        Member member = optionalMember.get();
-	        member.setRole(newRole); // 새로운 역할 설정
-	        memberRepository.save(member); // 변경 사항 저장
-	    } else {
-	        throw new IllegalArgumentException("회원 ID를 찾을 수 없습니다.");
-	    }
-	}
-
-
 
 }

@@ -12,17 +12,41 @@
         		</div>
       		</div>
     	</div>
-  	</div>
-	
-	
+  	</div>	
 
-
-    <h1 th:text="${member.username}">사용자 이름</h1>
-    <p th:text="${member.maddr}">이메일</p>
-    <p th:text="${member.mdate}">가입일</p>
-
-
-	
+	<div class="centered-container mt-5 mb-5">
+	    <div class="centered-div" style="width:550px;">
+	    	<form th:action="@{|/member/update/${member.username}|}" method="post">
+	    	
+	    		<input type="hidden" name="mid" th:value="${member.mid}">
+	    	
+		        <div class="text-center mb-7">
+		            <h3 class="text-body-highlight">프로필</h3>
+		        </div>
+		        
+		        <div class="mb-3 text-start">
+		            <label for="username" class="form-label">이메일 : </label>
+		            <p th:text="${member.username}">이메일</p>
+		        </div><br>    
+				
+		        <div class="mb-3 text-start">
+		            <label for="maddr" class="form-label">연락처 : </label>
+		            <input type="text" name="maddr" th:value="${member.maddr}" placeholder="연락처 수정" class="form-control" />
+		        </div><br>    
+		        
+		        <div class="mb-3 text-start">
+		            <label for="mdate" class="form-label">가입일 : </label>
+		            <p th:text="${#temporals.format(member.mdate, 'yyyy-MM-dd HH:mm:ss')}">가입일</p>
+		        </div>
+		        
+		        <div class="text-center mb-7">
+		            <input type="submit" class="btn btn-primary w-45 mb-3" value="프로필 수정">
+		            <a class="btn btn-danger w-45 mb-3" th:href="@{|/member/delete/${member.mid}|}">회원 탈퇴</a>
+		            <a class="btn btn-secondary w-45 mb-3" href="/">메인으로</a>
+		        </div>
+	        </form>
+	    </div>
 	</div>
-
+	
+</div>
 </html>
