@@ -14,13 +14,13 @@ public class MailService {
 		
 		SimpleMailMessage message = new SimpleMailMessage();
 		
-        message.setFrom(String.format("%s <%s>", senderName, "oosssok1@naver.com"));
-		message.setTo("oosssok1@naver.com");
-		message.setSubject(title);
-		message.setText(content);
-		
-		mailsender.send(message);
-	}
+			message.setFrom("oosssok1@naver.com");
+	        message.setTo("oosssok1@naver.com");
+	        message.setSubject(title);
+	        message.setText(String.format("From: %s\n\n%s", senderName, content));  // 이메일 본문에 발신자 이름 추가
+	        
+	        mailsender.send(message);
+	    }
 	
 	
 
