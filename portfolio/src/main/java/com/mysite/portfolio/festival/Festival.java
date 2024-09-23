@@ -5,9 +5,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-
-import com.mysite.portfolio.review.Review;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,6 +56,8 @@ public class Festival {
    
     @OneToMany(mappedBy = "festival", cascade = CascadeType.REMOVE)
 	private List<Freview> freviewList; 
+    
+    private LocalDateTime fmodifyDate;
     
 }
 

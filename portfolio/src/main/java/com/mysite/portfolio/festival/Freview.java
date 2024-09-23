@@ -27,6 +27,35 @@ public class Freview {
 
 	    @ManyToOne
 	    private Festival festival;  
+	    
+	    private LocalDateTime fmodifyDate;
+	    
+	 // Update 메서드
+	    public void update(String newContent) {
+	        this.frcontent = newContent;
+	        this.fmodifyDate = LocalDateTime.now(); // 수정 시간 업데이트
+	    }
+	
+	    
+	    public void delete() {
 	}
 
 
+		public Object getSubject1() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		public void setSubject(Object subject) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		public Object getSubject() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+}

@@ -14,6 +14,7 @@ public class MailService {
 		
 		SimpleMailMessage message = new SimpleMailMessage();
 		
+
 			message.setFrom("oosssok1@naver.com");
 	        message.setTo("oosssok1@naver.com");
 	        message.setSubject(title);
@@ -21,6 +22,7 @@ public class MailService {
 	        
 	        mailsender.send(message);
 	    }
+
 	
 	
 
