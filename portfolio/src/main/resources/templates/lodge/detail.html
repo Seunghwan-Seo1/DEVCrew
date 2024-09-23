@@ -1,6 +1,5 @@
 <html layout:decorate="~{layout}">
 
-
 <div layout:fragment="content">
 
 <!-- 	<link rel="apple-touch-icon" type="image/png"
@@ -59,12 +58,31 @@ a {
 	display: block;
 }
 
-#linfo, #notice {
+#linfo, #review, #notice {
 	border : 1px solid  #83a4ff;
 }
 
-</style>
+#message2 {
+	border: 1px solid #83a4ff;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+#rvCmt {
+ 	border: 1px solid gray;
+	margin : 5px;
+	padding : 10px;
+	
+ }
 
+textarea {
+resize: none;
+}
+
+.comments-list {
+	margin-bottom : 10px;
+	padding : 10px;
+}
+</style>
 
 <div class="hero hero-inner">
 	<div class="container">
@@ -100,25 +118,23 @@ a {
 					<div class="row">
 					
 
-					<img th:src="@{|${downpath}/${lodge.accomm}|}">
+					<img th:src="@{|${downpath}/${lodge.accomm}|}" width="250px" height="400px">
 					
 					</div>
 				</form>
 			</div>
 
 			<div class="col-lg-5 ml-auto">
-				<div class="quick-contact-item d-flex align-items-center mb-4">
-
-					<form><img th:src="@{|${downpath}/${lodge.firstaccomm}|}">내부이미지</form>
-
+				<div class="quick-contact-item d-flex align-items-center mb-4" style="display: inline-block">
+					<form><img th:src="@{|${downpath}/${lodge.firstaccomm}|}" width="150px" height="250px">내부</form>
 				</div>
-				<div class="quick-contact-item d-flex align-items-center mb-4">
-
-					<form><img th:src="@{|${downpath}/${lodge.secondaccomm}|}">내부이미지2</form>
-
+				
+				<div id="secondin"class="quick-contact-item d-flex align-items-center mb-4" style="display: inline-block">
+					<form><img th:src="@{|${downpath}/${lodge.secondaccomm}|}" width="150px" height="250px">내부2</form>
 				</div>
+				
 				<div class="quick-contact-item d-flex align-items-center mb-4">
-
+	
 					<form>지도</form>
 
 				</div>
@@ -160,58 +176,35 @@ a {
 	<form th:action="@{|/review/rvcreate/${lodge.lnum}|}"method="post"> 
             <label for="comment">작성 글자 제한</label>
             <span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
-            <textarea id="comment" name="rcontent" autocomplete="off"></textarea>          
+            <textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width:100%; height:100%;" minlength="5" maxlength="1000"></textarea>          
         <input type="submit" value="리뷰등록">
     </form>
     </div>
 
 
-등록된 리뷰 보기
+<div class="my-3 p-3 bg-white" style="padding-top: 10px">
+<p style="font-size:20px;">등록된 리뷰 보기<p>
+
+
 
 <div id="comments-list">
 
 	<th:block th:each="review : ${lodge.reviewList}">
   
+  
+  		 <div class="mt-2.5">
+ 			<div id="message2" rows="4" class="block w-full rounded-md border-1 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+ 						
 			[[${review.rnum}]] _ [[${review.username}]] _ [[${review.rcontent}]]<br>
-
+ 			
+ 			</div>
+		</div>
+		
 	</th:block>
+	
 
 </div> 
-
-
-
-
-
-
-<!-- <!-- 댓글 섹션 시작 
-            <section id="comments-section" th:style="'margin-top: 20px;'">
-                <div id="comments-container">
-                    댓글 목록이 여기에 동적으로 추가될 것입니다.
-                    <table class="table">
-                        <thead>
-                        <tr><th>Comments</th></tr>
-                        </thead>
-                        <tbody>
-                        각 댓글을 표 형식으로 표시
-                        <tr th:each="reviews : ${rcontent}">
-                            <td th:text="${review.rcontent}"></td> 댓글 내용
-                            <td th:text="${review.username}"></td> 댓글 작성자
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                댓글 작성 폼
-                <form id="comment-form">
-                    <div class="form-group">
-                        <label for="comment">댓글 추가:</label>
-                        <textarea class="form-control" id="rcontent" rows="3"></textarea>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="create-comment-btn">댓글 작성</button>
-                </form>
-            </section>
-<!-- 댓글 섹션 끝 -->  
-            
-            
+</div>
 
 
 </div>
@@ -220,9 +213,10 @@ a {
 
 	<div id="notice" class="tab__content">
 	
-						 <div class="mt-2.5">
-         				 <div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">[[${lodge.notice}]]</div>
-        			</div></div>
+		 <div class="mt-2.5">
+ 			<div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">[[${lodge.notice}]]</div>
+		</div>
+    </div>
 </div>
 
 
@@ -268,6 +262,20 @@ tabItem.forEach((item, index) => {
     tabContent[index].classList.add("active");
   });
 });
+</script>
+
+<script>
+//글자수 세는 기능
+$('.row_txtArea textarea').keyup(function(){
+	  var content = $(this).val();
+	  $('.row_txtArea .ipt_msg txtLen span').html(rcontent.length);
+	  if (rcontent.length > 200){
+	    alert("최대 200자까지 입력 가능합니다.");
+	    $(this).val(rcontent.substring(0, 200));
+	    $('.row_txtArea .ipt_msg txtLen span').html(200);
+	  }
+	});
+	
 </script>
 
 </body>

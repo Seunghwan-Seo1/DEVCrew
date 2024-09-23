@@ -1,6 +1,7 @@
 package com.mysite.portfolio.review;
 
 import java.io.IOException;
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,7 +55,7 @@ public class ReviewController {
 
 	@PostMapping("/rvcreate/{lnum}")
 	public String createReview(Model model, @PathVariable("lnum") Integer lnum,
-			@RequestParam("rcontent") String rcontent) throws IOException {
+			@RequestParam("rcontent") String rcontent, Principal principal) throws IOException {
 		this.reviewService.rvcreate(lnum, rcontent);
 		return String.format("redirect:/lodge/detail/%s", lnum);
 	}
