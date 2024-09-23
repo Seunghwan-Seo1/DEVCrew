@@ -14,7 +14,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+
 import jakarta.persistence.ManyToOne;
+
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
@@ -62,6 +64,7 @@ public class Festival {
     
     private LocalDateTime fmodifyDate;
     
+
     @ManyToOne
     private Member author;
     
@@ -76,5 +79,5 @@ public class Festival {
         return this.voter.size() - this.devoter.size();
     }
     
-}
 
+}

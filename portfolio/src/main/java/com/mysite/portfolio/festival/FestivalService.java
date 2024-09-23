@@ -98,7 +98,7 @@ public class FestivalService {
     // readdetail
     public Festival readdetail(Integer fid) {
         Optional<Festival> ob = festivalRepository.findById(fid); 
-        return ob.orElseThrow(() -> new RuntimeException("Festival not found"));
+        return ob.get();
     }
 
     // update
@@ -149,11 +149,14 @@ public class FestivalService {
     public void delete(Integer id) {
         festivalRepository.deleteById(id);
     }
+
     //추천
+
     public void vote(Festival festival, Member member) {
         festival.getVoter().add(member);
         this.festivalRepository.save(festival);
     }
+
     
     //비추천
     public void devote(Festival festival, Member member) {
@@ -166,3 +169,4 @@ public class FestivalService {
 		return festival.get();
 	}
 }
+
