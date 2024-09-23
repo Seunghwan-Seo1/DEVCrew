@@ -19,6 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import com.mysite.portfolio.DataNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -154,6 +156,15 @@ public class MemberService implements UserDetailsService {
 	        throw new IllegalArgumentException("회원 ID를 찾을 수 없습니다.");
 	    }
 	}
+	
+	public Member getMember (String username) {
+        Optional<Member> member = this.memberRepository.findByusername(username);
+        if (member.isPresent()) {
+            return member.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }
+    }
 
 
 

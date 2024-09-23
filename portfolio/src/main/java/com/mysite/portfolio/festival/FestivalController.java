@@ -1,9 +1,11 @@
 package com.mysite.portfolio.festival;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -41,8 +44,10 @@ public class FestivalController {
 
     @PostMapping("/create")
     public String create(@ModelAttribute Festival festival,
-                         @RequestParam("files") List<MultipartFile> files) throws IOException {
-        festivalService.create(festival, files);
+                         @RequestParam("files") List<MultipartFile> files, Principal principal) throws IOException {
+    	if (files.size() > 0 && files.get(0) != null) {
+        festivalService.create(festival, files, memberService.getMember(principal.getName()));
+    	}
         return "redirect:/festival/readlist";
     }
 
@@ -78,6 +83,25 @@ public class FestivalController {
     public String delete(@PathVariable("id") Integer id) {
         festivalService.delete(id);
         return "redirect:/festival/readlist";
+    }
+    //추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{fid}")
+    public String festivalVote(Principal principal, @PathVariable("fid") Integer fid) {
+        Festival festival = this.festivalService.getFestival(fid);
+        Member member = this.memberService.getMember(principal.getName());
+        this.festivalService.vote(festival, member);
+        return String.format("redirect:/festival/readdetail/%s", fid);
+    }
+    
+  //비추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/devote/{fid}")
+    public String festivalDevote(Principal principal, @PathVariable("fid") Integer fid) {
+        Festival festival = this.festivalService.getFestival(fid);
+        Member member = this.memberService.getMember(principal.getName());
+        this.festivalService.devote(festival, member);
+        return String.format("redirect:/festival/readdetail/%s", fid);
     }
 
 }

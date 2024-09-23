@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
-import com.mysite.portfolio.festival.Festival;
 
-import jakarta.mail.Multipart;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -33,19 +31,47 @@ public class LodgeService {
 	}
 
 	// 숙소 정보 작성
-	public void lgcreate(Lodge lodge, MultipartFile file) throws IOException {
-		String fileName = "";
+	public void lgcreate(Lodge lodge, List<MultipartFile> files) throws IOException {
+		
         lodge.setRegiDate(LocalDateTime.now()); // 숙소 등록 일자로 데이터 등록
         
-        UUID uuid = UUID.randomUUID();
-		fileName = uuid + "_" + file.getOriginalFilename();
-		s3Service.uploadFile(file, fileName);		
-		lodge.setAccomm(fileName); // 건물 외관 사진
-		
-		this.lodgeRepository.save(lodge);
+     // 파일 이름을 저장할 배열, 최대 5개
+        String[] fileNames = new String[3];
+
+        // 파일 업로드 처리 (빈 파일 건너뛰기)
+        for (int i = 0; i < files.size() && i < 5; i++) {
+            MultipartFile file = files.get(i);
+            
+            if (!file.isEmpty()) {
+                try {
+                    UUID uuid = UUID.randomUUID();
+                    String fileName = uuid + "_" + file.getOriginalFilename();
+                    s3Service.uploadFile(file, fileName);
+                    fileNames[i] = fileName;
+                } catch (Exception e) {
+                    throw new RuntimeException("Failed to upload file: " + file.getOriginalFilename(), e);
+                }
+            } else {
+                // 빈 파일 무시
+                System.out.println("File " + i + " is empty and skipped.");
+            }
+        }
+
+        // 파일 이름을 lodge 객체에 설정 (null 검증 추가)
+        if (fileNames[0] != null) lodge.setAccomm(fileNames[0]);
+        if (fileNames[1] != null) lodge.setFirstaccomm(fileNames[1]);
+        if (fileNames[2] != null) lodge.setSecondaccomm(fileNames[2]);
+       
+
+        // 데이터 저장
+        try {
+            this.lodgeRepository.save(lodge);
+        } catch (Exception e) {
+            e.printStackTrace();  // 예외 발생 시 스택 트레이스 출력
+            throw new RuntimeException("Failed to save lodge data.");
+        }
+	
 	}
-	
-	
 	
 	//숙소 목록
 	public List<Lodge> lglist() {
