@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -87,7 +88,7 @@ public class FestivalService {
     // readdetail
     public Festival readdetail(Integer fid) {
         Optional<Festival> ob = festivalRepository.findById(fid); 
-        return ob.orElseThrow(() -> new RuntimeException("Festival not found"));
+        return ob.get();
     }
 
     // update
@@ -138,4 +139,15 @@ public class FestivalService {
     public void delete(Integer id) {
         festivalRepository.deleteById(id);
     }
-}
+ 
+    
+    public void vote(Festival festival, Member member) {
+        festival.getVoter().add(member);
+        this.festivalRepository.save(festival);
+    }
+
+
+
+    
+    }
+

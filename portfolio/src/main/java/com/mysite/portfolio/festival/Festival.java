@@ -3,6 +3,9 @@ package com.mysite.portfolio.festival;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+
+import com.mysite.portfolio.member.Member;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -10,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
@@ -58,5 +62,7 @@ public class Festival {
     
     private LocalDateTime fmodifyDate;
     
+    @ManyToMany
+    Set<Member> voter;
+    
 }
-
