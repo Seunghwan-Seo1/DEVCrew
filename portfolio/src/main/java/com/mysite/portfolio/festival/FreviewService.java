@@ -84,13 +84,5 @@ public class FreviewService {
         return freview.orElseThrow(() -> new RuntimeException("Freview not found"));
     }
 
-	public void vote(Freview freview, Class<? extends Object> member) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void devote(Freview freview, Class<? extends Object> member) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 }
