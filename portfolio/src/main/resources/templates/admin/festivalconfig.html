@@ -12,7 +12,7 @@
                         <tr>
                             <th class="sort text-end align-middle pe-0 ps-4" scope="col" style="width:50px;"></th>
                             <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:200px;" data-sort="customer">글 제목</th>
-                            <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:200px;" data-sort="customer">간략한 사진</th>
+                            <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:300px;" data-sort="customer">간략한 사진</th>
                             <th class="sort align-middle ps-4" scope="col" data-sort="category" style="width:300px;">축제 장소</th>
                             <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:180px;">작성일</th>
                             <th class="sort align-middle ps-4" scope="col" style="width:220px;">사진 변경</th>
@@ -33,6 +33,8 @@
                                     </td>
                                     <td>
                                         <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" style="width:50px">
+                                        <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}" style="width:50px">
+                                        <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg3}|}" style="width:50px">
                                     </td>
                                     <td>
                                         <input type="text" class="form-control" th:value="${festival.flocation}" name ="flocation">
@@ -41,7 +43,7 @@
                                         <input type="text" class="form-control" th:value="${#temporals.format(festival.fdate, 'yy-MM-dd')}" readonly>
                                     </td>
                                     <td>
-                                        <input class="form-control" type="file" name="file">
+                                        <input class="form-control" type="file" name="files" multiple required>
                                     </td>
                                     <td>
                                         <!-- 역할 변경 버튼 -->

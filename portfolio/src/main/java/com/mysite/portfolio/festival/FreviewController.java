@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 
 import com.mysite.portfolio.member.MemberService;
 
@@ -78,10 +80,10 @@ public class FreviewController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{frid}")
     public String freviewVote(Principal principal, @PathVariable("frid") Integer frid) {
-        Freview freview = this.freviewService.getFreview(frid); // Freview로 수정
-        Class<? extends Object> member = this.memberService.getClass();
+        Freview freview = this.freviewService.getFreview(frid); // Freview로 
+        Member member = this.memberService.getMember(principal.getName());
         this.freviewService.vote(freview, member);
-        return String.format("redirect:/festival/readdetail/%s", frid);
+        return String.format("redirect:/festival/readdetail/%s", freview.getFestival().getFid());
     }
 
     // 비추천
@@ -89,8 +91,8 @@ public class FreviewController {
     @GetMapping("/devote/{frid}")
     public String freviewDevote(Principal principal, @PathVariable("frid") Integer frid) {
         Freview freview = this.freviewService.getFreview(frid); // 메소드 이름 일관성 유지
-        Class<? extends Object> member = this.memberService.getClass();
+        Member member = this.memberService.getMember(principal.getName());
         this.freviewService.devote(freview, member);
-        return String.format("redirect:/festival/readdetail/%s", frid);
+        return String.format("redirect:/festival/readdetail/%s", freview.getFestival().getFid());
     }
 }
