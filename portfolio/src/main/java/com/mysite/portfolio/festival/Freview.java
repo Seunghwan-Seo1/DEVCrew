@@ -62,8 +62,18 @@ public class Freview {
 			return null;
 		}
 
-		@ManyToMany
+	    @ManyToOne
+	    private Member author;
+	    
+	    @ManyToMany
 	    Set<Member> voter;
-		
-		
+	    
+	    @ManyToMany
+	    Set<Member> devoter;
+	    
+	 // 추천 수에서 비추천 수를 뺀 값 계산
+	    public int getVoteScore() {
+	        return this.voter.size() - this.devoter.size();
+	    }
+	    
 }
