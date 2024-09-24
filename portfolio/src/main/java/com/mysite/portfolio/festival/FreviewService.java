@@ -27,43 +27,48 @@ public class FreviewService {
 	
 	
 	//c  
-	public void create(Freview freview, Integer frid) throws IOException {
+		public void create(Freview freview, Integer fid, Member author){
 
-		Optional<Festival> of = festivalRepository.findById(frid);
-		freview.setFestival(of.get());		
-		freview.setFrcreateDate(LocalDateTime.now());
-		
-		this.freviewRepository.save(freview);
+			Optional<Festival> of = festivalRepository.findById(fid);
+			freview.setFestival(of.get());		
+			freview.setFrcreateDate(LocalDateTime.now());
+			freview.setAuthor(author);
+			
+			
+			this.freviewRepository.save(freview);
 
-	}
+		}
 	
-	//r
+	//rl
 	public List<Freview> frvlist() {
 		return freviewRepository.findAll();
 	}
 	
 	//rd
-//	public Freview readdetail(Integer frid) {
-//		Optionnal<Freview> ob = freviewRepository.findById(fid);
-//		return ob.get();
-//	}
-//	
+	public Freview readdetail(Integer frid) {
+		Optional<Freview> ob = freviewRepository.findById(frid);
+		return ob.get();
+	}
+
 	
 	
 	
 	// Update
 	public void update(Freview freview) {
-		freviewRepository.save(freview);
+		Optional<Freview> _freview = freviewRepository.findById(freview.getFrid());
+		
+		Freview freviewData = _freview.get();
+		freviewData.setFrcontent(freview.getFrcontent());
+		this.freviewRepository.save(freviewData);
 	}
 
     // Delete
-    @Transactional
-    public void delete(Integer frid) {
-        Freview existingFreview = freviewRepository.findById(frid)
-            .orElseThrow(() -> new IllegalArgumentException("삭제할 리뷰를 찾을 수 없습니다."));
-        
-        freviewRepository.delete(existingFreview);
+	public void delete(Integer id) {
+        this.freviewRepository.deleteById(id);
     }
+    
+    
+    
     //추천
 
     public void vote(Freview freview, Member member) {
