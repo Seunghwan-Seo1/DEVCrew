@@ -175,8 +175,8 @@ resize: none;
     <div id="rvCmt" class="row_txtArea">   
 	<form th:action="@{|/review/rvcreate/${lodge.lnum}|}"method="post"> 
             <label for="comment">작성 글자 제한</label>
-            <span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
-            <textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width:100%; height:100%;" minlength="5" maxlength="1000"></textarea>          
+            <span class="ipt_msg txtLen"><strong>0</strong>/300</span>
+            <textarea class="rivTxt" id="rivTxt" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" maxlength="300" style="width:100%; height:100%;" minlength="5"></textarea>          
         <input type="submit" value="리뷰등록">
     </form>
     </div>
@@ -195,8 +195,17 @@ resize: none;
   		 <div class="mt-2.5">
  			<div id="message2" rows="4" class="block w-full rounded-md border-1 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
  						
-			[[${review.rnum}]] _ [[${review.username}]] _ [[${review.rcontent}]]<br>
- 			
+			[[${review.rnum}]] _ [[${review.username}]] _ [[${review.rcontent}]]
+<!-- 				<div class="my-3">
+            <a th:href="@{|/review/detail/rvupdate/${member.mid}|}" class="btn btn-sm btn-outline-secondary"
+                sec:authorize="isAuthenticated()"
+                th:if="${review.username != null and #authentication.getPrincipal().getUsername() == review.username}"
+                th:text="수정"></a>
+        		</div> 
+			 <span th:if="${review.username != null}" th:text="${review.username.username}"></span>-->
+ 			 
+ 	 
+        	
  			</div>
 		</div>
 		
@@ -262,19 +271,22 @@ tabItem.forEach((item, index) => {
     tabContent[index].classList.add("active");
   });
 });
-</script>
 
-<script>
 //글자수 세는 기능
-$('.row_txtArea textarea').keyup(function(){
-	  var content = $(this).val();
-	  $('.row_txtArea .ipt_msg txtLen span').html(rcontent.length);
-	  if (rcontent.length > 200){
-	    alert("최대 200자까지 입력 가능합니다.");
-	    $(this).val(rcontent.substring(0, 200));
-	    $('.row_txtArea .ipt_msg txtLen span').html(200);
-	  }
-	});
+  $(".rivTxt").keyup(function (e){
+    var countcont = $(this).val();
+
+    if(rcontent.length == 0 || rcontent == ""){
+        $(".ipt_msg txtLen").text('0');
+    }else{
+        $(".ipt_msg txtLen").text(rcontent.length);
+    }
+
+    if (rcontent.length > 300) {
+    // 300자 부터는 타이핑 막음
+    $(this).val($(this).val().substring(0, 300));
+    // 300자 넘으면 alert 알림
+  };
 	
 </script>
 
