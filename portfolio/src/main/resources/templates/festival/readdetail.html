@@ -244,7 +244,7 @@
         <div class="review-item">
             <p th:text="${freview.frcontent}"></p>
             <div class="review-actions">
-                <button class="edit-button" data-review-id="${freview.frid}">수정</button>
+                <button class="edit-button" th:data-review-id="${freview.frid}">수정</button>
                 <button class="delete-button" data-review-id="${freview.frid}">삭제</button>
 
                 <div>
@@ -262,7 +262,7 @@
 
 					<dl>
 						<dt>작성자</dt>
-						<dd th:if="${festival.author != null}">[[${festival.author.username}]]</dd>
+						<dd th:if="${freview.author != null}">[[${freview.author.username}]]</dd>
 						</dl>
 						<dl>
 					</div>
