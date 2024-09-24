@@ -43,7 +43,7 @@
                             </dl>
                         </div>
                     </dl>
-
+                    
                     <style>
                         .festival-info {
                             background-color: #f8f9fa;
@@ -223,9 +223,9 @@
                 추천
                 <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.voter)}"></span>
             </a>
-            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-secondary" th:data-uri="@{|/festival/devote/${festival.fid}|}">
+            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" th:data-uri="@{|/festival/devote/${festival.fid}|}">
                 비추천
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.devoter)}"></span>
+                <span class="badge rounded-pill bg-danger" th:text="${#lists.size(festival.devoter)}"></span>
             </a>
         </div>
 
@@ -234,48 +234,72 @@
             <h2>리뷰 남기기</h2>
             <form action="/freview/create" method="post">
                 <input type="hidden" name="fid" th:value="${festival.fid}">
+                <input type="hidden" name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 댓글 : <input type="text" name="frcontent" placeholder="여기에 댓글을 입력하세요" required>
                 <input type="submit" value="등록">
             </form>
         </div>
 
         <div class="review-list">
-            <th:block th:each="freview : ${festival.freviewList}">
-                <div class="review-item">
-                    <p th:text="${freview.frcontent}"></p>
-                    <div class="review-actions">
-                        <button class="edit-button" data-review-id="${freview.frid}">수정</button>
-                        <button class="delete-button" data-review-id="${freview.frid}">삭제</button>
-                    </div>
-                </div>
-            </th:block>
+    <th:block th:each="freview : ${festival.freviewList}">
+        <div class="review-item">
+            <p th:text="${freview.frcontent}"></p>
+            <div class="review-actions">
+                <button class="edit-button" th:data-review-id="${freview.frid}">수정</button>
+                <button class="delete-button" th:data-review-id="${freview.frid}">삭제</button>
+
+                <div>
+                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" 
+                       th:data-uri="@{|/freview/vote/${freview.frid}|}">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(freview.voter)}"></span>
+                    </a>
+                    <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" 
+                       th:data-uri="@{|/freview/devote/${freview.frid}|}">
+                        비추천
+                        <span class="badge rounded-pill bg-danger" th:text="${#lists.size(freview.devoter)}"></span>
+                    </a>
+
+
+					<dl>
+						<dt>작성자</dt>
+						<dd th:if="${freview.author != null}">[[${freview.author.username}]]</dd>
+						</dl>
+						<dl>
+					</div>
+            </div>
         </div>
+    </th:block>
+</div>
+
 
         <script>
             document.querySelectorAll('.edit-button').forEach(button => {
                 button.addEventListener('click', function() {
                     const reviewId = this.getAttribute('data-review-id');
-                    editReview(reviewId);
+                    const fid = document.querySelector('input[name="fid"]').value;  // fid 값을 가져옴
+                    editReview(reviewId, fid);
                 });
             });
 
             document.querySelectorAll('.delete-button').forEach(button => {
                 button.addEventListener('click', function() {
                     const reviewId = this.getAttribute('data-review-id');
-                    deleteReview(reviewId);
+                    const fid = document.querySelector('input[name="fid"]').value;  // fid 값을 가져옴
+                    deleteReview(reviewId, fid);
                 });
             });
 
-            function editReview(reviewId) {
+            function editReview(reviewId, fid) {
                 const reviewContent = document.querySelector(`[data-review-id="${reviewId}"]`).parentElement.previousElementSibling.innerText;
                 const newContent = prompt("리뷰를 수정하세요:", reviewContent);
 
                 if (newContent !== null) {
-                    updateReview(reviewId, newContent);
+                    updateReview(reviewId, newContent, fid);
                 }
             }
 
-            function updateReview(reviewId, newContent) {
+            function updateReview(reviewId, newContent, fid) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = `/freview/update/${reviewId}`;
@@ -285,6 +309,12 @@
                 inputContent.name = 'frcontent';
                 inputContent.value = newContent;
                 form.appendChild(inputContent);
+
+                const inputFid = document.createElement('input');
+                inputFid.type = 'hidden';
+                inputFid.name = 'fid';
+                inputFid.value = fid;  
+                form.appendChild(inputFid);
 
                 const csrfInput = document.createElement('input');
                 csrfInput.type = 'hidden';
@@ -296,7 +326,7 @@
                 form.submit();
             }
 
-            function deleteReview(reviewId) {
+            function deleteReview(reviewId, fid) {
                 if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
                     const form = document.createElement('form');
                     form.method = 'POST';
@@ -307,6 +337,13 @@
                     csrfInput.name = '${_csrf.parameterName}';
                     csrfInput.value = '${_csrf.token}';
                     form.appendChild(csrfInput);
+                    
+                    const inputFid = document.createElement('input');
+                    inputFid.type = 'hidden';
+                    inputFid.name = 'fid';
+                    inputFid.value = fid;  
+                    form.appendChild(inputFid);
+
 
                     document.body.appendChild(form);
                     form.submit();
@@ -318,7 +355,7 @@
                 element.addEventListener('click', function() {
                     if(confirm("정말로 추천하시겠습니까?")) {
                         location.href = this.dataset.uri;
-                    };
+                    }
                 });
             });
 
@@ -327,7 +364,7 @@
                 element.addEventListener('click', function() {
                     if(confirm("정말로 비추천하시겠습니까?")) {
                         location.href = this.dataset.uri;
-                    };
+                    }
                 });
             });
         </script>
