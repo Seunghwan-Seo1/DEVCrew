@@ -47,30 +47,31 @@ public class ReviewService {
 	}
 
 	// 리뷰 수정
-	
-	  public Review rvdetail(Integer mid) { Optional<Review> ob =
-	  reviewRepository.findById(mid); return ob.get();
-	  
-	  }
-	  
-	  public void rvupdate(Review review) { reviewRepository.save(review); }
-	 
-	
-	public Review getReview(Integer rnum) {
-        Optional<Review> review = this.reviewRepository.findById(rnum);
-        if (review.isPresent()) {
-            return review.get();
-        } else {
-            throw new DataNotFoundException("등록한 리뷰가 없습니다");
-        }
-    }
 
-    public void modify(Review review, String rcontent) {
-        review.setRcontent(rcontent);
-        review.setRdate(LocalDateTime.now());
-        this.reviewRepository.save(review);
-    }
-	 
+	public Review rvdetail(Integer mid) {
+		Optional<Review> ob = reviewRepository.findById(mid);
+		return ob.get();
+
+	}
+
+	public void rvupdate(Review review) {
+		reviewRepository.save(review);
+	}
+
+	public Review getReview(Integer rnum) {
+		Optional<Review> review = this.reviewRepository.findById(rnum);
+		if (review.isPresent()) {
+			return review.get();
+		} else {
+			throw new DataNotFoundException("등록한 리뷰가 없습니다");
+		}
+	}
+
+	public void modify(Review review, String rcontent) {
+		review.setRcontent(rcontent);
+		review.setRdate(LocalDateTime.now());
+		this.reviewRepository.save(review);
+	}
 
 	// 리뷰 삭제
 	public void rvdelete(Integer mid) {
