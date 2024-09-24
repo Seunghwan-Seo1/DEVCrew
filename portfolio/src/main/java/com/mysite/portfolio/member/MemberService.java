@@ -150,6 +150,10 @@ public class MemberService implements UserDetailsService {
 	    return memberRepository.findByusername(username);
 	}
 	
+	public List<Member> findByRole(String role) {
+	    return memberRepository.findByRole(role);
+	}
+	
 	public Member getMember (String username) {
         Optional<Member> member = this.memberRepository.findByusername(username);
         if (member.isPresent()) {

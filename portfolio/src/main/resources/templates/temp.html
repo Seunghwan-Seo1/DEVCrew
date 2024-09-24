@@ -1,7 +1,10 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content">
 
-
+ <li th:each="notification : ${notifications}">
+            <p th:text="${notification.nmessage}"></p>
+            <p th:text="${notification.createdAt}"></p>
+        </li>
 
 
 </html>
