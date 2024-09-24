@@ -249,16 +249,23 @@
 
                 <div>
                     <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" 
-                       th:data-uri="@{|/festival/vote/${festival.fid}|}">
+                       th:data-uri="@{|/freview/vote/${freview.frid}|}">
                         추천
                         <span class="badge rounded-pill bg-success" th:text="${#lists.size(freview.voter)}"></span>
                     </a>
                     <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" 
-                       th:data-uri="@{|/festival/devote/${festival.fid}|}">
+                       th:data-uri="@{|/freview/devote/${freview.frid}|}">
                         비추천
                         <span class="badge rounded-pill bg-danger" th:text="${#lists.size(freview.devoter)}"></span>
                     </a>
-                </div>
+
+
+					<dl>
+						<dt>작성자</dt>
+						<dd th:if="${festival.author != null}">[[${festival.author.username}]]</dd>
+						</dl>
+						<dl>
+					</div>
             </div>
         </div>
     </th:block>

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysite.portfolio.S3Service;
@@ -18,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class FreviewService {
 
-	
+	@Autowired
 	private final FreviewRepository freviewRepository;
 	private final S3Service s3Service;
 	private final MemberService memberService;
@@ -26,9 +27,9 @@ public class FreviewService {
 	
 	
 	//c  
-	public void create(Freview freview, Integer fid) throws IOException {
+	public void create(Freview freview, Integer frid) throws IOException {
 
-		Optional<Festival> of = festivalRepository.findById(fid);
+		Optional<Festival> of = festivalRepository.findById(frid);
 		freview.setFestival(of.get());		
 		freview.setFrcreateDate(LocalDateTime.now());
 		
@@ -41,8 +42,8 @@ public class FreviewService {
 		return freviewRepository.findAll();
 	}
 	
-	//r
-//	public Freview readdetail(Integer fid) {
+	//rd
+//	public Freview readdetail(Integer frid) {
 //		Optionnal<Freview> ob = freviewRepository.findById(fid);
 //		return ob.get();
 //	}
@@ -51,22 +52,14 @@ public class FreviewService {
 	
 	
 	// Update
-    @Transactional
-    public void update(Integer fid, Freview freview) {
-        Freview existingFreview = freviewRepository.findById(fid)
-            .orElseThrow(() -> new IllegalArgumentException("수정할 리뷰를 찾을 수 없습니다."));
-        
-        // 엔티티의 수정 메서드 호출
-        existingFreview.update(freview.getFrcontent()); // freview의 content 설정
-        existingFreview.setSubject(freview.getSubject()); // freview의 subject 설정
-        
-        freviewRepository.save(existingFreview);
-    }
+	public void update(Freview freview) {
+		freviewRepository.save(freview);
+	}
 
     // Delete
     @Transactional
-    public void delete(Integer fid) {
-        Freview existingFreview = freviewRepository.findById(fid)
+    public void delete(Integer frid) {
+        Freview existingFreview = freviewRepository.findById(frid)
             .orElseThrow(() -> new IllegalArgumentException("삭제할 리뷰를 찾을 수 없습니다."));
         
         freviewRepository.delete(existingFreview);
@@ -86,8 +79,8 @@ public class FreviewService {
         this.freviewRepository.save(freview);
     }
 
-    public Freview getFreview(Integer fid) {
-        Optional<Freview> freview = this.freviewRepository.findById(fid);
+    public Freview getFreview(Integer frid) {
+        Optional<Freview> freview = this.freviewRepository.findById(frid);
         return freview.orElseThrow(() -> new RuntimeException("Freview not found"));
     }
 

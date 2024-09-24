@@ -30,46 +30,50 @@ public class FreviewController {
 	
 	@PostMapping("/create")
 	public String create(@ModelAttribute Freview freview,
-					     @RequestParam("fid") Integer fid
+					     @RequestParam("frid") Integer frid
 			) throws IOException {
-		freviewService.create(freview, fid);
-		return "redirect:/festival/readdetail/" + fid;
+		freviewService.create(freview, frid);
+		return "redirect:/festival/readdetail/" + frid;
 	}
 	
 	
 	
 	// Update
-    @PostMapping("/modify/{fid}")
-    public String update(@PathVariable("fid") Integer fid,
-                         @ModelAttribute Freview freview,
-                         @RequestParam("fid") Integer fid1) throws IOException {
-        freviewService.update(fid1, freview);
-        return "redirect:/festival/readdetail/" + fid1;
-    }
+	/*@GetMapping("/update/{frid}")
+	public String update(Model model,@PathVariable("frid") Integer frid) {
+		model.addAttribute("Freview", freviewService.readdetail(frid));
+		return "update";   // redirect 이 없으면 그냥 html을 호출
+	}*/
+	
+	@PostMapping("/update")// Create @ModelAttribute 주로사용
+	public String update(@ModelAttribute Freview freview) {
+		freviewService.update(freview);
+		return "redirect:readdeail/" + freview.getFrid();  // redirect 이 있으면 해당 매핑을 호출
+	}
 
     // Delete
-    @PostMapping("/freview/delete/{fid}")
+    @PostMapping("/freview/delete/{frid}")
     public ResponseEntity<Void> deleteReview(@PathVariable Integer fid) {
         freviewService.delete(fid);
         return ResponseEntity.ok().build();
     }
  // 추천
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/vote/{fid}")
-    public String festivalVote(Principal principal, @PathVariable("fid") Integer fid) {
-        Freview freview = this.freviewService.getFreview(fid); // Freview로 수정
+    @GetMapping("/vote/{frid}")
+    public String freviewVote(Principal principal, @PathVariable("frid") Integer frid) {
+        Freview freview = this.freviewService.getFreview(frid); // Freview로 수정
         Class<? extends Object> member = this.memberService.getClass();
         this.freviewService.vote(freview, member);
-        return String.format("redirect:/festival/readdetail/%s", fid);
+        return String.format("redirect:/festival/readdetail/%s", frid);
     }
 
     // 비추천
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/devote/{fid}")
-    public String festivalDevote(Principal principal, @PathVariable("fid") Integer fid) {
-        Freview freview = this.freviewService.getFreview(fid); // 메소드 이름 일관성 유지
+    @GetMapping("/devote/{frid}")
+    public String freviewDevote(Principal principal, @PathVariable("frid") Integer frid) {
+        Freview freview = this.freviewService.getFreview(frid); // 메소드 이름 일관성 유지
         Class<? extends Object> member = this.memberService.getClass();
         this.freviewService.devote(freview, member);
-        return String.format("redirect:/festival/readdetail/%s", fid);
+        return String.format("redirect:/festival/readdetail/%s", frid);
     }
 }
