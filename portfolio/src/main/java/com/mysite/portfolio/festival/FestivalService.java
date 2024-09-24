@@ -146,8 +146,8 @@ public class FestivalService {
     }
 
     // delete
-    public void delete(Integer id) {
-        festivalRepository.deleteById(id);
+    public void delete(Integer frid) {
+        festivalRepository.deleteById(frid);
     }
 
     //추천
