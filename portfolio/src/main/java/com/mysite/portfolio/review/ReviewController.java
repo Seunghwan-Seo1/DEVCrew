@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.lodge.LodgeService;
 import com.mysite.portfolio.member.MemberService;
+
+import jakarta.validation.Valid;
 
 
 @RequestMapping("/review")
@@ -36,7 +42,6 @@ public class ReviewController {
 	private S3Service s3Service;
 
 	// 리뷰 기능
-
 	@GetMapping("/detail")
 	public String rvcreate() {
 		return "lodge/detail";
@@ -44,7 +49,6 @@ public class ReviewController {
 	}
 
 	@PostMapping("/detail/{mid}")
-
 	public String rvcreate(@ModelAttribute Review review,
 			@RequestParam MultipartFile file,
 			@PathVariable Integer mid) throws IOException {
@@ -61,7 +65,6 @@ public class ReviewController {
 	}
 
 	// 리뷰 수정..
-
 	@GetMapping("/detail/rvlist")
 	public String rvlist(Model model) {
 		model.addAttribute("reviewList", reviewService.rvlist());
@@ -79,13 +82,31 @@ public class ReviewController {
 		return "lodge/detail";
 	}
 
-	@PostMapping("/detail/rvupdate2/{mid}")
-	public String rvupdate2(Model model, @PathVariable("mid") Integer id) {
-		return "redirect:lodge/detail/" + id;
-	}
+	/*
+	 * @PostMapping("/detail/rvupdate2/{mid}") public String rvupdate2(Model
+	 * model, @PathVariable("mid") Integer id) { return "redirect:lodge/detail/" +
+	 * id; }
+	 */
+	
+	//작성자만 수정할 수 있게
+	 @PreAuthorize("isAuthenticated()")
+	 @PostMapping("/detail/rvupdate2/{mid}")
+	    public String rvupdate2(@Valid ReviewForm reviewForm, BindingResult bindingResult,
+	            @PathVariable("mid") Integer rnum, Principal principal) {
+	        if (bindingResult.hasErrors()) {
+	            return "review_form";
+	        }
+	        Review review = this.reviewService.getReview(rnum);
+	        if (!review.getUsername().equals(principal.getName())) {
+	            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자신이 쓴 리뷰만 수정이 가능합니다.");
+	        }
+	        this.reviewService.modify(review, reviewForm.getRcontent());
+	        return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
+	    }
 
+	 
+	 
 	// 리뷰 삭제
-
 	@GetMapping("/delete/{mid}")
 	public String rvdelete(@PathVariable("mid") Integer mid) {
 		reviewService.rvdelete(mid);
