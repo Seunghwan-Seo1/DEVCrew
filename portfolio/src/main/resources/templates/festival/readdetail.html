@@ -72,32 +72,69 @@
 
         <!-- 지도 -->
         <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
-        <script>
-            var mapContainer = document.getElementById('map');
-            var mapOption = {
-                center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3
-            };
-            var map = new kakao.maps.Map(mapContainer, mapOption);
+<script>
+    function initializeMap() {
+        var mapContainer = document.getElementById('map');
 
-            var marker = new kakao.maps.Marker({
-                position: mapOption.center
-            });
-            marker.setMap(map);
+        if (!mapContainer) {
+            console.error("지도 컨테이너가 존재하지 않습니다. 'map' ID를 가진 요소를 확인하세요.");
+            return;
+        }
 
-            var address = "[[${festival.flocation}]]";
-            var geocoder = new kakao.maps.services.Geocoder();
+        var mapOption = {
+            center: new kakao.maps.LatLng(33.450701, 126.570667), // 기본 좌표 (제주도)
+            level: 3
+        };
 
-            geocoder.addressSearch(address, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
-                    map.setCenter(newPosition);
-                    marker.setPosition(newPosition);
-                } else {
-                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
-                }
-            });
-        </script>
+        var map = new kakao.maps.Map(mapContainer, mapOption);
+
+        // 마커 초기화
+        var marker = new kakao.maps.Marker({
+            position: mapOption.center
+        });
+        marker.setMap(map);
+
+        // 주소 정보 가져오기
+        var address = "[[${festival.flocation}]]";
+        
+        // 주소가 제공되지 않은 경우 처리
+        if (!address || address.trim() === "") {
+            console.error("주소 정보가 없습니다. 기본 좌표로 설정합니다.");
+            alert("축제 위치 정보가 제공되지 않아 기본 위치를 표시합니다.");
+            return;
+        }
+
+        // 주소 검색을 위한 Geocoder 객체
+        var geocoder = new kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(address, function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+                map.setCenter(newPosition);
+                marker.setPosition(newPosition);
+            } else {
+                console.error('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+                alert('주소를 찾을 수 없습니다. 기본 위치를 표시합니다.');
+
+                // 기본 위치로 설정 (서울 시청 좌표)
+                var defaultPosition = new kakao.maps.LatLng(37.566535, 126.9779692); // 서울 시청 좌표
+                map.setCenter(defaultPosition);
+                marker.setPosition(defaultPosition);
+            }
+        });
+    }
+
+    // Kakao Maps API가 로드된 후에 initializeMap 호출
+    window.onload = function() {
+        if (kakao && kakao.maps) {
+            initializeMap();
+        } else {
+            console.error("Kakao Maps API를 로드하지 못했습니다.");
+        }
+    };
+</script>
+
+
 
         <!-- 추가 사진 -->
         <div class="untree_co-section">

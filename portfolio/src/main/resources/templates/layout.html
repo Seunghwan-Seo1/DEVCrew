@@ -417,6 +417,101 @@ tabItem.forEach((item, index) => {
         }
       }
     </script>
+<script type="text/javascript">
+      // 대화 히스토리 관리
+      let conversationHistory = [];
+
+      // 한 글자씩 타이핑 효과를 주는 함수
+      function typeText(text, element, delay) {
+        let index = 0;
+        function type() {
+          if (index < text.length) {
+            element.innerHTML += text.charAt(index);
+            index++;
+            setTimeout(type, delay);
+          }
+        }
+        type(); // 타이핑 시작
+      }
+
+      // GPT에 질문하고 답변을 출력하는 함수
+      async function askGPT() {
+        const question = document.getElementById('question').value; // 질문 입력값을 가져옴
+        const chatContainer = document.getElementById('chat-container');
+
+        // 입력된 질문이 공백이면 알림을 표시하고 종료
+        if (question.trim() === '') {
+          alert("질문을 입력하세요!");
+          return;
+        }
+
+        // 사용자 질문을 대화창에 추가 (중복 방지)
+        const userMessage = document.createElement('div');
+        userMessage.classList.add('d-flex', 'chat-message', 'justify-content-end'); // 우측 정렬
+        userMessage.innerHTML = `
+          <div class="d-flex mb-2 justify-content-end flex-1">
+            <div class="w-100 w-xxl-75">
+              <div class="d-flex flex-end-center hover-actions-trigger">
+                <div class="chat-message-content me-2">
+                  <div class="mb-1 sent-message-content bg-primary rounded-2 p-3 text-white">
+                    <p class="mb-0">${question}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        chatContainer.appendChild(userMessage);
+
+        // 질문 입력창 비우기
+        document.getElementById('question').value = '';
+
+        // 서버로 질문 전송 및 응답 받기
+        try {
+          const response = await fetch('/ask', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ question: question }) // 질문을 서버로 보냄
+          });
+
+          // 서버에서 응답 받기
+          const responseData = await response.text();
+
+          // 서버 응답을 대화창에 추가 (중복 방지)
+          const gptMessage = document.createElement('div');
+          gptMessage.classList.add('d-flex', 'chat-message', 'justify-content-start'); // 좌측 정렬
+          gptMessage.innerHTML = `
+            <div class="d-flex mb-2 flex-1">
+              <div class="w-100 w-xxl-75">
+                <div class="d-flex hover-actions-trigger">
+                  <div class="chat-message-content received me-2">
+                    <div class="mb-1 received-m('overlay');essage-content border rounded-2 p-3">
+                      <p class="mb-0">${responseData}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+          chatContainer.appendChild(gptMessage);
+
+          // 스크롤을 하단으로 유지
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        } catch (error) {
+          console.error("에러 발생: ", error);
+          const errorMessage = document.createElement('div');
+          errorMessage.classList.add('d-flex', 'chat-message');
+          errorMessage.innerHTML = `<p class="text-danger">에러 발생: ${error.message}</p>`;
+          chatContainer.appendChild(errorMessage);
+
+          // 스크롤을 하단으로 유지
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+      }
+    </script>
 
     <script>
 	  // 오버레이 열기/닫기 처리
