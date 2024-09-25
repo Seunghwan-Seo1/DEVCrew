@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,7 +59,7 @@ public class LodgeController {
 	}
 
 	// 숙박 create
-	@PreAuthorize("isAuthenticated()") // 로그인 해야 작성 가능
+	//@PreAuthorize("isAuthenticated()") // 로그인 해야 작성 가능
 	@GetMapping("/lgcreate")
 	public String lodgeCreate(LodgeForm lodgeForm) {
 		return "lodge/lgcreate";
