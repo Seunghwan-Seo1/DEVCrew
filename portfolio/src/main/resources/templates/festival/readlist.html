@@ -37,24 +37,17 @@
 
 
 
-			<style>
+		
+			<!-- 필터 -->
+
+<style>
 .filter-container {
-	max-width: 250px; /* 필터 너비를 조정 */
+	max-width: 1000px; /* 필터 너비를 조정 */
 	margin: 0 auto; /* 가운데 정렬 */
-}
-
-
-
-.medium-text {
-    font-size: 30px; /* 원하는 크기로 조정 */   
-    transform: rotate(180deg); /* 텍스트 방향을 아래에서 위로 변경 */
-    text-align: center; /* 중앙 정렬 */
-    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
 }
 </style>
 
-			<!-- 필터 -->
-			<div class="condition">
+		<div class="condition">
    <div class="container mt-4">
         <div class="row">
        
@@ -132,54 +125,80 @@
 			<!-- 필터 -->
 
 			<div class="col-md-9">
-				<div class="row row-cols-1 row-cols-lg-3">
+				
 
 					<!-- 사진 및 간단한설명 반복문-->
-
-					<th:block th:each="festival : ${festivals}">
-						<div class="feature col festival-item"
-							data-name="[[${festival.fname}]]"
-							data-location="[[${festival.flocation}]]"
-							data-category="[[${festival.category}]]">
-							<div
-								class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-								<a th:href="@{|/festival/readdetail/${festival.fid}|}" style="text-decoration: none;">
-								<img class="img-fluid"
-									th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
-							</div>
-							
-							
-							
-							
-							 <h3 class="fs-2 text-body-emphasis" style="color: black; text-decoration: none;">
-                            <span class="medium-text" style="text-decoration: none;">[[${festival.fname}]]</span>
-                             </h3>
-                          </div>
-						 </div>
-					    </th:block>
-					<!-- 사진 및 간단한설명 반복문-->
-
- <style>
+			<div class="row row-cols-1 row-cols-lg-3">
+				<th:block th:each="festival : ${festivals}">
+					<div class="feature col festival-item"
+						data-name="[[${festival.fname}]]"
+						data-location="[[${festival.flocation}]]"
+						data-category="[[${festival.category}]]">
+						<div
+							class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
+							<a th:href="@{|/festival/readdetail/${festival.fid}|}"
+								style="text-decoration: none;"> <img class="img-fluid"
+								th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
+							</a>
+						</div>
+						<h3 class="fs-3 text-body-emphasis festival-name">
+							[[${festival.fname}]]</h3>
+					</div>
+				</th:block>
+			</div>
+			<!-- 사진 및 간단한설명 반복문-->
+<!-- CSS -->
+<style>
     .feature-icon {
-        width: 400px; /* feature-icon의 너비를 고정 (필요에 따라 조정) */
-        height: 400px; /* 고정된 높이 설정 (정사각형) */
+        width: 100%; /* feature-icon의 너비를 100%로 설정 */
+        height: 300px; /* 고정된 높이 설정 */
         overflow: hidden; /* 넘치는 부분 숨김 */
         text-align: center; /* 텍스트 정렬 */
-        margin-top: 3px; /* 위쪽 여백 추가 (줄임) */
-        margin-bottom: 60px; /* 아래쪽 여백 추가 (줄임) */
-        margin-left: 5px; /* 좌측 여백 추가 (줄임) */
-        margin-right: 10px; /* 우측 여백 추가 (줄임) */
-        display: inline-block; /* 인라인 블록으로 설정하여 간격 조정 */
+        margin-bottom: 1rem; /* 이미지와 제목 사이 간격 */
+        position: relative; /* 자식 요소 배치 제어 */
+        display: flex;
+        justify-content: center;
+        align-items: center; /* 이미지 중앙 정렬 */
     }
 
     img {
-        width: 5000px; /* 이미지 가로폭 100% */
-        height: 5000px; /* 이미지 높이를 부모 요소에 맞춤 */
-       
+        width: 100%; /* 이미지 너비를 100%로 설정 */
+        height: 100%; /* 이미지 높이를 100%로 설정 */
+        object-fit: cover; /* 이미지 비율 유지하며 잘림 */
     }
-</style> 
 
+    .festival-name {
+        font-size: 1.75rem; /* 적절한 텍스트 크기 설정 */
+        color: #000; /* 텍스트 색상 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        margin-top: 0.5rem; /* 이미지와 텍스트 사이 간격 */
+        margin-bottom: 1rem; /* 텍스트와 다른 요소 사이 여백 */
+    }
 
+    /* 작은 화면을 위한 반응형 디자인 */
+    @media (max-width: 768px) {
+        .feature-icon {
+            height: 200px; /* 작은 화면에서의 이미지 높이 조정 */
+        }
+        .festival-name {
+            font-size: 1.25rem; /* 작은 화면에서 텍스트 크기 조정 */
+            margin-top: 0.3rem; /* 작은 화면에서 이미지와 텍스트 간격 조정 */
+            margin-bottom: 0.8rem; /* 텍스트와 다른 요소 사이 여백 조정 */
+        }
+    }
+
+    /* 아주 작은 화면을 위한 반응형 디자인 */
+    @media (max-width: 480px) {
+        .feature-icon {
+            height: 150px; /* 아주 작은 화면에서의 이미지 높이 조정 */
+        }
+        .festival-name {
+            font-size: 1rem; /* 아주 작은 화면에서 텍스트 크기 조정 */
+            margin-top: 0.2rem; /* 이미지와 텍스트 사이 간격 */
+            margin-bottom: 0.5rem; /* 텍스트와 다른 요소 사이 여백 */
+        }
+    }
+</style>
 
 
 
@@ -192,38 +211,50 @@
 	</div>
 
 	  <script>
-	  function filterFestivals() {
-		    const input = document.getElementById('search').value.toLowerCase(); // 검색창 입력 값
-		    const region = document.getElementById('region').value; // 지역 필터 값
-		    const category = document.getElementById('fcategory').value; // 카테고리 필터 값
-		    const festivalItems = document.querySelectorAll('.festival-item'); // 축제 목록
+    // 축제 필터링 기능
+    function filterFestivals() {
+        const input = document.getElementById('search').value.toLowerCase(); // 검색창 입력 값
+        const region = document.getElementById('region').value.toLowerCase(); // 지역 필터 값
+        const category = document.getElementById('fcategory').value.toLowerCase(); // 카테고리 필터 값
+        const festivalItems = document.querySelectorAll('.festival-item'); // 축제 목록
 
-		    festivalItems.forEach(item => {
-		        const name = item.getAttribute('data-name').toLowerCase(); // 축제 이름
-		        const location = item.getAttribute('data-location').toLowerCase(); // 축제 위치
-		        const itemCategory = item.getAttribute('data-category') ? item.getAttribute('data-category').toLowerCase() : ''; // 축제 카테고리
+        festivalItems.forEach(item => {
+            const name = item.getAttribute('data-name').toLowerCase(); // 축제 이름
+            const location = item.getAttribute('data-location').toLowerCase(); // 축제 위치
+            const itemCategory = item.getAttribute('data-category') ? item.getAttribute('data-category').toLowerCase() : ''; // 축제 카테고리
 
-		        const matchesSearch = name.includes(input); // 검색어와 일치 여부
-		        const matchesRegion = region === "전체" || location.includes(region); // 지역 필터와 일치 여부
-		        const matchesCategory = category === "전체" || itemCategory.includes(category); // 카테고리 필터와 일치 여부
+            // 조건 확인
+            const matchesSearch = name.includes(input); // 검색어와 일치 여부
+            const matchesRegion = region === '전체' || location.includes(region); // 지역 필터와 일치 여부
+            const matchesCategory = category === '전체' || itemCategory.includes(category); // 카테고리 필터와 일치 여부
 
-		        // 조건에 맞는 항목만 보이게 설정
-		        if (matchesSearch && matchesRegion && matchesCategory) {
-		            item.style.display = ''; // 조건에 맞으면 표시
-		        } else {
-		            item.style.display = 'none'; // 조건에 맞지 않으면 숨김
-		        }
-		    });
-		}
+            // 조건에 맞는 항목만 보이게 설정
+            if (matchesSearch && matchesRegion && matchesCategory) {
+                item.style.display = ''; // 조건에 맞으면 표시
+            } else {
+                item.style.display = 'none'; // 조건에 맞지 않으면 숨김
+            }
+        });
+    }
 
-
+    // 필터 초기화
     function resetFilter() {
         document.getElementById('search').value = ''; // 검색어 초기화
         document.getElementById('region').selectedIndex = 0; // 지역 필터 초기화
-        document.getElementById('category').selectedIndex = 0; // 카테고리 필터 초기화
+        document.getElementById('fcategory').selectedIndex = 0; // 카테고리 필터 초기화
         filterFestivals(); // 필터 재적용
     }
+
+    // 검색 입력 시 필터링 자동 적용
+    document.getElementById('search').addEventListener('input', filterFestivals);
+
+    // 지역 필터 변경 시 필터링 적용
+    document.getElementById('region').addEventListener('change', filterFestivals);
+
+    // 카테고리 필터 변경 시 필터링 적용
+    document.getElementById('fcategory').addEventListener('change', filterFestivals);
 </script>
+
 
 
 </div>
