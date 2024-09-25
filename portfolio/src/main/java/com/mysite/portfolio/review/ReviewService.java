@@ -77,5 +77,11 @@ public class ReviewService {
 	public void rvdelete(Integer mid) {
 		reviewRepository.deleteById(mid);
 	}
+	
+	// 추천
+	
+	
+	// 비추
+	
 
 }
