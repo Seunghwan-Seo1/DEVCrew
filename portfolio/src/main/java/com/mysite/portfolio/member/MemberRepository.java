@@ -14,7 +14,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 	//연락처로 객체 찾기
 	Optional<Member> findByMaddr(String maddr);
 	
-    List<Member> findByRole(String role);
-
+	List<Member> findByRole(String role);
 }
 
