@@ -38,7 +38,7 @@ public class Festival {
     @Column(length = 4000)
     private String fdescription; //축제설명
 
-    
+    private String fcategory; //카테고리 
     
    
     private String fimg; //축제사진 메인

@@ -51,10 +51,13 @@ public class FestivalController {
         return "redirect:/festival/readlist";
     }
 
-    // readlist
-    @GetMapping("/readlist") // 축제 목록
-    public String readlist(Model model) {
-        model.addAttribute("festivals", festivalService.readlist());
+    @GetMapping("/readlist")
+    public String readlist(Model model, 
+                           @RequestParam(value = "search", required = false) String search,
+                           @RequestParam(value = "region", required = false, defaultValue = "전체") String region,
+                           @RequestParam(value = "category", required = false, defaultValue = "전체") String category) {
+        List<Festival> festivals = festivalService.filterFestivals(search, region, category); // 필터 메서드 호출
+        model.addAttribute("festivals", festivals);
         return "festival/readlist";
     }
 

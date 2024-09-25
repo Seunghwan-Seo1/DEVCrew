@@ -88,11 +88,15 @@ public class FestivalService {
 
 
     // readlist
-    public List<Festival> readlist() {
+    public List<Festival> filterFestivals(String search, String region, String category) {
         List<Festival> festivals = festivalRepository.findAll();
+
         return festivals.stream()
-                        .sorted((f1, f2) -> Integer.compare(f2.getVoteScore(), f1.getVoteScore())) // getVoteScore 기준으로 내림차순 정렬
-                        .collect(Collectors.toList());
+            .filter(festival -> (search == null || search.isEmpty() || festival.getFname().toLowerCase().contains(search.toLowerCase()) || festival.getFlocation().toLowerCase().contains(search.toLowerCase())) &&
+                                (region.equals("전체") || festival.getFlocation().contains(region)) &&
+                                (category.equals("전체") || festival.getFcategory().equalsIgnoreCase(category)))
+            .sorted((f1, f2) -> Integer.compare(f2.getVoteScore(), f1.getVoteScore())) // 내림차순 정렬
+            .collect(Collectors.toList());
     }
 
     // readdetail

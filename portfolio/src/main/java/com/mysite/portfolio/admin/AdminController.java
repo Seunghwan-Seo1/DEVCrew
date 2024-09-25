@@ -59,10 +59,15 @@ public class AdminController {
 	}
 
 	@GetMapping("/festivalconfig")
-	public String festival(Model model) {
-		model.addAttribute("festivals", festivalService.readlist());
-		return "admin/festivalconfig";
+	public String festival(Model model,
+	                       @RequestParam(value = "search", required = false) String search,
+	                       @RequestParam(value = "region", required = false, defaultValue = "전체") String region,
+	                       @RequestParam(value = "category", required = false, defaultValue = "전체") String category) {
+	    // 모든 축제를 가져오거나 필터링된 축제를 가져옵니다.
+	    model.addAttribute("festivals", festivalService.filterFestivals(search, region, category));
+	    return "admin/festivalconfig";
 	}
+
 	
 
 

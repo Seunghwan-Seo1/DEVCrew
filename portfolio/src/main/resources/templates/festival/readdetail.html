@@ -143,80 +143,122 @@
         </style>
 
         <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
-        <style>
-            .review-form {
-                background-color: #ffffff;
-                border: 1px solid #ddd;
-                border-radius: 8px;
-                padding: 20px;
-                max-width: 500px;
-                margin: 0 auto;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
+      
+   <style>
+    /* 리뷰 폼 스타일 */
+    .review-form {
+        background-color: #ffffff; /* 흰색 배경 */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        max-width: 1500px;
+        margin: 20px auto; /* 여백 추가 */
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-            .review-form h2 {
-                color: #6a0dad;
-            }
+    .review-form h2 {
+        color: #1A374D; /* 주 색상 */
+    }
 
-            .review-form input[type="text"] {
-                width: calc(100% - 110px);
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 4px;
-                margin-right: 10px;
-                font-size: 16px;
-            }
+    .review-form input[type="text"] {
+        width: calc(100% - 110px);
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 10px;
+        font-size: 16px;
+        transition: border-color 0.3s;
+    }
 
-            .review-form input[type="submit"] {
-                padding: 10px 15px;
-                border: none;
-                border-radius: 4px;
-                background-color: #8a2be2;
-                color: white;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
+    .review-form input[type="text"]:focus {
+        border-color: #1A374D; /* 포커스 시 주 색상 */
+    }
 
-            .review-form input[type="submit"]:hover {
-                background-color: #7a1ea1;
-            }
+    .review-form input[type="submit"] {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 4px;
+        background-color: #1A374D; /* 주 색상 */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
 
-            .review-list {
-                margin-top: 20px;
-            }
+    .review-form input[type="submit"]:hover {
+        background-color: #ff7f00; /* 호버 시 어두운 주황색 */
+        transform: translateY(-2px); /* 약간 위로 이동 */
+    }
 
-            .review-item {
-                background-color: #f9f5ff;
-                border: 1px solid #dcdcdc;
-                border-radius: 8px;
-                padding: 15px;
-                margin-bottom: 10px;
-                transition: box-shadow 0.3s;
-            }
+    .review-list {
+        margin-top: 20px;
+    }
 
-            .review-item:hover {
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
+    .review-item {
+        background-color: #f9f9f9; /* 연한 회색 배경 */
+        border: 1px solid #dcdcdc;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        transition: box-shadow 0.3s, transform 0.2s;
+        max-width: 1500px; /* 리뷰 아이템 너비 조정 */
+        margin-left: auto;
+        margin-right: auto; /* 가운데 정렬 */
+    }
 
-            .review-actions {
-                display: flex;
-                gap: 10px;
-            }
+    .review-item:hover {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px); /* 약간 위로 이동 */
+    }
 
-            .review-actions button {
-                padding: 5px 10px;
-                border: none;
-                border-radius: 3px;
-                background-color: #8a2be2;
-                color: white;
-                cursor: pointer;
-                transition: background-color 0.3s;
-            }
+    .review-header {
+        margin-bottom: 10px; /* 헤더 아래 여백 추가 */
+        font-weight: bold; /* 작성자 강조 */
+    }
 
-            .review-actions button:hover {
-                background-color: #7a1ea1;
-            }
-        </style>
+    .review-content {
+        font-size: 16px;
+        line-height: 1.5;
+        color: #333; /* 텍스트 색상 */
+        margin: 5px 0; /* 여백 추가 */
+    }
+
+    .review-actions {
+        display: flex;
+        justify-content: flex-end; /* 오른쪽으로 정렬 */
+        align-items: center; /* 세로 정렬 */
+        margin-top: 10px; /* 위쪽 여백 추가 */
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 5px; /* 버튼 간 간격 조정 */
+    }
+
+    .review-actions button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #1A374D; /* 주 색상 */
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .review-actions button:hover {
+        background-color: #ff7f00; /* 호버 시 어두운 주황색 */
+        transform: translateY(-2px); /* 약간 위로 이동 */
+    }
+
+    .review-votes {
+        display: flex;
+        gap: 10px; /* 추천/비추천 버튼 간 간격 */
+    }
+</style>
+
+
+
+
+
 
         <div>
             <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" th:data-uri="@{|/festival/vote/${festival.fid}|}">
@@ -240,15 +282,19 @@
             </form>
         </div>
 
-        <div class="review-list">
+      <div class="review-list">
     <th:block th:each="freview : ${festival.freviewList}">
         <div class="review-item">
-            <p th:text="${freview.frcontent}"></p>
+            <div class="review-header">
+                <span class="review-author" th:if="${freview.author != null}">작성자: [[${freview.author.username}]]</span>
+            </div>
+            <p class="review-content" th:text="${freview.frcontent}"></p>
             <div class="review-actions">
-                <button class="edit-button" th:data-review-id="${freview.frid}">수정</button>
-                <button class="delete-button" th:data-review-id="${freview.frid}">삭제</button>
-
-                <div>
+                
+                    <button class="edit-button" th:data-review-id="${freview.frid}">수정</button>
+                    <button class="delete-button" th:data-review-id="${freview.frid}">삭제</button>
+                </div>
+                <div class="review-votes">
                     <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" 
                        th:data-uri="@{|/freview/vote/${freview.frid}|}">
                         추천
@@ -259,18 +305,12 @@
                         비추천
                         <span class="badge rounded-pill bg-danger" th:text="${#lists.size(freview.devoter)}"></span>
                     </a>
-
-
-					<dl>
-						<dt>작성자</dt>
-						<dd th:if="${freview.author != null}">[[${freview.author.username}]]</dd>
-						</dl>
-						<dl>
-					</div>
+                </div>
             </div>
         </div>
     </th:block>
 </div>
+
 
 
         <script>
