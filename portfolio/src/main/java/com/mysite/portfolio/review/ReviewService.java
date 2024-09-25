@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.mysite.portfolio.DataNotFoundException;
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.festival.Freview;
 import com.mysite.portfolio.lodge.Lodge;
 import com.mysite.portfolio.lodge.LodgeRepository;
+import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -46,18 +48,34 @@ public class ReviewService {
 		return reviewRepository.findAll(); // 전체 목록 조회
 	}
 
-	// 리뷰 수정
-
-	public Review rvdetail(Integer mid) {
-		Optional<Review> ob = reviewRepository.findById(mid);
+	// 리뷰 수정 (단건)
+	public Review rvdetail(Integer rnum) {
+		Optional<Review> ob = reviewRepository.findById(rnum);
 		return ob.get();
 
 	}
+	
+	// 리뷰 수정
+//	public void rvupdate(Review review) {
+//		reviewRepository.save(review);
+//	}
 
-	public void rvupdate(Review review) {
-		reviewRepository.save(review);
+//	public void modify(Review review, String rcontent) {
+//		review.setRcontent(rcontent);
+//		review.setRdate(LocalDateTime.now());
+//		this.reviewRepository.save(review);
+//	}
+
+	public void updateRv(Review review) {
+		Optional<Review> _review = reviewRepository.findById(review.getRnum());
+		
+		Review reviewData = _review.get();
+		reviewData.setRcontent(review.getRcontent());
+		this.reviewRepository.save(reviewData);
 	}
-
+	
+	
+	
 	public Review getReview(Integer rnum) {
 		Optional<Review> review = this.reviewRepository.findById(rnum);
 		if (review.isPresent()) {
@@ -66,22 +84,24 @@ public class ReviewService {
 			throw new DataNotFoundException("등록한 리뷰가 없습니다");
 		}
 	}
-
-	public void modify(Review review, String rcontent) {
-		review.setRcontent(rcontent);
-		review.setRdate(LocalDateTime.now());
-		this.reviewRepository.save(review);
-	}
-
+	
 	// 리뷰 삭제
 	public void rvdelete(Integer mid) {
-		reviewRepository.deleteById(mid);
+		this.reviewRepository.deleteById(mid);
 	}
 	
-	// 추천
+	// 공감
+	public void agree(Review review, Member member) {
+		review.getRagree().add(member);
+		this.reviewRepository.save(review);
+	}
 	
+	// 비공감
+	public void disagree(Review review, Member member) {
+		review.getRdisagree().add(member);
+		this.reviewRepository.save(review);
+	}
 	
-	// 비추
 	
 
 }

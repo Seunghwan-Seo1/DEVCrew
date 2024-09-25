@@ -64,14 +64,14 @@ public class ReviewController {
 		return String.format("redirect:/lodge/detail/%s", lnum);
 	}
 
-	/*
-	 * @PostMapping("/rvcreate") public String createReview(Model
-	 * model, @RequestParam("lnum") Integer lnum,
-	 * 
-	 * @RequestParam("rcontent") String rcontent, Principal principal) throws
-	 * IOException { this.reviewService.rvcreate(lnum, rcontent); return
-	 * String.format("redirect:/lodge/detail/%s", lnum); }
-	 */
+	
+//	@PostMapping("/rvcreate")
+//	public String createReview(Model model, @RequestParam("lnum") Integer lnum,
+//			@RequestParam("rcontent") String rcontent, Principal principal) throws IOException {
+//		this.reviewService.rvcreate(lnum, rcontent);
+//		return String.format("redirect:/lodge/detail/%s", lnum);
+//	}
+	 
 	
 	// 리뷰 수정..
 	@GetMapping("/detail/rvlist")
@@ -91,11 +91,12 @@ public class ReviewController {
 		return "lodge/detail";
 	}
 
-	/*
-	 * @PostMapping("/detail/rvupdate2/{mid}") public String rvupdate2(Model
-	 * model, @PathVariable("mid") Integer id) { return "redirect:lodge/detail/" +
-	 * id; }
-	 */
+	
+//	  @PostMapping("/detail/rvupdate2/{mid}") 
+//	  public String rvupdate2(Model model, @PathVariable("mid") Integer id) { 
+//		  return "redirect:lodge/detail/" +id; 
+//	  }
+	 
 	
 	//작성자만 수정할 수 있게
 	 @PreAuthorize("isAuthenticated()")
@@ -109,18 +110,24 @@ public class ReviewController {
 	        if (!review.getUsername().equals(principal.getName())) {
 	            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자신이 쓴 리뷰만 수정이 가능합니다.");
 	        }
-	        this.reviewService.modify(review, reviewForm.getRcontent());
+	        this.reviewService.updateRv(review);
 	        return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
 	    }
 
-	 
-	 
+	 	 
 	// 리뷰 삭제
 	@GetMapping("/delete/{mid}")
 	public String rvdelete(@PathVariable("mid") Integer mid) {
 		reviewService.rvdelete(mid);
 		return "redirect:lodge/detail";
 	}
+	
+	// 공감
+	
+	
+	// 비공감
+	
+	
 
 
 }
