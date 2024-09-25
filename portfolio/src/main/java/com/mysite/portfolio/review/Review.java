@@ -4,8 +4,8 @@ package com.mysite.portfolio.review;
 
 import java.time.LocalDateTime;
 
-import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.lodge.Lodge;
+import com.mysite.portfolio.member.Member;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +22,8 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer rnum; //리뷰 번호
 	
-	private String username; // 작성자
+	private String username; // 사용자
+	private String rname; // 리뷰 작성자
 	private String rcontent; //리뷰 내용
 	private String rstar; // 별점
 	private String rpicture; // 리뷰 사진등록
@@ -34,6 +35,10 @@ public class Review {
 	
 	@ManyToOne
 	private Lodge lodge;
+	
+	
+	@ManyToOne
+	private Member member;
 	
 	
 	

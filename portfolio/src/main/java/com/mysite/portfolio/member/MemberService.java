@@ -22,6 +22,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import com.mysite.portfolio.DataNotFoundException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -176,6 +178,30 @@ public class MemberService implements UserDetailsService {
 	
 	public Optional<Member> findByUsername(String username) {
 	    return memberRepository.findByusername(username);
+	}
+	
+	public List<Member> findByRole(String role) {
+	    return memberRepository.findByRole(role);
+	}
+	
+	public Member getMember (String username) {
+        Optional<Member> member = this.memberRepository.findByusername(username);
+        if (member.isPresent()) {
+            return member.get();
+        } else {
+            throw new DataNotFoundException("siteuser not found");
+        }
+	}
+	
+	public void updateUserRole(Integer memberId, String newRole) {
+	    Optional<Member> optionalMember = memberRepository.findById(memberId);
+	    if (optionalMember.isPresent()) {
+	        Member member = optionalMember.get();
+	        member.setRole(newRole); // 새로운 역할 설정
+	        memberRepository.save(member); // 변경 사항 저장
+	    } else {
+	        throw new IllegalArgumentException("회원 ID를 찾을 수 없습니다.");
+	    }
 	}
 
 

@@ -1,6 +1,7 @@
 //생산자 : 이진호
 package com.mysite.portfolio.member;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,7 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
 
 	//연락처로 객체 찾기
 	Optional<Member> findByMaddr(String maddr);
+	
+	List<Member> findByRole(String role);
 }
 
