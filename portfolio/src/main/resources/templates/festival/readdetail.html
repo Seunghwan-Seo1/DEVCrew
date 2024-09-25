@@ -43,7 +43,7 @@
                             </dl>
                         </div>
                     </dl>
-
+                    
                     <style>
                         .festival-info {
                             background-color: #f8f9fa;
@@ -72,69 +72,32 @@
 
         <!-- 지도 -->
         <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
-<script>
-    function initializeMap() {
-        var mapContainer = document.getElementById('map');
+        <script>
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3
+            };
+            var map = new kakao.maps.Map(mapContainer, mapOption);
 
-        if (!mapContainer) {
-            console.error("지도 컨테이너가 존재하지 않습니다. 'map' ID를 가진 요소를 확인하세요.");
-            return;
-        }
+            var marker = new kakao.maps.Marker({
+                position: mapOption.center
+            });
+            marker.setMap(map);
 
-        var mapOption = {
-            center: new kakao.maps.LatLng(33.450701, 126.570667), // 기본 좌표 (제주도)
-            level: 3
-        };
+            var address = "[[${festival.flocation}]]";
+            var geocoder = new kakao.maps.services.Geocoder();
 
-        var map = new kakao.maps.Map(mapContainer, mapOption);
-
-        // 마커 초기화
-        var marker = new kakao.maps.Marker({
-            position: mapOption.center
-        });
-        marker.setMap(map);
-
-        // 주소 정보 가져오기
-        var address = "[[${festival.flocation}]]";
-        
-        // 주소가 제공되지 않은 경우 처리
-        if (!address || address.trim() === "") {
-            console.error("주소 정보가 없습니다. 기본 좌표로 설정합니다.");
-            alert("축제 위치 정보가 제공되지 않아 기본 위치를 표시합니다.");
-            return;
-        }
-
-        // 주소 검색을 위한 Geocoder 객체
-        var geocoder = new kakao.maps.services.Geocoder();
-
-        geocoder.addressSearch(address, function(result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
-                map.setCenter(newPosition);
-                marker.setPosition(newPosition);
-            } else {
-                console.error('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
-                alert('주소를 찾을 수 없습니다. 기본 위치를 표시합니다.');
-
-                // 기본 위치로 설정 (서울 시청 좌표)
-                var defaultPosition = new kakao.maps.LatLng(37.566535, 126.9779692); // 서울 시청 좌표
-                map.setCenter(defaultPosition);
-                marker.setPosition(defaultPosition);
-            }
-        });
-    }
-
-    // Kakao Maps API가 로드된 후에 initializeMap 호출
-    window.onload = function() {
-        if (kakao && kakao.maps) {
-            initializeMap();
-        } else {
-            console.error("Kakao Maps API를 로드하지 못했습니다.");
-        }
-    };
-</script>
-
-
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    map.setCenter(newPosition);
+                    marker.setPosition(newPosition);
+                } else {
+                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+                }
+            });
+        </script>
 
         <!-- 추가 사진 -->
         <div class="untree_co-section">
@@ -260,9 +223,9 @@
                 추천
                 <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.voter)}"></span>
             </a>
-            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-secondary" th:data-uri="@{|/festival/devote/${festival.fid}|}">
+            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" th:data-uri="@{|/festival/devote/${festival.fid}|}">
                 비추천
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.devoter)}"></span>
+                <span class="badge rounded-pill bg-danger" th:text="${#lists.size(festival.devoter)}"></span>
             </a>
         </div>
 
@@ -271,48 +234,72 @@
             <h2>리뷰 남기기</h2>
             <form action="/freview/create" method="post">
                 <input type="hidden" name="fid" th:value="${festival.fid}">
+                <input type="hidden" name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 댓글 : <input type="text" name="frcontent" placeholder="여기에 댓글을 입력하세요" required>
                 <input type="submit" value="등록">
             </form>
         </div>
 
         <div class="review-list">
-            <th:block th:each="freview : ${festival.freviewList}">
-                <div class="review-item">
-                    <p th:text="${freview.frcontent}"></p>
-                    <div class="review-actions">
-                        <button class="edit-button" data-review-id="${freview.frid}">수정</button>
-                        <button class="delete-button" data-review-id="${freview.frid}">삭제</button>
-                    </div>
-                </div>
-            </th:block>
+    <th:block th:each="freview : ${festival.freviewList}">
+        <div class="review-item">
+            <p th:text="${freview.frcontent}"></p>
+            <div class="review-actions">
+                <button class="edit-button" th:data-review-id="${freview.frid}">수정</button>
+                <button class="delete-button" th:data-review-id="${freview.frid}">삭제</button>
+
+                <div>
+                    <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" 
+                       th:data-uri="@{|/freview/vote/${freview.frid}|}">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(freview.voter)}"></span>
+                    </a>
+                    <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" 
+                       th:data-uri="@{|/freview/devote/${freview.frid}|}">
+                        비추천
+                        <span class="badge rounded-pill bg-danger" th:text="${#lists.size(freview.devoter)}"></span>
+                    </a>
+
+
+					<dl>
+						<dt>작성자</dt>
+						<dd th:if="${freview.author != null}">[[${freview.author.username}]]</dd>
+						</dl>
+						<dl>
+					</div>
+            </div>
         </div>
+    </th:block>
+</div>
+
 
         <script>
             document.querySelectorAll('.edit-button').forEach(button => {
                 button.addEventListener('click', function() {
                     const reviewId = this.getAttribute('data-review-id');
-                    editReview(reviewId);
+                    const fid = document.querySelector('input[name="fid"]').value;  // fid 값을 가져옴
+                    editReview(reviewId, fid);
                 });
             });
 
             document.querySelectorAll('.delete-button').forEach(button => {
                 button.addEventListener('click', function() {
                     const reviewId = this.getAttribute('data-review-id');
-                    deleteReview(reviewId);
+                    const fid = document.querySelector('input[name="fid"]').value;  // fid 값을 가져옴
+                    deleteReview(reviewId, fid);
                 });
             });
 
-            function editReview(reviewId) {
+            function editReview(reviewId, fid) {
                 const reviewContent = document.querySelector(`[data-review-id="${reviewId}"]`).parentElement.previousElementSibling.innerText;
                 const newContent = prompt("리뷰를 수정하세요:", reviewContent);
 
                 if (newContent !== null) {
-                    updateReview(reviewId, newContent);
+                    updateReview(reviewId, newContent, fid);
                 }
             }
 
-            function updateReview(reviewId, newContent) {
+            function updateReview(reviewId, newContent, fid) {
                 const form = document.createElement('form');
                 form.method = 'POST';
                 form.action = `/freview/update/${reviewId}`;
@@ -322,6 +309,12 @@
                 inputContent.name = 'frcontent';
                 inputContent.value = newContent;
                 form.appendChild(inputContent);
+
+                const inputFid = document.createElement('input');
+                inputFid.type = 'hidden';
+                inputFid.name = 'fid';
+                inputFid.value = fid;  
+                form.appendChild(inputFid);
 
                 const csrfInput = document.createElement('input');
                 csrfInput.type = 'hidden';
@@ -333,7 +326,7 @@
                 form.submit();
             }
 
-            function deleteReview(reviewId) {
+            function deleteReview(reviewId, fid) {
                 if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
                     const form = document.createElement('form');
                     form.method = 'POST';
@@ -344,6 +337,13 @@
                     csrfInput.name = '${_csrf.parameterName}';
                     csrfInput.value = '${_csrf.token}';
                     form.appendChild(csrfInput);
+                    
+                    const inputFid = document.createElement('input');
+                    inputFid.type = 'hidden';
+                    inputFid.name = 'fid';
+                    inputFid.value = fid;  
+                    form.appendChild(inputFid);
+
 
                     document.body.appendChild(form);
                     form.submit();
@@ -355,7 +355,7 @@
                 element.addEventListener('click', function() {
                     if(confirm("정말로 추천하시겠습니까?")) {
                         location.href = this.dataset.uri;
-                    };
+                    }
                 });
             });
 
@@ -364,7 +364,7 @@
                 element.addEventListener('click', function() {
                     if(confirm("정말로 비추천하시겠습니까?")) {
                         location.href = this.dataset.uri;
-                    };
+                    }
                 });
             });
         </script>
