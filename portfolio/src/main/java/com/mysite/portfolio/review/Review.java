@@ -3,6 +3,7 @@
 package com.mysite.portfolio.review;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import com.mysite.portfolio.lodge.Lodge;
 import com.mysite.portfolio.member.Member;
@@ -11,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
@@ -29,10 +31,11 @@ public class Review {
 	private String rpicture; // 리뷰 사진등록
 	private LocalDateTime rdate; // 작성일자
 	
-	private String ragree; // 공감
-	private String rdisagree; // 비공감
-	
-	
+	@ManyToMany
+	Set<Member> ragree; // 공감
+	@ManyToMany
+	Set<Member> rdisagree; // 비공감
+		
 	@ManyToOne
 	private Lodge lodge;
 	
