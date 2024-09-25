@@ -1,0 +1,100 @@
+<!-- 생산자 : 이진호 -->
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+	
+	<div class="hero hero-inner">
+	   <div class="container">
+	     <div class="row align-items-center">
+	       <div class="col-lg-6 mx-auto text-center">
+	         <div class="intro-wrap">
+	           <h1 class="mb-0">회원 가입 페이지</h1>
+	         </div>
+	       </div>
+	     </div>
+	   </div>
+	 </div>
+		
+	<form th:action="@{/member/signup}" th:object="${memberForm}" method="post">
+	  <div class="centered-container mt-5 mb-5">
+	    <div class="centered-div" style="width:370px;">
+	      <div class="text-center mb-7">
+	        <h3 class="text-body-highlight">회원 가입</h3>
+	      </div>
+	
+	      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+	
+	      <!-- Display global error messages -->
+	      <div th:if="${#fields.hasGlobalErrors()}" class="alert alert-danger">
+	        <ul>
+	          <li th:each="error : ${#fields.globalErrors()}" th:text="${error}"></li>
+	        </ul>
+	      </div>
+	
+	      <div class="mb-3 text-start">
+	        <label class="form-label" for="username">아이디</label>
+	        <div class="form-icon-container">
+	          <input class="form-control form-icon-input" th:field="*{username}" type="email" placeholder="이메일을 입력하세요" 
+	          		 id="username" th:readonly="${email != null}" /> <!-- 소셜 아이디 고정 -->
+	          <span class="fas fa-user text-body fs-9 form-icon"></span>
+	        </div>
+	        <!-- Display field-specific errors for username -->
+	        <div th:if="${#fields.hasErrors('username')}" class="text-danger">
+	          <span th:text="${#fields.errors('username')}"></span>
+	        </div>
+	      </div>
+	      
+	      <div class="mb-3 text-start">
+	        <label class="form-label" for="password1">비밀번호</label>
+	        <div class="form-icon-container">
+	          <input class="form-control form-icon-input" th:field="*{password1}" type="password" placeholder="비밀번호를 입력하세요" />
+	          <span class="fas fa-key text-body fs-9 form-icon"></span>
+	        </div>
+	        <!-- Display field-specific errors for password1 -->
+	        <div th:if="${#fields.hasErrors('password1')}" class="text-danger">
+	          <span th:text="${#fields.errors('password1')}"></span>
+	        </div>
+	      </div>
+	
+	      <div class="mb-3 text-start">
+	        <label class="form-label" for="password2">비밀번호 확인</label>
+	        <div class="form-icon-container">
+	          <input class="form-control form-icon-input" th:field="*{password2}" type="password" placeholder="비밀번호를 한번 더 입력하세요" />
+	          <span class="fas fa-key text-body fs-9 form-icon"></span>
+	        </div>
+	        <!-- Display field-specific errors for password2 -->
+	        <div th:if="${#fields.hasErrors('password2')}" class="text-danger">
+	          <span th:text="${#fields.errors('password2')}"></span>
+	        </div>
+	      </div>
+	
+	      <div class="mb-3 text-start">
+	        <label class="form-label" for="maddr">연락처</label>
+	        <div class="form-icon-container">
+	          <input class="form-control form-icon-input" th:field="*{maddr}" type="text" placeholder="전화번호를 입력해주세요" />
+	          <span class="fas fa-key text-body fs-9 form-icon"></span>
+	        </div>
+	        <!-- Display field-specific errors for maddr -->
+	        <div th:if="${#fields.hasErrors('maddr')}" class="text-danger">
+	          <span th:text="${#fields.errors('maddr')}"></span>
+	        </div>
+	      </div>
+	
+	      <input type="submit" class="btn btn-primary w-100 mb-3" value="가입하기">
+	    </div>
+	  </div>
+	</form>
+	
+	<script>
+	  window.onload = function() {
+	    const urlParams = new URLSearchParams(window.location.search);
+	    const email = urlParams.get('email');
+	    if (email) {
+	      document.getElementById('username').value = email;
+	      document.getElementById('username').readOnly = true;  // Set the input to read-only
+	    }
+	  };
+	</script>
+	
+
+</div>
+</html>

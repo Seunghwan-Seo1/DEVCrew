@@ -34,20 +34,36 @@ public class Freview {
 	    
 	    private LocalDateTime fmodifyDate;
 	    
-	 
-
-	    @ManyToOne
-	    private Member author;
-	    
-	    @ManyToMany
-	    Set<Member> voter;
-	    
-	    @ManyToMany
-	    Set<Member> devoter;
-	    
-	 // 추천 수에서 비추천 수를 뺀 값 계산
-	    public int getVoteScore() {
-	        return this.voter.size() - this.devoter.size();
+	 // Update 메서드
+	    public void update(String newContent) {
+	        this.frcontent = newContent;
+	        this.fmodifyDate = LocalDateTime.now(); // 수정 시간 업데이트
 	    }
+	
 	    
+	    public void delete() {
+	}
+
+
+		public Object getSubject1() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		public void setSubject(Object subject) {
+			// TODO Auto-generated method stub
+			
+		}
+
+
+		public Object getSubject() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@ManyToMany
+	    Set<Member> voter;
+		
+		
 }

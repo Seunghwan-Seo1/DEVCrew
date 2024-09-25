@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.auth.policy.Principal;
 import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
