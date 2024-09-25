@@ -43,11 +43,6 @@ public class AdminController {
         model.addAttribute("visitorCount", totalVisitorCount);
         return "admin/main"; // admin/main.html로 이동
     }
-    
-    @GetMapping("/notification")
-    public String notification() {
-    	return "admin/notification";
-    }
 
 
 	
@@ -72,13 +67,13 @@ public class AdminController {
         @RequestParam("fid") Integer fid, 
         @RequestParam("fname") String fname, 
         @RequestParam("flocation") String flocation,
-        @RequestParam("files") List<MultipartFile> files // 파일은 List로 받음
+        @RequestParam("file") List<MultipartFile> files // 파일은 List로 받음
     ) {
         try {
             // 기존 페스티벌 정보를 가져와서 수정
             Festival festival = festivalService.readdetail(fid); // ID로 기존 페스티벌 정보를 불러옴
             festival.setFname(fname); // 이름 업데이트
-            festival.setFlocation(flocation); // 장소 업데이트
+            festival.setFlocation(flocation); // 가격 업데이트
 
             // 파일과 기타 필드 업데이트
             festivalService.update(festival, files); // 업데이트 메소드 호출

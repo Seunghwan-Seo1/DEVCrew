@@ -7,20 +7,23 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
-import com.mysite.portfolio.DataNotFoundException;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 
@@ -30,6 +33,7 @@ public class MemberService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final HttpServletRequest req;
 	
 	//회원 가입
 	public void create(MemberForm memberForm) {
@@ -44,10 +48,9 @@ public class MemberService implements UserDetailsService {
 	    this.memberRepository.save(member);
 	}
 	
-    // 아이디 중복 확인
-	
 	//회원 가입 시 폼 유효성 검사
 	public void validateMemberForm(MemberForm memberForm) {
+		
 	    // 아이디 중복 확인
 	    Optional<Member> member = memberRepository.findByusername(memberForm.getUsername());
 	    if (member.isPresent()) {
@@ -105,10 +108,36 @@ public class MemberService implements UserDetailsService {
         }
         return new User(member.getUsername(), member.getPassword(), authorities);
         
-   }
-   
-   //회원 정보 조회
-   public Member readdetail() {
+	}
+	
+	//소셜 로그인 확인
+	public int logincheck(String username) throws UsernameNotFoundException {
+		Optional<Member> tmember = memberRepository.findByusername(username);
+		
+		if (tmember.isEmpty()) {
+			return 1;//db에 없음, 회원 가입으로
+		}
+		
+		Member member = tmember.get();
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		if ("ROLE_ADMIN".equals(member.getRole())) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        } else {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+		
+		//스프링 시큐리티 규격에 맞게 로그인 처리
+		SecurityContext sc = SecurityContextHolder.getContext();
+		sc.setAuthentication(new UsernamePasswordAuthenticationToken(member.getUsername(), member.getPassword(), authorities));
+		HttpSession session = req.getSession(true);
+		session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,sc);
+	
+		return 0; //db에 있음, 세션 처리까지
+	}
+	
+	
+    //회원 정보 조회
+	public Member readdetail() {
       
       //접속자 정보 추출
       Authentication authentication = 
@@ -119,8 +148,8 @@ public class MemberService implements UserDetailsService {
       
       return oc.get();
 
-	}
-	
+    }
+   
 	//회원 정보 수정
 	public void update(Member member) {
 		Optional<Member> _member = memberRepository.findByusername(member.getUsername());
@@ -143,36 +172,11 @@ public class MemberService implements UserDetailsService {
 
 	public List<Member> readlist() {
 		return memberRepository.findAll();
-
 	}
 	
 	public Optional<Member> findByUsername(String username) {
 	    return memberRepository.findByusername(username);
 	}
-	
-	public List<Member> findByRole(String role) {
-	    return memberRepository.findByRole(role);
-	}
-	
-	public Member getMember (String username) {
-        Optional<Member> member = this.memberRepository.findByusername(username);
-        if (member.isPresent()) {
-            return member.get();
-        } else {
-            throw new DataNotFoundException("siteuser not found");
-        }
 
 
-	}
-	
-	public void updateUserRole(Integer memberId, String newRole) {
-	    Optional<Member> optionalMember = memberRepository.findById(memberId);
-	    if (optionalMember.isPresent()) {
-	        Member member = optionalMember.get();
-	        member.setRole(newRole); // 새로운 역할 설정
-	        memberRepository.save(member); // 변경 사항 저장
-	    } else {
-	        throw new IllegalArgumentException("회원 ID를 찾을 수 없습니다.");
-	    }
-	}
 }

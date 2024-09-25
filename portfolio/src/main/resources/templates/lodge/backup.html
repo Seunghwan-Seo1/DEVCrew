@@ -1,3 +1,4 @@
+
 <html layout:decorate="~{layout}">
 
 <div layout:fragment="content">
@@ -11,6 +12,7 @@
 	border: 1px solid #ddd;
 	border-radius: 1rem;
 	cursor: pointer;
+
 }
 .nav-link.active {
   display: inline-block;
@@ -37,6 +39,7 @@
 textarea {
 resize: none;
 }
+
 
 .comments-list {
 	margin-bottom : 10px;
@@ -193,11 +196,13 @@ resize: none;
               
               	<form action="/review/rvcreate"method="post"> 
 	<input type="hidden" name="lnum" th:value="${lodge.lnum}">
+
             <label for="comment">작성 글자 제한</label>
             <span class="ipt_msg txtLen"><strong>0</strong>/300</span>
             <textarea class="rivTxt" id="rivTxt" name="rcontent" autocomplete="off"placeholder="숙소 후기를 적어주세요" maxlength="300" style="width:100%; height:100%;" minlength="5" ></textarea>          
         <input type="submit" value="리뷰등록">
     </form>
+
     
     
                 <input class="card-form-check-input d-none" type="radio" name="pricingMonthly" id="startup" checked="checked" />
@@ -360,3 +365,4 @@ resize: none;
              
 </div>
 </html>
+
