@@ -20,8 +20,12 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-                .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")  // 관리자 페이지 접근 제한
-                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())  // 그 외 경로는 모두 허용
+                // 정적 리소스에 대한 접근을 허용
+                .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+                // 관리자 페이지 접근은 ADMIN 권한이 있는 사용자만 허용
+                .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole("ADMIN")
+                // 그 외 모든 요청은 인증 없이 허용
+                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll())
             .csrf((csrf) -> csrf
                     .ignoringRequestMatchers(new AntPathRequestMatcher("/**")))
             .formLogin((formLogin) -> formLogin
