@@ -62,5 +62,11 @@ public class ReviewService {
 	public void rvdelete(Integer uid) {
 		reviewRepository.deleteById(uid);
 	}
+	
+	// 추천
+	
+	
+	// 비추
+	
 
 }

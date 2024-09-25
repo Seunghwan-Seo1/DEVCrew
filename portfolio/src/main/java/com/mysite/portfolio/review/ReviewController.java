@@ -59,6 +59,15 @@ public class ReviewController {
 		return String.format("redirect:/lodge/detail/%s", lnum);
 	}
 
+	/*
+	 * @PostMapping("/rvcreate") public String createReview(Model
+	 * model, @RequestParam("lnum") Integer lnum,
+	 * 
+	 * @RequestParam("rcontent") String rcontent, Principal principal) throws
+	 * IOException { this.reviewService.rvcreate(lnum, rcontent); return
+	 * String.format("redirect:/lodge/detail/%s", lnum); }
+	 */
+	
 	// 리뷰 수정..
 
 	@GetMapping("/detail/rvlist")
