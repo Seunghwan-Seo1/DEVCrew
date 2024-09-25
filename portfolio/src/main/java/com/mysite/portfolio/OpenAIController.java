@@ -17,7 +17,6 @@ public class OpenAIController {
     // 사용자가 질문을 POST 요청으로 보냄
     @PostMapping("/ask")
     public Mono<String> askQuestion(@RequestBody String question) {
-        // GPT-3.5 Turbo를 사용한 응답 처리 및 에러 처리
         return openAIService.getChatCompletion(question)
                 .onErrorResume(WebClientResponseException.class, e -> {
                     // WebClient에서 발생하는 HTTP 에러 처리

@@ -44,7 +44,7 @@ public class OpenAIService {
     // 요청 바디를 구성하는 메서드 (GPT-4 모델 사용)
     private JSONObject createRequestBody(String question) {
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "gpt-4");  // GPT-4 모델 사용
+        requestBody.put("model", "gpt-4o-mini");  // GPT-4 모델 사용
 
         // messages 배열을 구성하여 사용자 메시지 추가
         JSONArray messages = new JSONArray();
