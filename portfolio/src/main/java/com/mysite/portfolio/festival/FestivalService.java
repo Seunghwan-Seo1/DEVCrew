@@ -172,5 +172,10 @@ public class FestivalService {
 		Optional<Festival> festival  = this.festivalRepository.findById(fid);
 		return festival.get();
 	}
+    
+    public List<Festival> find(String keyword) {
+    	System.out.println("서비스 : " + keyword);
+    	return festivalRepository.findAllByfnameLike(keyword);
+    }
 }
 

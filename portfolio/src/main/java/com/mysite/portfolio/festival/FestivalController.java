@@ -51,6 +51,8 @@ public class FestivalController {
         return "redirect:/festival/readlist";
     }
 
+    
+    //readlist
     @GetMapping("/readlist")
     public String readlist(Model model, 
                            @RequestParam(value = "search", required = false) String search,
@@ -59,6 +61,15 @@ public class FestivalController {
         List<Festival> festivals = festivalService.filterFestivals(search, region, category); // 필터 메서드 호출
         model.addAttribute("festivals", festivals);
         return "festival/readlist";
+    }
+    
+    //검색 기능 추가
+    
+    @GetMapping("/find")
+    public String find(@RequestParam("keyword") String keyword, Model model) {
+    	System.out.println("컨트롤러 : " + keyword);
+    	model.addAttribute("festivals", festivalService.find(keyword));
+    	return "festival/readlist";
     }
 
     // readdetail

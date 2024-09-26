@@ -12,14 +12,21 @@
                 </div>
             </div>
         </div>
-
-        <!-- 사진 -->
+   
+                   <!-- 축제 목록으로 이동 버튼 -->
+<a href="/festival/readlist" class="btn btn-primary festival-list-button" style="position: absolute; top: 20px; left: 20px; z-index: 10;">축제 목록</a>
+                    <!-- 축제 목록으로 이동 버튼 -->
+        <!-- 메인사진 -->
         <section class="summary">
             <div class="row">
                 <div class="col-md-6">
+
                     <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" 
                     style="width: 1000px; height: 1000px; object-fit: contain; margin: 0 auto; display: block;">
                 </div>
+       <!-- 메인사진 -->
+
+ 
 
                 <!-- 설명 -->
                 <div class="col-md-6 d-flex flex-column justify-content-center">
