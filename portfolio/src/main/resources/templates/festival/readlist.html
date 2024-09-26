@@ -26,204 +26,105 @@
         
         
 <!-- 검색	버튼 추가 -->
+<form action="/festival/find" method="get">
  <div class="input-group">
-                <input type="text" id="search" class="form-control" placeholder="검색...">
-                <button class="btn btn-primary" onclick="filterFestivals()">검색</button>
-            </div>
-        </div>
+                <input type="text" name ="keyword" id="search" class="form-control" placeholder="검색...">
+                <input type="submit" class="btn btn-primary" value="검색">
+
+ </div>
+</form>
+ </div>
         
-        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        
 <!-- 검색	버튼 추가 -->
 
 
 
-			<style>
-.filter-container {
-	max-width: 250px; /* 필터 너비를 조정 */
-	margin: 0 auto; /* 가운데 정렬 */
-}
+		
+			<!-- 필터 -->
 
-
-
-.medium-text {
-    font-size: 30px; /* 원하는 크기로 조정 */   
-    transform: rotate(180deg); /* 텍스트 방향을 아래에서 위로 변경 */
-    text-align: center; /* 중앙 정렬 */
-    white-space: nowrap; /* 텍스트 줄 바꿈 방지 */
-}
-</style>
 
 			<!-- 필터 -->
-			<div class="condition">
-   <div class="container mt-4">
-        <div class="row">
-       
-           <div class="filter-container">
-               <h5>검색 조건</h5>
-               <form>
-             
-           <div class="form-group">
-                     <label for="category">지역</label>
-                     <select class="form-control" id="region"> <!-- ID 수정 -->
-                         <option>전체</option>
-                         <option>서울/경기/인천</option>
-                         <option>부산/울산/경남</option>
-                         <option>대구/경북</option>
-                         <option>광주/전라</option>
-                         <option>제주</option>                       
-                     </select>
-                 </div>
-                 
-                 
-                 <div class="form-group">
-                     <label for="category">카테고리</label>
-                     <select class="form-control" id="fcategory">
-                         <option>전체</option>
-                         <option>나들이</option>
-                         <option>가을꽃</option>
-                         <option>야경</option>
-                         <option>문화예술</option>
-                         <option>미디어아트</option>                       
-                         <option>빛</option>                       
-                     </select>
-                 </div>
-                 
-		                   
-				<div class="form-group">       
-                 <label for="serve">축제 참여비용</label><br>
-                 <input type="checkbox" name="options" value="free"> 무료 <br>
-                 <input type="checkbox" name="options" value="paid"> 유료 <br>
+
+			
 				
-				                </div>
-                                       
-                   <div class="form-group">
-                       <!-- <label>축제 참여비용</label> -->
-                       <input type="range" class="form-control-range" id="priceRange">
-                       <small>참여비용 범위: 0원~70,000원</small>
-                   </div>
-                   <div class="form-group">
-                     <label for="startDate">시작일</label>
-                     <input type="date" class="form-control" id="startDate">
-                     <label for="endDate">종료일</label>
-                     <input type="date" class="form-control" id="endDate">
-                   </div> 
-                   
-                   <div class="form-group">       
-					<label for="serve">원하는 서비스를 선택하세요</label><br>
-				  <input type="checkbox" name="options" value="performance"> 공연 <br>
-                  <input type="checkbox" name="options" value="food"> 음식 부스 <br>
-                  <input type="checkbox" name="options" value="workshop"> 체험 워크숍 <br>
-                  <input type="checkbox" name="options" value="transportation"> 교통 서비스 <br>
-                  <input type="checkbox" name="options" value="souvenir"> 기념품 판매 <br>
-                  <input type="checkbox" name="options" value="safety"> 안전 관리 <br>
-                  <input type="checkbox" name="options" value="guide"> 관광 가이드 서비스 <br>
-
-                   </div>
-                   
-                <button type="submit" class="btn btn-primary">조건 초기화</button>
-               </form>
-                </div>
-            
-            
-        </div>
-   </div>
-   
-    </div>
-			<!-- 필터 -->
-
-			<div class="col-md-9">
-				<div class="row row-cols-1 row-cols-lg-3">
 
 					<!-- 사진 및 간단한설명 반복문-->
-
-					<th:block th:each="festival : ${festivals}">
-						<div class="feature col festival-item"
-							data-name="[[${festival.fname}]]"
-							data-location="[[${festival.flocation}]]"
-							data-category="[[${festival.category}]]">
-							<div
-								class="feature-icon d-inline-flex align-items-center justify-content-center text-bg-primary bg-gradient fs-2 mb-3">
-								<a th:href="@{|/festival/readdetail/${festival.fid}|}" style="text-decoration: none;">
-								<img class="img-fluid"
-									th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
-							</div>
-							
-							
-							
-							
-							 <h3 class="fs-2 text-body-emphasis" style="color: black; text-decoration: none;">
-                            <span class="medium-text" style="text-decoration: none;">[[${festival.fname}]]</span>
-                             </h3>
-                          </div>
-						 </div>
-					    </th:block>
-					<!-- 사진 및 간단한설명 반복문-->
-
- <style>
-    .feature-icon {
-        width: 400px; /* feature-icon의 너비를 고정 (필요에 따라 조정) */
-        height: 400px; /* 고정된 높이 설정 (정사각형) */
-        overflow: hidden; /* 넘치는 부분 숨김 */
-        text-align: center; /* 텍스트 정렬 */
-        margin-top: 3px; /* 위쪽 여백 추가 (줄임) */
-        margin-bottom: 60px; /* 아래쪽 여백 추가 (줄임) */
-        margin-left: 5px; /* 좌측 여백 추가 (줄임) */
-        margin-right: 10px; /* 우측 여백 추가 (줄임) */
-        display: inline-block; /* 인라인 블록으로 설정하여 간격 조정 */
-    }
-
-    img {
-        width: 5000px; /* 이미지 가로폭 100% */
-        height: 5000px; /* 이미지 높이를 부모 요소에 맞춤 */
-       
-    }
-</style> 
-
-
-
-
-
-
-
-
+					<div class="row g-3 py-5 row-cols-1 row-cols-lg-4">
+     <th:block th:each="festival : ${festivals}">
+        <div class="feature col festival-item"
+            data-name="[[${festival.fname}]]"
+            data-location="[[${festival.flocation}]]"
+            data-category="[[${festival.category}]]">
+            <div class="feature-icon">
+                <a th:href="@{|/festival/readdetail/${festival.fid}|}" style="text-decoration: none;">
+								<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
+							</a>
+						</div>
+						<h3 class="fs-3 text-body-emphasis festival-name">
+							[[${festival.fname}]]</h3>
+					</div>
+				</th:block>
 			</div>
-			</div>
-		</div>
-	</div>
+			<!-- 사진 및 간단한설명 반복문-->
+<!-- CSS -->
+<style>
+    
+    .row {
+    display: flex;
+    flex-wrap: wrap; /* 줄 바꿈 허용 */
+    justify-content: center; /* 중앙 정렬 */
+    align-items: flex-start; /* 위쪽 정렬 */
+}
 
-	  <script>
-	  function filterFestivals() {
-		    const input = document.getElementById('search').value.toLowerCase(); // 검색창 입력 값
-		    const region = document.getElementById('region').value; // 지역 필터 값
-		    const category = document.getElementById('fcategory').value; // 카테고리 필터 값
-		    const festivalItems = document.querySelectorAll('.festival-item'); // 축제 목록
-
-		    festivalItems.forEach(item => {
-		        const name = item.getAttribute('data-name').toLowerCase(); // 축제 이름
-		        const location = item.getAttribute('data-location').toLowerCase(); // 축제 위치
-		        const itemCategory = item.getAttribute('data-category') ? item.getAttribute('data-category').toLowerCase() : ''; // 축제 카테고리
-
-		        const matchesSearch = name.includes(input); // 검색어와 일치 여부
-		        const matchesRegion = region === "전체" || location.includes(region); // 지역 필터와 일치 여부
-		        const matchesCategory = category === "전체" || itemCategory.includes(category); // 카테고리 필터와 일치 여부
-
-		        // 조건에 맞는 항목만 보이게 설정
-		        if (matchesSearch && matchesRegion && matchesCategory) {
-		            item.style.display = ''; // 조건에 맞으면 표시
-		        } else {
-		            item.style.display = 'none'; // 조건에 맞지 않으면 숨김
-		        }
-		    });
-		}
+.feature {
+    margin: 10px; /* 통일된 마진 */
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
 
 
-    function resetFilter() {
-        document.getElementById('search').value = ''; // 검색어 초기화
-        document.getElementById('region').selectedIndex = 0; // 지역 필터 초기화
-        document.getElementById('category').selectedIndex = 0; // 카테고리 필터 초기화
-        filterFestivals(); // 필터 재적용
+
+
+
+img {
+    width: 100%; /* 이미지 너비를 100%로 설정 */
+    height: auto; /* 비율 유지 */
+    object-fit: cover; /* 비율 유지하며 잘림 */
+}
+
+
+    .festival-name {
+        font-size: 2rem; /* 적절한 텍스트 크기 설정 */
+        color: #000; /* 텍스트 색상 */
+        text-align: center; /* 텍스트 중앙 정렬 */
+        margin-top: 0.5rem; /* 이미지와 텍스트 사이 간격 */
+        margin-bottom: 1rem; /* 텍스트와 다른 요소 사이 여백 */
     }
-</script>
+
+    /* 작은 화면을 위한 반응형 디자인 */
+    @media (max-width: 768px) {
+        .feature-icon {
+            height: 200px; /* 작은 화면에서의 이미지 높이 조정 */
+        }
+        .festival-name {
+            font-size: 1.25rem; /* 작은 화면에서 텍스트 크기 조정 */
+            margin-top: 0.3rem; /* 작은 화면에서 이미지와 텍스트 간격 조정 */
+            margin-bottom: 0.8rem; /* 텍스트와 다른 요소 사이 여백 조정 */
+        }
+    }
+
+    /* 아주 작은 화면을 위한 반응형 디자인 */
+    @media (max-width: 480px) {
+        .feature-icon {
+            height: 150px; /* 아주 작은 화면에서의 이미지 높이 조정 */
+        }
+        .festival-name {
+            font-size: 1rem; /* 아주 작은 화면에서 텍스트 크기 조정 */
+            margin-top: 0.2rem; /* 이미지와 텍스트 사이 간격 */
+            margin-bottom: 0.5rem; /* 텍스트와 다른 요소 사이 여백 */
+        }
+    }
+</style>
 
 
 </div>
