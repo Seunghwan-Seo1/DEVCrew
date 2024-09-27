@@ -180,8 +180,8 @@ public class FestivalService {
 	}
     
     public List<Festival> find(String keyword) {
-    	System.out.println("서비스 : " + keyword);
-    	return festivalRepository.findAllByfnameLike(keyword);
+        System.out.println("서비스 : " + keyword);
+        return festivalRepository.findAllByKeyword(keyword); // 수정된 메서드 호출
     }
 }
 

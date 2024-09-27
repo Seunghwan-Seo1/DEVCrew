@@ -68,6 +68,8 @@ public class FestivalController {
     @GetMapping("/find")
     public String find(@RequestParam("keyword") String keyword, Model model) {
     	System.out.println("컨트롤러 : " + keyword);
+    	
+    	
     	model.addAttribute("festivals", festivalService.find(keyword));
     	return "festival/readlist";
     }

@@ -303,8 +303,8 @@
             <p class="review-content" th:text="${freview.frcontent}"></p>
             <div class="review-actions">
                 
-                    <button class="edit-button" th:data-review-id="${freview.frid}">수정</button>
-                    <button class="delete-button" th:data-review-id="${freview.frid}">삭제</button>
+                    <button class="edit-button" th:data-review-id="${freview.frid}" th:if="${freview.author != null and #authentication.getPrincipal().getUsername() == freview.author.username}" sec:authorize="isAuthenticated()">수정</button>
+                    <button class="delete-button" th:data-review-id="${freview.frid}" th:if="${freview.author != null and #authentication.getPrincipal().getUsername() == freview.author.username}" sec:authorize="isAuthenticated()">삭제</button>
                 </div>
                 <div class="review-votes">
                     <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" 
