@@ -60,14 +60,14 @@ public class FreviewController {
 	@PostMapping("/update/{frid}") // Create @ModelAttribute 주로사용
 	public String update(@PathVariable("frid") Integer frid, 
             @RequestParam("frcontent") String frcontent, @RequestParam("fid") Integer fid,
-            Model model) {
+            Model model, Principal principal) {
 			// Freview 객체 생성 및 업데이트할 내용 설정
 			Freview freview = new Freview();
 			freview.setFrid(frid);          // PathVariable로 받아온 리뷰 ID 설정
 			freview.setFrcontent(frcontent); // RequestParam으로 받아온 새로운 리뷰 내용 설정
 			
 			// 서비스 레이어를 통해 업데이트 처리
-			freviewService.update(freview);
+			freviewService.update(freview,  memberService.getMember(principal.getName()));
 		
     	return "redirect:/festival/readdetail/" + fid;
 	}

@@ -1,9 +1,9 @@
 package com.mysite.portfolio.festival;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,6 @@ import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -52,14 +51,31 @@ public class FreviewService {
 
 	
 	
-	
-	// Update
-	public void update(Freview freview) {
-		Optional<Freview> _freview = freviewRepository.findById(freview.getFrid());
-		
-		Freview freviewData = _freview.get();
-		freviewData.setFrcontent(freview.getFrcontent());
-		this.freviewRepository.save(freviewData);
+	//update
+	public void update(Freview freview, Member author) {
+	    // 기존 Freview 정보 가져오기
+	    Optional<Freview> _freview = freviewRepository.findById(freview.getFrid());
+
+	    if (_freview.isPresent()) {
+	        Freview freviewData = _freview.get();
+
+	        // 기존 voter와 devoter 유지
+	        Set<Member> existingVoters = freviewData.getVoter();
+	        Set<Member> existingDevoters = freviewData.getDevoter();
+
+	        // 투표 정보는 유지하고, 필요한 필드만 업데이트
+	        freviewData.setFrcontent(freview.getFrcontent());
+	        freviewData.setAuthor(author);
+
+	        // 기존 voter와 devoter를 유지
+	        freviewData.setVoter(existingVoters);
+	        freviewData.setDevoter(existingDevoters);
+
+	        // 업데이트된 Freview 저장
+	        this.freviewRepository.save(freviewData);
+	    } else {
+	        throw new RuntimeException("Freview not found with id: " + freview.getFrid());
+	    }
 	}
 
     // Delete
