@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.admin.NotificationService;
 import com.mysite.portfolio.member.Member;
-import com.mysite.portfolio.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ public class FestivalService {
     private S3Service s3Service; // S3Service 주입
 
     @Autowired
-	private MemberService memberService;
+	private NotificationService notificationService;
     
     // create
     public void create(Festival festival, List<MultipartFile> files, Member author) throws IOException {
@@ -76,6 +76,9 @@ public class FestivalService {
         // 데이터 저장
         try {
             this.festivalRepository.save(festival);
+            
+            String message = "새로운 게시글이 작성되었습니다: " + festival.getFname();
+            notificationService.sendNotificationToUsers(message);
         } catch (Exception e) {
             e.printStackTrace();  // 예외 발생 시 스택 트레이스 출력
             throw new RuntimeException("Failed to save festival data.");

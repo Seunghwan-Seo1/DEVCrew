@@ -1,5 +1,6 @@
 package com.mysite.portfolio;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +54,8 @@ public class MainController {
 
 	}
 	
-	@GetMapping("/ndetail/{username}")
-	public String getUserNotifications(Model model,@PathVariable("username") String username) {
+	@GetMapping("/ndetail/{nid}")
+	public String getUserNotifications(Model model,@PathVariable("nid") String username) {
         
         // 해당 사용자의 알림 목록을 가져옴
         Member member = memberService.getMember(username);
@@ -65,6 +66,14 @@ public class MainController {
         model.addAttribute("notifications", notifications);
         
         return "/ndetail"; 
+    }
+	
+	 // 알림 삭제 요청 처리
+    @PostMapping("/deletenoti/{nid}")
+    public String deleteNotification(@PathVariable("nid") Integer nid, Principal principal) {
+        notificationService.delete(nid);
+        Member member = this.memberService.getMember(principal.getName());
+        return String.format("redirect:/ndetail/%s", member.getUsername());  // 삭제 후 알림 목록 페이지로 리다이렉트
     }
 
 }

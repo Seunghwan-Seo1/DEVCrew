@@ -5,7 +5,6 @@ package com.mysite.portfolio.admin;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.festival.FestivalService;
-import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 import com.mysite.portfolio.visitor.VisitorService;
 

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.admin.NotificationService;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
@@ -23,6 +24,7 @@ public class FreviewService {
 	private final S3Service s3Service;
 	private final MemberService memberService;
 	private final FestivalRepository festivalRepository;
+	private final NotificationService notificationService;
 	
 	
 	//c  
@@ -35,6 +37,10 @@ public class FreviewService {
 			
 			
 			this.freviewRepository.save(freview);
+			
+			// 게시글 작성 후 작성자에게만 알림 전송
+	        String message = "새로운 댓글이 달렸습니다.";
+	        notificationService.sendNotificationToUserByUsername(author.getUsername(), message);
 
 		}
 	

@@ -28,7 +28,7 @@ public class GlobalControllerAdvice {
     public List<Notification> addNotificationsToModel(Principal principal) {
         if (principal != null) {
             Member member = memberService.getMember(principal.getName());
-            return notificationService.getNotificationsForUser(member);
+            return notificationService.getNotificationsByRecipient(member);
         }
         return null; // 로그인되지 않은 경우 빈 리스트 또는 null 반환
     }

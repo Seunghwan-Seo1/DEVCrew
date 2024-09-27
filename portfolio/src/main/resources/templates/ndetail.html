@@ -25,21 +25,30 @@
                             <th class="sort text-end align-middle pe-0 ps-4" scope="col" style="width:50px;"></th>
                             <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:200px;" data-sort="customer">메세지</th>
                             <th class="sort align-middle ps-4" scope="col" data-sort="category" style="width:100px;">작성시간</th>
+                            <th class="sort align-middle ps-4" scope="col" data-sort="category" style="width:100px;"></th>
                         </tr>
                     </thead>
                     <tbody>
                         <th:block th:each="notification : ${notifications}">
-                            <tr>
-                                    <th scope="row">[[${notification.nid}]]</th>
-                                    <td class="align-middle">
-                                        <input type="text" class="form-control" th:value="${notification.nmessage}" name="fname">
-                                    </td>
-                                                                        
-                                    <td>
-                                        <input type="text" class="form-control" th:value="${#temporals.format(notification.ntime, 'yy-MM-dd')}" readonly>
-                                    </td>
-                            </tr>
-                        </th:block>
+						        <tr>
+						            <th scope="row">[[${notification.nid}]]</th>
+						            <td>
+						                <input type="text" class="form-control" th:value="${notification.nmessage}" name="fname" readonly>
+						            </td>
+						            <td>
+						                <input type="text" class="form-control" th:value="${#temporals.format(notification.ntime, 'yy-MM-dd')}" readonly>
+						            </td>
+						            <td>
+						             <form th:action="@{/deletenoti/{nid}(nid=${notification.nid})}" method="post">
+									     <input type="hidden" name="nid" th:value="${notification.nid}">
+						                <input class="btn btn-danger w-45 mb-3" type="submit" value="알림 삭제">
+						               </form>
+						            </td>
+						   	 		
+						        </tr>
+						    
+						</th:block>
+                        
                     </tbody>
                 </table>
 	</div>
