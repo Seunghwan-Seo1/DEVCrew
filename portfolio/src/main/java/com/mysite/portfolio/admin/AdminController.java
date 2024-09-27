@@ -3,7 +3,9 @@
 package com.mysite.portfolio.admin;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.festival.FestivalService;
+import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 import com.mysite.portfolio.visitor.VisitorService;
 
@@ -77,8 +80,12 @@ public class AdminController {
         @RequestParam("fid") Integer fid, 
         @RequestParam("fname") String fname, 
         @RequestParam("flocation") String flocation,
-        @RequestParam("files") List<MultipartFile> files // 파일은 List로 받음
+        @RequestParam("files") List<MultipartFile> files, // 파일은 List로 받음
+        Principal principal
     ) {
+    	
+
+    	
         try {
             // 기존 페스티벌 정보를 가져와서 수정
             Festival festival = festivalService.readdetail(fid); // ID로 기존 페스티벌 정보를 불러옴
@@ -86,7 +93,7 @@ public class AdminController {
             festival.setFlocation(flocation); // 장소 업데이트
 
             // 파일과 기타 필드 업데이트
-            festivalService.update(festival, files); // 업데이트 메소드 호출
+            festivalService.update(festival, files, memberService.getMember(principal.getName())); // 업데이트 메소드 호출
 
         } catch (IOException e) {
             e.printStackTrace();

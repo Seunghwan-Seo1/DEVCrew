@@ -276,8 +276,13 @@
                 비추천
                 <span class="badge rounded-pill bg-danger" th:text="${#lists.size(festival.devoter)}"></span>
             </a>
-        </div>
+            
+            <a th:href="@{|/festival/update/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn btn-success">수정</a> <!-- 등록 버튼 추가 -->
 
+            <a th:href="@{|/festival/delete/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn btn-success">삭제</a> <!-- 등록 버튼 추가 -->
+            
+        </div>
+		
 
         <div class="review-form">
             <h2>리뷰 남기기</h2>

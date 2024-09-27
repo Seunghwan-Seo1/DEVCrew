@@ -87,8 +87,8 @@ public class FestivalController {
     }
     
     @PostMapping("/update")
-    public String update(@ModelAttribute Festival festival, @RequestParam("files") List<MultipartFile> files) throws IOException {
-        festivalService.update(festival, files);
+    public String update(@ModelAttribute Festival festival, @RequestParam("files") List<MultipartFile> files, Principal principal) throws IOException {
+        festivalService.update(festival, files, memberService.getMember(principal.getName()));
         return "redirect:/festival/readdetail/" + festival.getFid();
     }
 

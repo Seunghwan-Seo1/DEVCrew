@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -104,16 +105,25 @@ public class FestivalService {
         Optional<Festival> ob = festivalRepository.findById(fid); 
         return ob.get();
     }
-
-    // update
-    public void update(Festival festival, List<MultipartFile> files) throws IOException {
-        // 기존 축제 정보를 가져와서 기존 이미지 유지
+    
+    //update
+    public void update(Festival festival, List<MultipartFile> files, Member author) throws IOException {
+        
+        // 기존 Festival 정보 가져오기
         Festival existingFestival = festivalRepository.findById(festival.getFid())
                 .orElseThrow(() -> new RuntimeException("Festival not found"));
 
-        // 파일 이름을 저장할 리스트
+        // 기존 voter와 devoter 유지
+        Set<Member> existingVoters = existingFestival.getVoter();
+        Set<Member> existingDevoters = existingFestival.getDevoter();
+
+        // 작성자 설정
+        festival.setAuthor(author);
+
+        // 파일 이름을 저장할 배열
         String[] fileNames = new String[5];
 
+        // 파일 업로드 처리
         for (int i = 0; i < files.size() && i < 5; i++) {
             MultipartFile file = files.get(i);
             if (!file.isEmpty()) {
@@ -124,34 +134,30 @@ public class FestivalService {
             }
         }
 
-        // 각 이미지 필드에 저장, 기존 이미지 유지
-        if (fileNames[0] != null) festival.setFimg(fileNames[0]);
-        else festival.setFimg(existingFestival.getFimg());
+        // 이미지 필드 설정 (기존 이미지 유지)
+        festival.setFimg(fileNames[0] != null ? fileNames[0] : existingFestival.getFimg());
+        festival.setFimg2(fileNames[1] != null ? fileNames[1] : existingFestival.getFimg2());
+        festival.setFimg3(fileNames[2] != null ? fileNames[2] : existingFestival.getFimg3());
+        festival.setFimg4(fileNames[3] != null ? fileNames[3] : existingFestival.getFimg4());
+        festival.setFimg5(fileNames[4] != null ? fileNames[4] : existingFestival.getFimg5());
 
-        if (fileNames[1] != null) festival.setFimg2(fileNames[1]);
-        else festival.setFimg2(existingFestival.getFimg2());
-
-        if (fileNames[2] != null) festival.setFimg3(fileNames[2]);
-        else festival.setFimg3(existingFestival.getFimg3());
-
-        if (fileNames[3] != null) festival.setFimg4(fileNames[3]);
-        else festival.setFimg4(existingFestival.getFimg4());
-
-        if (fileNames[4] != null) festival.setFimg5(fileNames[4]);
-        else festival.setFimg5(existingFestival.getFimg5());
+        // 기존의 voter와 devoter를 유지
+        festival.setVoter(existingVoters);
+        festival.setDevoter(existingDevoters);
 
         // 데이터베이스에 저장
         try {
             festivalRepository.save(festival);
         } catch (Exception e) {
-            e.printStackTrace(); // 예외 발생 시 스택 트레이스를 출력
-            throw new RuntimeException("Failed to update festival data."); // 사용자 정의 예외 메시지
+            e.printStackTrace();
+            throw new RuntimeException("Failed to update festival data.");
         }
     }
 
+
     // delete
-    public void delete(Integer frid) {
-        festivalRepository.deleteById(frid);
+    public void delete(Integer fid) {
+        festivalRepository.deleteById(fid);
     }
 
     //추천
