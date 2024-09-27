@@ -189,13 +189,14 @@ resize: none;
 		<div class="col-md-6 d-flex flex-column justify-content-center"> <!-- col-lg-12 ml-auto -->
 			<div class="block firstin">
 				<form><img th:src="@{|${downpath}/${lodge.firstaccomm}|}" width="300px" height="250px"></form>
-			</div>			
-		</div>			
-		<div class="block secondin">
+			</div>
+			<div class="block secondin">
 			<form><img th:src="@{|${downpath}/${lodge.secondaccomm}|}" width="300px" height="250px"></form>
-		</div>
+		</div>			
+		</div>			
+		
 		<div class="block accommlocation">	
-			 <div id="map" style="width: 80%; height: 300px; margin: 20px 0;"></div>
+			 <div id="map" style="width: 100%; height: 500px; max-width: 800px; margin: 20px auto;"></div>
 		</div>
 		
 	</div>
@@ -213,174 +214,118 @@ resize: none;
 				<li class="tab__item" id="notice">안내 사항</li>
 			</ul>
 			
-<!-- 탭 내용 영역 -->
-	<div class="tab__content-wrapper">
-		<div id="linfo" class="tab__content active">
-		
-		 <div class="mt-2.5">
-	     	<div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-	     	
-	     	<a th:utext=${lodge.linfo}></a>
-	     	
-	     	</div>
-	    </div>
-	    </div>
-	
-	
-		<div id="review" class="tab__content">
+			<!-- 탭 내용 영역 -->
+			<div class="tab__content-wrapper">
+				<div id="linfo" class="tab__content active">
+					<div class="mt-2.5">
+						<div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+							<a th:utext="${lodge.linfo}"></a>
+						</div>
+					</div>
+				</div>
+				
+				<div id="review" class="tab__content">
+					<div id="rvCmt" class="row_txtArea">
+						<form th:action="@{|/review/rvcreate/${lodge.lnum}|}" method="post">
+							<label for="comment">작성 글자 제한</label>
+							<span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
+							<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width:100%; height:100%;" minlength="5" maxlength="1000"></textarea>
+							<input type="submit" value="리뷰등록">
+						</form>
+					</div>
 
+					<div class="my-3 p-3 bg-white" style="padding-top: 10px">
+						<p style="font-size:20px;">등록된 리뷰 보기</p>
 
-    <div id="rvCmt" class="row_txtArea">   
-	<form th:action="@{|/review/rvcreate/${lodge.lnum}|}"method="post"> 
-            <label for="comment">작성 글자 제한</label>
-            <span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
-            <textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width:100%; height:100%;" minlength="5" maxlength="1000"></textarea>          
-        <input type="submit" value="리뷰등록">
-    </form>
-    </div>
+						<div id="comments-list">
+							<th:block th:each="review : ${lodge.reviewList}">
+								<div class="mt-2.5">
+									<div id="message2" rows="4" class="block w-full rounded-md border-1 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+										[[${review.rnum}]]번째 댓글<br>
+										작성자 : [[${review.username}]]<br>
+										리뷰 : [[${review.rcontent}]]<br>
 
-
-<div class="my-3 p-3 bg-white" style="padding-top: 10px">
-<p style="font-size:20px;">등록된 리뷰 보기<p>
-
-
-
-<div id="comments-list">
-
-	<th:block th:each="review : ${lodge.reviewList}">
-  
-  
-  		 <div class="mt-2.5">
- 			<div id="message2" rows="4" class="block w-full rounded-md border-1 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
- 						
-			[[${review.rnum}]]번째 댓글<br>
-			작성자 : [[${review.username}]]<br>
-			리뷰 : [[${review.rcontent}]]<br>
-
-
-
-											<div class="review-actions">
-
-
-<!--  작성자 일 때만 버튼이 보이도록 설정 -->
-<div th:if="${#authentication.name == review.username}">
-
-								<a th:href="@{|/review/delete/${review.rnum}|}"
-									class="btn btn-danger">삭제</a>
-<!-- 								<button type="button" class="btn btn-primary"
-									data-bs-toggle="modal" data-bs-target="#exampleModal">수정</button> -->
-									
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>
-									
-					
-</div>
-
+										<div class="review-actions">
+											<!-- 작성자 일 때만 버튼이 보이도록 설정 -->
+											<div th:if="${#authentication.name == review.username}">
+												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>
+											</div>
 
 											<div class="twobtn">
-            <a href="javascript:void(0);"class="agree btn-two green mini" th:data-uri="@{|/review/ragree/${review.ragree}|}">
-                공감
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
-            </a>
-            <a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/rdisagree/${review.rdisagree}|}">
-                비공감
-                <span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
-            </a>
-        </div>
-        
- 			</div>
+												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/ragree/${review.ragree}|}">
+													공감
+													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
+												</a>
+												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/rdisagree/${review.rdisagree}|}">
+													비공감
+													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</th:block>
+
+							<!-- 모든 댓글들에서 공용으로 사용할 모달 창 설정 -->
+							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">수정할 내용을 입력하세요</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<form action="/review/rvupdate" method="post">
+											<div class="modal-body">
+												<div class="mb-3">
+													<input type="hidden" name="lnum" class="form-control" th:value="${lodge.lnum}">
+													<input type="text" name="rnum" class="form-control" id="rnum">
+												</div>
+												<div class="mb-3">
+													<label for="message-text" class="col-form-label">수정할 리뷰 내용:</label>
+													<textarea class="form-control" name="rcontent" id="message-text"></textarea>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+												<input type="submit" class="btn btn-primary" value="전송">
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+
+							<!-- 모든 댓글들에서 공용으로 사용할 스크립트 설정 -->
+							<script>
+								const exampleModal = document.getElementById('exampleModal');
+								if (exampleModal) {
+									exampleModal.addEventListener('show.bs.modal', event => {
+										const button = event.relatedTarget;
+										const recipient = button.getAttribute('data-bs-whatever');
+										const msg = button.getAttribute('data-bs-msg');
+										const modalBodyInput = exampleModal.querySelector('#rnum');
+										const modalMsg = exampleModal.querySelector('#message-text');
+										modalBodyInput.value = recipient;
+										modalMsg.value = msg;
+									});
+								}
+							</script>
+						</div>
+					</div>
+				</div>
+
+				<div id="notice" class="tab__content">
+					<div class="mt-2.5">
+						<div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+							[[${lodge.notice}]]
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		
-	</th:block>
-
-
-
-<!-- 모든 댓글들에서 공용으로 사용할 모달 창 설정 -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">수정할 내용을 입력하세요</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      
-      
-<form action="/review/rvupdate" method="post">      
-      <div class="modal-body">
-  
-          <div class="mb-3">
-            <input type="hidden" name="lnum" class="form-control" th:value="${lodge.lnum}">
-            <input type="text" name="rnum" class="form-control" id="rnum">
-          </div>
-          <div class="mb-3">
-            <label for="message-text" class="col-form-label">수정할 리뷰 내용:</label>
-            <textarea class="form-control" name="rcontent" id="message-text"></textarea>
-          </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-<input type="submit" class="btn btn-primary" value="전송">
-									      </div>
-    </div>
-    
-</form>
-  </div>
+	</div>
 </div>
 
-
-<!-- 모든 댓글들에서 공용으로 사용할 스크립트 설정 th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent} -->
-<script>
-
-const exampleModal = document.getElementById('exampleModal')
-if (exampleModal) {
-  exampleModal.addEventListener('show.bs.modal', event => {
-
-    const button = event.relatedTarget
-
-    const recipient = button.getAttribute('data-bs-whatever')
-	const msg = button.getAttribute('data-bs-msg')
-
-
-    
-    const modalTitle = exampleModal.querySelector('.modal-title')
-    const modalBodyInput = exampleModal.querySelector('#rnum')
-	const modalMsg = exampleModal.querySelector('#message-text')
-    
-   /*  modalTitle.textContent = `New message to ${recipient}` */
-    modalBodyInput.value = recipient
-    modalMsg.value = msg
-  })
-}
-
-</script>
-
-
-
-
-	
-
-</div> 
-</div>
-
-
-</div>
-
-
-
-	<div id="notice" class="tab__content">
-	
-		 <div class="mt-2.5">
- 			<div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">[[${lodge.notice}]]</div>
-		</div>
-    </div>
-</div>
-
-
-
-
-</div>
-</div>
-
-</div>
 
 
 
