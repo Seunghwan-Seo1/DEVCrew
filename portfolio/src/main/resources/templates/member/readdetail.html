@@ -15,7 +15,7 @@
   	</div>	
 
 	<div class="centered-container mt-5 mb-5">
-	    <div class="centered-div" style="width:370px;">
+	    <div class="centered-div" style="width:500px;">
 	    	<form th:action="@{|/member/update/${member.username}|}" th:object="${memberForm}" method="post">
 	    	
 	    		<input type="hidden" name="mid" th:value="${member.mid}">
@@ -56,13 +56,68 @@
             	</div>
             	
 		        <div class="text-center mb-7">
-		            <input type="submit" class="btn btn-primary w-45 mb-3" value="프로필 수정">
-		            <a class="btn btn-danger w-45 mb-3" th:href="@{|/member/delete/${member.mid}|}">회원 탈퇴</a>
+		            <!-- <input type="submit" class="btn btn-primary w-45 mb-3" value="프로필 수정">
+		            <a class="btn btn-danger w-45 mb-3" th:href="@{|/member/delete/${member.mid}|}">회원 탈퇴</a> -->
+		            
+		            <!-- 프로필 수정 모달 버튼 -->
+	                <button type="button" class="btn btn-primary w-45 mb-3" data-toggle="modal" data-target="#profileUpdateModal">
+	                    프로필 수정
+	                </button>
+	                
+	                <!-- 회원 탈퇴 모달 버튼 -->
+	                <button type="button" class="btn btn-danger w-45 mb-3" data-toggle="modal" data-target="#deleteConfirmModal">
+	                    회원 탈퇴
+	                </button>
+		            
 		            <a class="btn btn-secondary w-45 mb-3" href="/">메인으로</a>
 		        </div>
+		        
+		        <!-- 프로필 수정 모달 -->
+				<div class="modal fade" id="profileUpdateModal" tabindex="-1" role="dialog" aria-labelledby="profileUpdateModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="profileUpdateModalLabel">프로필 수정</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        프로필을 수정하시겠습니까?
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				        <button type="submit" class="btn btn-primary">수정</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+				
+				<!-- 회원 탈퇴 모달 -->
+				<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="deleteConfirmModalLabel">회원 탈퇴</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        정말로 회원 탈퇴를 하시겠습니까? 이 작업은 되돌릴 수 없습니다.
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				        <a class="btn btn-danger" th:href="@{|/member/delete/${member.mid}|}">탈퇴</a>
+				      </div>
+				    </div>
+				  </div>
+				</div>
 	        </form>
 	    </div>
 	</div>
+	
+
 	
 </div>
 </html>

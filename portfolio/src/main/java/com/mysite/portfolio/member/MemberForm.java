@@ -3,6 +3,7 @@ package com.mysite.portfolio.member;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -12,10 +13,12 @@ public class MemberForm {
 	@Email
 	private String username;
 	
+	@Pattern (regexp = "^[a-zA-Z0-9!@#$%^&*]{4,16}$",
+			  message = "비밀번호는 4~16자의 영문 대소문자,숫자,특수문자로 구성되어야 합니다")
 	@NotEmpty(message = "비밀번호를 입력해주세요")
     private String password1;
 
-    @NotEmpty(message = "비밀번호 확인을 부탁드립니다")
+    @NotEmpty(message = "비밀번호를 다시 입력해주세요")
     private String password2;
 	
     @NotEmpty(message = "연락처를 입력해주세요")
