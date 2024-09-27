@@ -38,8 +38,7 @@ public class Review {
 		
 	@ManyToOne
 	private Lodge lodge;
-	
-	
+		
 	@ManyToOne
 	private Member member;
 	
