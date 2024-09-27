@@ -74,10 +74,10 @@ a {
 	 height: 80vh; */
 }
 
-.1strow {
+/* .block 1strow {
 	grid-column: 1 / 2;
     grid-row: 1 / 3;
-}
+} */
 
 .firstin {
 	grid-column: 1 / 2;
@@ -123,19 +123,27 @@ resize: none;
 	margin-bottom : 10px;
 	padding : 10px;
 }
-/* .twobtn {
+.twobtn {
 	float : right;
-} 
- */
+	display: inline-block;    
+    align-self: flex-end;
+}
+
 .review-actions {
 	float : right;
 	text-align : center;
+	display: inline-block;
+    align-self: flex-end; 
 }
 
 .edit-btn, .delete-btn {
 	border: 1px solid #83a4ff;
-  background-color: #83a4ff;
-  color: #fff;
+    background-color: #83a4ff;
+    color: #fff;
+    display: inline-block;
+    align-self: flex-end;
+    justify-content: space-between;
+
 }
 
 </style>
@@ -248,14 +256,59 @@ resize: none;
 			[[${review.rnum}]]번째 댓글<br>
 			작성자 : [[${review.username}]]<br>
 			리뷰 : [[${review.rcontent}]]<br>
- 			
+			
+
  			
  			     <div class="review-actions">              
-<!-- <button class="edit-btn" th:data-review-id="${review.rnum}">수정</button> -->
-<!--<button class="delete-btn" th:data-review-id="${review.rnum}">삭제</button> -->
-                     <a th:href="@{|/review/delete/${review.rnum}|}" class="edit-btn">수정</a>
-                     <a th:href="@{|/review/delete/${review.rnum}|}" class="delete-btn">삭제</a>
- 
+				
+   
+                     <!--  작성자 일 때만 버튼이 보이도록 설정 -->
+<th:block th:if="${#authentication.name == review.username}">     
+        
+<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  
+</button>
+
+</th:block>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+<form action="/review/rvtest" method="post">
+      <input type="hidden" name="lid" th:value="${lodge.lnum}">
+      <input type="hidden" name="rnum" th:value="${review.rnum}">
+      
+      <input type="text" name="rcontent" th:value="${review.rcontent}">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <input type="submit" class="btn btn-danger">수정</a> 
+      </div>
+</form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+                     
+                     
+                     
+                     
+
+					
                  </div>
                 
                 

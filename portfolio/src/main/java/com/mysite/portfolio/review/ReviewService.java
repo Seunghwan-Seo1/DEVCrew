@@ -65,13 +65,20 @@ public class ReviewService {
 //		this.reviewRepository.save(review);
 //	}
 
-	public void updateRv(Review review) {
-		Optional<Review> rv = reviewRepository.findById(review.getRnum());
-		Review reviewData = rv.get();
-		reviewData.setRcontent(review.getRcontent());
-		this.reviewRepository.save(reviewData);
+	public void rvupdate(Review review, Integer lnum) {
+		/*
+		 * Optional<Review> rv = reviewRepository.findById(review.getRnum()); Review
+		 * reviewData = rv.get(); reviewData.setRcontent(review.getRcontent());
+		 * this.reviewRepository.save(reviewData);
+		 */
+		
+		Optional<Lodge> ol = lodgeRepository.findById(lnum);
+		
+		review.setLodge(ol.get());
+		this.reviewRepository.save(review);
 	}
 	
+
 		
 	public Review getReview(Integer rnum) {
 		Optional<Review> review = this.reviewRepository.findById(rnum);

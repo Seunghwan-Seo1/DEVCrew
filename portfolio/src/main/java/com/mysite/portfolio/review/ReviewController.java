@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.mysite.portfolio.S3Service;
-import com.mysite.portfolio.festival.Freview;
 import com.mysite.portfolio.lodge.LodgeService;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
@@ -82,16 +81,16 @@ public class ReviewController {
 //		return "lodge/detail";
 //	}
 
-	@GetMapping("/detail/{mid}")
+	@GetMapping("/detail/rvupdate/{mid}")
 	public String rvdetail(@PathVariable("mid") Integer mid, Model model) {
 		model.addAttribute("lodge", reviewService.rvdetail(mid));
 		return "lodge/detail";
 	}
 
-	@GetMapping("/detail/rvupdate/{mid}")
-	public String rvupdate() {
-		return "lodge/detail";
-	}
+//	@GetMapping("/detail/rvupdate/{mid}")
+//	public String rvupdate() {
+//		return "lodge/detail";
+//	}
 
 	
 //	  @PostMapping("/detail/rvupdate2/{mid}") 
@@ -100,21 +99,32 @@ public class ReviewController {
 //	  }
 		
 	//작성자만 수정할 수 있게
-	 @PreAuthorize("isAuthenticated()")
-	 @PostMapping("/detail/rvupdate2/{mid}")
-	    public String rvupdate2(@Valid ReviewForm reviewForm, BindingResult bindingResult,
-	            @PathVariable("mid") Integer rnum, Principal principal) {
-	        if (bindingResult.hasErrors()) {
-	            return "review_form";
-	        }
-	        Review review = this.reviewService.getReview(rnum);
-	        if (!review.getUsername().equals(principal.getName())) {
-	            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자신이 쓴 리뷰만 수정이 가능합니다.");
-	        }
-	        this.reviewService.updateRv(review);
-	        return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
-	    }
+	/*
+	 * @PreAuthorize("isAuthenticated()")
+	 * 
+	 * @PostMapping("/detail/rvupdate/{mid}") public String rvupdate(@Valid
+	 * ReviewForm reviewForm, BindingResult bindingResult,
+	 * 
+	 * @PathVariable("mid") Integer rnum, Principal principal) { if
+	 * (bindingResult.hasErrors()) { return "review_form"; } Review review =
+	 * this.reviewService.getReview(rnum); if
+	 * (!review.getUsername().equals(principal.getName())) { throw new
+	 * ResponseStatusException(HttpStatus.BAD_REQUEST, "자신이 쓴 리뷰만 수정이 가능합니다."); }
+	 * this.reviewService.rvupdate(review); return
+	 * String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum()); }
+	 */
 
+	//리뷰 수정
+	@PostMapping("/rvtest")
+	public String rvupdate(@ModelAttribute Review review,
+						   @RequestParam("lid") Integer lid
+			) {
+			this.reviewService.rvupdate(review, lid);
+		
+		return "redirect:/lodge/detail/" + lid;
+	}
+	 
+	 
 	 	 
 	// 리뷰 삭제
 //	@GetMapping("/delete/{mid}")
