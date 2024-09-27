@@ -117,4 +117,15 @@ public class LodgeService {
 	public void rvdelete(Integer lnum) {
 		lodgeRepository.deleteById(lnum);
 	}
+	
+	
+	// 숙소 정보 검색
+	
+	
+	
+	 public List<Lodge> find(String keyword) {
+	        System.out.println("서비스 : " + keyword);
+	        return lodgeRepository.findAllByKeyword(keyword); // 수정된 메서드 호출
+	    }
 }
+	
