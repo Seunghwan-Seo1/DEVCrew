@@ -15,6 +15,6 @@ public interface FestivalRepository extends JpaRepository<Festival, Integer> {
     List<Festival> findAllByOrderByVoteCountDesc(); // 추천 수 기준 내림차순 정렬
 	
 	//검색 기능       
-	@Query("SELECT f FROM Festival f WHERE f.fname LIKE %:keyword% OR f.flocation LIKE %:keyword%")
+	@Query("SELECT f FROM Festival f WHERE f.fname LIKE %:keyword% OR f.flocation LIKE :keyword%")
     List<Festival> findAllByKeyword(@Param("keyword") String keyword);
 }
