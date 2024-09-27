@@ -195,7 +195,7 @@ resize: none;
 			<form><img th:src="@{|${downpath}/${lodge.secondaccomm}|}" width="300px" height="250px"></form>
 		</div>
 		<div class="block accommlocation">	
-			<form>지도 위치</form>
+			 <div id="map" style="width: 80%; height: 300px; margin: 20px 0;"></div>
 		</div>
 		
 	</div>
@@ -381,7 +381,7 @@ if (exampleModal) {
 </div>
 
 </div>
-</div>
+
 
 
 
@@ -527,6 +527,34 @@ Array.from(disagree_elements).forEach(function(element) {
 });
 
 </script>
+<!-- 지도 -->
+        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
+        <script>
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3
+            };
+            var map = new kakao.maps.Map(mapContainer, mapOption);
 
-</body>
+            var marker = new kakao.maps.Marker({
+                position: mapOption.center
+            });
+            marker.setMap(map);
+
+            var address = "[[${lodge.llocation}]]";
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    map.setCenter(newPosition);
+                    marker.setPosition(newPosition);
+                } else {
+                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+                }
+            });
+        </script>
+
+</div>
 </html>

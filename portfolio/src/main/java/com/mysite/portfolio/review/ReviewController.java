@@ -76,11 +76,6 @@ public class ReviewController {
 		return "lodge/detail";
 	}
 
-//	  @PostMapping("/detail/rvupdate2/{mid}") 
-//	  public String rvupdate2(Model model, @PathVariable("mid") Integer id) { 
-//		  return "redirect:lodge/detail/" +id; 
-//	  }
-
 	// 작성자만 수정할 수 있게
 //	 @PreAuthorize("isAuthenticated()")
 //	 @PostMapping("/detail/rvupdate2/{mid}")
