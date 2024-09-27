@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.mysite.portfolio.DataNotFoundException;
 import com.mysite.portfolio.S3Service;
-import com.mysite.portfolio.festival.Freview;
 import com.mysite.portfolio.lodge.Lodge;
 import com.mysite.portfolio.lodge.LodgeRepository;
 import com.mysite.portfolio.member.Member;
@@ -66,16 +65,21 @@ public class ReviewService {
 //		this.reviewRepository.save(review);
 //	}
 
-	public void updateRv(Review review) {
-		Optional<Review> _review = reviewRepository.findById(review.getRnum());
+	public void rvupdate(Review review, Integer lnum) {
+		/*
+		 * Optional<Review> rv = reviewRepository.findById(review.getRnum()); Review
+		 * reviewData = rv.get(); reviewData.setRcontent(review.getRcontent());
+		 * this.reviewRepository.save(reviewData);
+		 */
 		
-		Review reviewData = _review.get();
-		reviewData.setRcontent(review.getRcontent());
-		this.reviewRepository.save(reviewData);
+		Optional<Lodge> ol = lodgeRepository.findById(lnum);
+		
+		review.setLodge(ol.get());
+		this.reviewRepository.save(review);
 	}
 	
-	
-	
+
+		
 	public Review getReview(Integer rnum) {
 		Optional<Review> review = this.reviewRepository.findById(rnum);
 		if (review.isPresent()) {
