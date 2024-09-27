@@ -64,11 +64,11 @@ public class ReviewController {
 	}
 
 	// 리뷰 수정..
-//	@GetMapping("/detail/rvlist")
-//	public String rvlist(Model model) {
-//		model.addAttribute("reviewList", reviewService.rvlist());
-//		return "lodge/detail";
-//	}
+	@GetMapping("/detail/rvlist")
+	public String rvlist(Model model) {
+		model.addAttribute("reviewList", reviewService.rvlist());
+		return "lodge/detail";
+	}
 
 	@GetMapping("/detail/rvupdate/{mid}")
 	public String rvdetail(@PathVariable("mid") Integer mid, Model model) {
@@ -76,84 +76,32 @@ public class ReviewController {
 		return "lodge/detail";
 	}
 
-//	@GetMapping("/detail/rvupdate/{mid}")
-//	public String rvupdate() {
-//		return "lodge/detail";
-//	}
-
-	
 //	  @PostMapping("/detail/rvupdate2/{mid}") 
 //	  public String rvupdate2(Model model, @PathVariable("mid") Integer id) { 
-//		  return "redirect:lodge/detail/" +mid; 
+//		  return "redirect:lodge/detail/" +id; 
 //	  }
-		
-	//작성자만 수정할 수 있게
-	/*
-	 * @PreAuthorize("isAuthenticated()")
-	 * 
-	 * @PostMapping("/detail/rvupdate/{mid}") public String rvupdate(@Valid
-	 * ReviewForm reviewForm, BindingResult bindingResult,
-	 * 
-	 * @PathVariable("mid") Integer rnum, Principal principal) { if
-	 * (bindingResult.hasErrors()) { return "review_form"; } Review review =
-	 * this.reviewService.getReview(rnum); if
-	 * (!review.getUsername().equals(principal.getName())) { throw new
-	 * ResponseStatusException(HttpStatus.BAD_REQUEST, "자신이 쓴 리뷰만 수정이 가능합니다."); }
-	 * this.reviewService.rvupdate(review); return
-	 * String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum()); }
-	 */
 
-	//리뷰 수정
-	@PostMapping("/rvtest")
-	public String rvupdate(@ModelAttribute Review review,
-						   @RequestParam("lid") Integer lid
-			) {
-			this.reviewService.rvupdate(review, lid);
-		
-		return "redirect:/lodge/detail/" + lid;
-	}
-	 
-	 
-	 	 
-	// 리뷰 삭제
-//	@GetMapping("/delete/{mid}")
-//	public String rvdelete(@PathVariable("mid") Integer mid) {
-//		reviewService.rvdelete(mid);
-//		return "redirect:lodge/detail";
-//	}
+	// 작성자만 수정할 수 있게
+//	 @PreAuthorize("isAuthenticated()")
+//	 @PostMapping("/detail/rvupdate2/{mid}")
+//	    public String rvupdate2(@Valid ReviewForm reviewForm, BindingResult bindingResult,
+//	            @PathVariable("mid") Integer rnum, Principal principal) {
+//	        if (bindingResult.hasErrors()) {
+//	            return "review_form";
+//	        }
+//	        Review review = this.reviewService.getReview(rnum);
+//	        if (!review.getUsername().equals(principal.getName())) {
+//	            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "자신이 쓴 리뷰만 수정이 가능합니다.");
+//	        }
+//	        this.reviewService.updateRv(review);
+//	        return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
+//	    }
 	
-	// /review/delete/${review.rnum}/${lodge.lnum}|}
-	// http://localhost:8090/review/delete/24/lodge/detail/11
-	 @PreAuthorize("isAuthenticated()")
-	 @GetMapping("/delete/{rnum}")
-	public String rvdelete(@PathVariable("rnum") Integer rnum
-			) {
-		Review review = reviewService.rvdetail(rnum);
-		Integer lnum = review.getLodge().getLnum();
-		reviewService.rvdelete(rnum);
+	@PostMapping("/rvupdate")
+	public String rvupdate(@ModelAttribute Review review, @RequestParam("lnum") Integer lnum, Principal principal) {
+		System.out.println("현재 접속자 정보 컨트롤러 : " +  principal.getName());
+		this.reviewService.rvupdate(review, lnum, principal);
 		return "redirect:/lodge/detail/" + lnum;
-	}
-	
-		
-		
-	// 공감
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/ragree/{rnum}")
-	public String reviewAgr(Principal principal, @PathVariable("rnum") Integer mid) {
-		Review review = this.reviewService.getReview(mid);
-		Member member = this.memberService.getMember(principal.getName());
-		this.reviewService.agree(review, member);
-		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
-	}
-
-	// 비공감
-	@PreAuthorize("isAuthenticated()")
-	@GetMapping("/rdisagree/{rnum}")
-	public String reviewDagr(Principal principal, @PathVariable("rnum") Integer mid) {
-		Review review = this.reviewService.getReview(mid);
-		Member member = this.memberService.getMember(principal.getName());
-		this.reviewService.disagree(review, member);
-		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
 	}
 
 	// 리뷰 삭제
