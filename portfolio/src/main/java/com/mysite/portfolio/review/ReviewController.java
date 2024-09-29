@@ -109,24 +109,27 @@ public class ReviewController {
 		return "redirect:/lodge/detail/" + lnum;
 	}
 
-//	// 공감
-//	@PreAuthorize("isAuthenticated()")
-//	@GetMapping("/ragree/{rnum}")
-//	public String reviewAgr(Principal principal, @PathVariable("rnum") Integer mid) {
-//		Review review = this.reviewService.getReview(mid);
-//		Member member = this.memberService.getMember(principal.getName());
-//		this.reviewService.agree(review, member);
-//		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
-//	}
-//
-//	// 비공감
-//	@PreAuthorize("isAuthenticated()")
-//	@GetMapping("/rdisagree/{rnum}")
-//	public String reviewDagr(Principal principal, @PathVariable("rnum") Integer mid) {
-//		Review review = this.reviewService.getReview(mid);
-//		Member member = this.memberService.getMember(principal.getName());
-//		this.reviewService.disagree(review, member);
-//		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
-//	}
+	// 공감
+	/*
+	 * @PreAuthorize("isAuthenticated()")
+	 * 
+	 * @GetMapping("/agree/{rnum}") public String reviewAgr(Principal
+	 * principal, @PathVariable("rnum") Integer rnum) { Review review =
+	 * this.reviewService.getReview(rnum); Member member =
+	 * this.memberService.getMember(principal.getName());
+	 * this.reviewService.agree(review, member); return
+	 * String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum()); }
+	 * 
+	 * // 비공감
+	 * 
+	 * @PreAuthorize("isAuthenticated()")
+	 * 
+	 * @GetMapping("/disagree/{rnum}") public String reviewDagr(Principal
+	 * principal, @PathVariable("rnum") Integer mid) { Review review =
+	 * this.reviewService.getReview(mid); Member member =
+	 * this.memberService.getMember(principal.getName());
+	 * this.reviewService.disagree(review, member); return
+	 * String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum()); }
+	 */
 
 }
