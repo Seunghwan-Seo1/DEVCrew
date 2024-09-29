@@ -231,19 +231,20 @@ resize: none;
 						<form th:action="@{|/review/rvcreate/${lodge.lnum}|}" method="post">
 							<label for="comment">작성 글자 제한</label>
 							<span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
-							<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width:100%; height:100%;" minlength="5" maxlength="1000"></textarea>
+							<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width:100%; height:100%;"></textarea>
 							<input type="submit" value="리뷰등록">
 						</form>
 					</div>
 
 					<div class="my-3 p-3 bg-white" style="padding-top: 10px">
-						<p style="font-size:20px;">등록된 리뷰 보기</p>
+						<p style="font-size:20px; text-align:center;">등록된 리뷰 보기</p>
+						<h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(lodge.reviewList)}개의 리뷰가 있습니다.|"></h5>
 
 						<div id="comments-list">
 							<th:block th:each="review : ${lodge.reviewList}">
 								<div class="mt-2.5">
 									<div id="message2" rows="4" class="block w-full rounded-md border-1 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-										[[${review.rnum}]]번째 댓글<br>
+										[[${review.rnum}]]번째 후기<br>
 										작성자 : [[${review.username}]]<br>
 										리뷰 : [[${review.rcontent}]]<br>
 
@@ -255,11 +256,11 @@ resize: none;
 											</div>
 
 											<div class="twobtn">
-												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/ragree/${review.ragree}|}">
+												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.ragree}|}">
 													공감
 													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
 												</a>
-												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/rdisagree/${review.rdisagree}|}">
+												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/disagree/${review.rdisagree}|}">
 													비공감
 													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
 												</a>
@@ -290,7 +291,7 @@ resize: none;
 											</div>
 											<div class="modal-footer">
 												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-												<input type="submit" class="btn btn-primary" value="전송">
+												<input type="submit" class="btn btn-primary" value="수정완료">
 											</div>
 										</form>
 									</div>
@@ -455,7 +456,10 @@ document.querySelectorAll('.edit-btn').forEach(button => {
      }
  }
 
-const agree_elements = document.getElementsByClassName("ragree");
+ </script>
+ 
+<script type='text/javascript'>
+const agree_elements = document.getElementsByClassName("agree");
 Array.from(agree_elements).forEach(function(element) {
     element.addEventListener('click', function() {
         if(confirm("해당 리뷰에 공감하시나요?")) {
@@ -464,7 +468,7 @@ Array.from(agree_elements).forEach(function(element) {
     });
 });
 
-const disagree_elements = document.getElementsByClassName("rdisagree");
+const disagree_elements = document.getElementsByClassName("disagree");
 Array.from(disagree_elements).forEach(function(element) {
     element.addEventListener('click', function() {
         if(confirm("해당 리뷰에 비공감하시나요?")) {
@@ -472,36 +476,36 @@ Array.from(disagree_elements).forEach(function(element) {
         }
     });
 });
-
 </script>
+
 <!-- 지도 -->
-        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
-        <script>
-            var mapContainer = document.getElementById('map');
-            var mapOption = {
-                center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3
-            };
-            var map = new kakao.maps.Map(mapContainer, mapOption);
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
+<script>
+    var mapContainer = document.getElementById('map');
+    var mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3
+    };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-            var marker = new kakao.maps.Marker({
-                position: mapOption.center
-            });
-            marker.setMap(map);
+    var marker = new kakao.maps.Marker({
+        position: mapOption.center
+    });
+    marker.setMap(map);
 
-            var address = "[[${lodge.llocation}]]";
-            var geocoder = new kakao.maps.services.Geocoder();
+    var address = "[[${lodge.llocation}]]";
+    var geocoder = new kakao.maps.services.Geocoder();
 
-            geocoder.addressSearch(address, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
-                    map.setCenter(newPosition);
-                    marker.setPosition(newPosition);
-                } else {
-                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
-                }
-            });
-        </script>
+    geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+            map.setCenter(newPosition);
+            marker.setPosition(newPosition);
+        } else {
+            alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+        }
+    });
+</script>
 
 </div>
 </html>
