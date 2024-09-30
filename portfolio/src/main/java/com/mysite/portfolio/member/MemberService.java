@@ -95,7 +95,7 @@ public class MemberService implements UserDetailsService {
 	        } else if (message.contains("2개의 패스워드")) {
 	            bindingResult.rejectValue("password2", "passwordMismatch", message);
 	        } else if (message.contains("이미 등록된 닉네임")) {
-	        	bindingResult.rejectValue("nickname", "passwordMismatch", message);
+	        	bindingResult.rejectValue("nickname", "nicknameExists", message);
 	        } else if (message.contains("이미 등록된 연락처")) {
 	            bindingResult.rejectValue("maddr", "maddrExists", message);
 	        } else {

@@ -2,55 +2,7 @@
 <div layout:fragment="content">
 
 
-<style>
-.row {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: flex-start;
-}
 
-.feature {
-	margin: 10px;
-	text-align: center;
-}
-
-img {
-	width: 300px;
-	height: 400px;
-	object-fit: cover;
-}
-
-.lodge-name {
-	font-size: 2rem;
-	color: #000;
-	text-align: center;
-	margin-top: 0.5rem;
-	margin-bottom: 1rem;
-}
-
-@media ( max-width : 768px) {
-	.feature-icon {
-		height: 200px;
-	}
-	.lodge-name {
-		font-size: 1.25rem;
-		margin-top: 0.3rem;
-		margin-bottom: 0.8rem;
-	}
-}
-
-@media ( max-width : 480px) {
-	.feature-icon {
-		height: 150px;
-	}
-	.lodge-name {
-		font-size: 1rem;
-		margin-top: 0.2rem;
-		margin-bottom: 0.5rem;
-	}
-}
-</style>
 
 	<div class="hero hero-inner">
 		<div class="container">
@@ -86,7 +38,7 @@ img {
 		<!-- 사진 및 간단한설명 반복문-->
 		<div class="row g-3 py-5 row-cols-1 row-cols-lg-4">
 			<th:block th:each="lodge : ${lodges}">
-				<div class="feature col lodge-item" data-name="[[${lodge.ㅣname}]]">
+				<div class="feature col lodge-item" data-name="[[${lodge.lname}]]">
 					<div class="feature-icon">
 						<a th:href="@{|/lodge/detail/${lodge.lnum}|}" style="text-decoration: none;">
 						<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${lodge.accomm}|}">

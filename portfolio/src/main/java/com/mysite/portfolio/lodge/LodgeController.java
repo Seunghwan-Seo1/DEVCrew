@@ -45,7 +45,7 @@ public class LodgeController {
 	public String lsecmain(Model model) {
 		model.addAttribute("lodges", lodgeService.getList());
 		model.addAttribute("downpath", "https://" + downpath);
-		return "/lodge/secondmain";
+		return "lodge/secondmain";
 	}
 
 

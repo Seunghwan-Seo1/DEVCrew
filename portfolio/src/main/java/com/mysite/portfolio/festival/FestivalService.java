@@ -9,6 +9,9 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -96,12 +99,15 @@ public class FestivalService {
         List<Festival> festivals = festivalRepository.findAll();
 
         return festivals.stream()
-            .filter(festival -> (search == null || search.isEmpty() || festival.getFname().toLowerCase().contains(search.toLowerCase()) || festival.getFlocation().toLowerCase().contains(search.toLowerCase())) &&
+            .filter(festival -> (search == null || search.isEmpty() || 
+                                 festival.getFname().toLowerCase().contains(search.toLowerCase()) || 
+                                 festival.getFlocation().toLowerCase().contains(search.toLowerCase())) &&
                                 (region.equals("전체") || festival.getFlocation().contains(region)) &&
                                 (category.equals("전체") || festival.getFcategory().equalsIgnoreCase(category)))
             .sorted((f1, f2) -> Integer.compare(f2.getVoteScore(), f1.getVoteScore())) // 내림차순 정렬
             .collect(Collectors.toList());
     }
+
 
     // readdetail
     public Festival readdetail(Integer fid) {
@@ -182,8 +188,20 @@ public class FestivalService {
 		return festival.get();
 	}
     
-    public List<Festival> find(String keyword) {
-        System.out.println("서비스 : " + keyword);
-        return festivalRepository.findAllByKeyword(keyword); // 수정된 메서드 호출
+	/*
+	 * public List<Festival> find(String keyword) { System.out.println("서비스 : " +
+	 * keyword); return festivalRepository.findAllByKeyword(keyword); // 수정된 메서드 호출
+	 * }
+	 */
+    
+    public Page<Festival> getFestivalListSortedByVotes(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return festivalRepository.findAllByOrderByVoteCountDesc(pageable);
+    }
+    
+    // 검색어에 따른 페이징된 페스티벌 리스트 반환
+    public Page<Festival> findByKeywordPaged(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return festivalRepository.findAllByKeyword(keyword, pageable); // 수정된 메서드 호출
     }
 }

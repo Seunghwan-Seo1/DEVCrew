@@ -45,21 +45,63 @@
 			
 				
 
-					<!-- 사진 및 간단한설명 반복문-->
-					<div class="row g-3 py-5 row-cols-1 row-cols-lg-4">
-     <th:block th:each="festival : ${festivals.content}">
+<!-- 사진 및 간단한 설명 반복문 -->
+<div class="row g-3 py-5 row-cols-1 row-cols-lg-4">
+    <!-- 페이징된 페스티벌 리스트 반복문 -->
+    <th:block th:each="festival : ${festivalPage.content}">
         <div class="feature col festival-item"
-             data-name="[[${festival.fname}]]"
-             data-location="[[${festival.flocation}]]"
-             data-category="[[${festival.fcategory}]]">
+             data-name="${festival.fname}" 
+             data-location="${festival.flocation}"
+             data-category="${festival.fcategory}">
+             
             <div class="feature-icon">
-                <a th:href="@{|/festival/readdetail/${festival.fid}|}" style="text-decoration: none;">
-                    <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
+                <a th:href="@{/festival/readdetail/{id}(id=${festival.fid})}" style="text-decoration: none;">
+                    <img class="img-fluid" th:src="@{https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/{file}(file=${festival.fimg})}" 
+                         th:alt="${festival.fname}">
                 </a>
             </div>
-            <h3 class="fs-3 text-body-emphasis festival-name">[[${festival.fname}]]</h3>
+            
+            <h3 class="fs-3 text-body-emphasis festival-name" th:text="${festival.fname}"></h3>
         </div>
     </th:block>
+</div>
+
+<!-- 페이징 링크 -->
+<div class="pagination">
+    <a th:href="@{/festival/readlist(page=${festivalPage.number - 1}, size=${festivalPage.size})}" 
+       th:if="${festivalPage.hasPrevious()}" class="btn btn-primary">이전</a>
+    
+    <span>현재 페이지: <span th:text="${festivalPage.number + 1}"></span> / <span th:text="${festivalPage.totalPages}"></span></span>
+    
+    <a th:href="@{/festival/readlist(page=${festivalPage.number + 1}, size=${festivalPage.size})}" 
+       th:if="${festivalPage.hasNext()}" class="btn btn-primary">다음</a>
+</div>
+
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        <!-- Previous button -->
+        <li class="page-item" th:if="${currentPage > 0}">
+            <a class="page-link" th:href="@{/readlist(page=${currentPage - 1}, search=${search}, region=${region}, category=${category})}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        
+        <!-- Page numbers -->
+        <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${currentPage == i} ? 'active' : ''">
+            <a class="page-link" th:href="@{/readlist(page=${i}, search=${search}, region=${region}, category=${category})}">[[${i + 1}]]</a>
+        </li>
+        
+        <!-- Next button -->
+        <li class="page-item" th:if="${currentPage < totalPages - 1}">
+            <a class="page-link" th:href="@{/readlist(page=${currentPage + 1}, search=${search}, region=${region}, category=${category})}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
 			</div>
 			<!-- 사진 및 간단한설명 반복문-->
 <!-- CSS -->
