@@ -38,6 +38,15 @@
             	</div>
             	
 		        <div class="mb-3 text-start">
+		        	<label for="nickname" class="form-label">닉네임</label>
+		        	<input type="text" name="nickname" th:value="${member.nickname}" placeholder="닉네임" class="form-control" />
+		        </div>
+		        
+				<div class="position-relative">
+              		<hr class="bg-body-secondary mb-4" />
+            	</div>
+            	
+		        <div class="mb-3 text-start">
 		        	<label for="maddr" class="form-label">연락처</label>
 		        	<input type="text" name="maddr" th:value="${member.maddr}" placeholder="연락처" class="form-control" />
 		        </div>
@@ -56,9 +65,6 @@
             	</div>
             	
 		        <div class="text-center mb-7">
-		            <!-- <input type="submit" class="btn btn-primary w-45 mb-3" value="프로필 수정">
-		            <a class="btn btn-danger w-45 mb-3" th:href="@{|/member/delete/${member.mid}|}">회원 탈퇴</a> -->
-		            
 		            <!-- 프로필 수정 모달 버튼 -->
 	                <button type="button" class="btn btn-primary w-45 mb-3" data-toggle="modal" data-target="#profileUpdateModal">
 	                    프로필 수정
