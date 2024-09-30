@@ -1,6 +1,7 @@
 package com.mysite.portfolio.lodge;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +46,7 @@ public class LodgeController {
 	public String lsecmain(Model model) {
 		model.addAttribute("lodges", lodgeService.getList());
 		model.addAttribute("downpath", "https://" + downpath);
-		return "/lodge/secondmain";
+		return "lodge/secondmain";
 	}
 
 
@@ -67,8 +68,8 @@ public class LodgeController {
 	}
 	
 	@PostMapping("/lgcreate")
-	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("files") List<MultipartFile> files) throws IOException {
-		lodgeService.lgcreate(lodge, files);
+	public String lgcreate(@ModelAttribute Lodge lodge, @RequestParam("files") List<MultipartFile> files, Principal principal) throws IOException {
+		lodgeService.lgcreate(lodge, files, principal);
 
 		return "redirect:/lodge/secondmain";
 

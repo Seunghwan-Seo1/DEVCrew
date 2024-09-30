@@ -63,17 +63,9 @@
 
 				<ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-right">
 					<li><a href="/">홈</a></li>
-					<!-- <li class="has-children"> -->
+
 						<li><a href="/festival/readlist">축제소개</a></li>
-					<!-- 	<ul class="dropdown">
-						
-							<li class="has-children">
-								<a href="festival/readlist">축제 전체</a>
-							</li>
-						</ul>	 -->
-							
-						
-					</li>
+		
 					<li class="has-children">
 						<a href="#">숙박</a>
 						<ul class="dropdown">						
@@ -100,6 +92,24 @@
 					<li><a sec:authorize="isAnonymous()" href="/signin">로그인</a></li>
 					<li><a sec:authorize="isAuthenticated()" href="/signout">로그아웃</a></li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin/main">관리자 메뉴</a></li>
+					<li class="nav-item dropdown">
+					  <a class="nav-link" href="#" sec:authorize="isAuthenticated()" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					    <i class="bi bi-bell white-icon"></i> <!-- 흰색 아이콘 적용 -->
+					  </a>
+					
+					  <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownNotification">
+					    <div>
+					      <h6 class="dropdown-header">알림 목록</h6>
+					      <th:block th:each="notification : ${notifications}">
+					        <a href="#" class="dropdown-item">
+					          [[${notification.nmessage}]]
+					        </a>
+					      </th:block>
+					      <div class="dropdown-divider"></div>
+					      <a class="dropdown-item text-center" th:href="@{'/ndetail/' + ${#authentication.name}}">알림 관리</a>
+					    </div>
+					  </div>
+					</li>
 				</ul>
 
 				<a href="#" class="burger ml-auto float-right site-menu-toggle js-menu-toggle d-inline-block d-lg-none light" data-toggle="collapse" data-target="#main-navbar">

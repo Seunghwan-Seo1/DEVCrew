@@ -2,13 +2,6 @@
 <div layout:fragment="content">
 
 
-<style>
-.row {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: flex-start;
-}
 
 .feature {
 	margin: 10px;
@@ -21,6 +14,10 @@ img {
 	object-fit: cover;
 }
 
+.img-fluid {
+	width: 300px;
+	height: 300px;
+}
 .lodge-name {
 	font-size: 2rem;
 	color: #000;
@@ -52,12 +49,13 @@ img {
 }
 </style>
 
+
 	<div class="hero hero-inner">
 		<div class="container">
 			<div class="row align-items-center">
 				<div class="col-lg-6 mx-auto text-center">
 					<div class="intro-wrap">
-						<h1 class="mb-0">나에게 맞는 숙소 찾기</h1>
+						<h1 class="mb-0">내가 찾는 숙소</h1>
 						<p class="text-white">축제와 가깝고 편한 숙소를 소개합니다</p>
 					</div>
 				</div>
@@ -86,7 +84,7 @@ img {
 		<!-- 사진 및 간단한설명 반복문-->
 		<div class="row g-3 py-5 row-cols-1 row-cols-lg-4">
 			<th:block th:each="lodge : ${lodges}">
-				<div class="feature col lodge-item" data-name="[[${lodge.ㅣname}]]">
+				<div class="feature col lodge-item" data-name="[[${lodge.lname}]]">
 					<div class="feature-icon">
 						<a th:href="@{|/lodge/detail/${lodge.lnum}|}" style="text-decoration: none;">
 						<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${lodge.accomm}|}">

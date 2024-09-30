@@ -2,6 +2,7 @@ package com.mysite.portfolio.lodge;
 
 
 import java.io.IOException;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.member.Member;
+import com.mysite.portfolio.member.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,15 +28,21 @@ public class LodgeService {
     @Autowired
     private S3Service s3Service;
     
+    @Autowired
+    private MemberRepository memberRepository;
+    
 	// 호출
 	public List<Lodge> getList() {
 		return this.lodgeRepository.findAll();
 	}
 
 	// 숙소 정보 작성
-	public void lgcreate(Lodge lodge, List<MultipartFile> files) throws IOException {
+	public void lgcreate(Lodge lodge, List<MultipartFile> files, Principal principal) throws IOException {
 		
         lodge.setRegiDate(LocalDateTime.now()); // 숙소 등록 일자로 데이터 등록
+               
+        Optional<Member> member = memberRepository.findByusername(principal.getName());
+        lodge.setLwriter(member.get()); // optional 에서 진짜 작성자 객체를 빼내자
         
      // 파일 이름을 저장할 배열, 최대 5개
         String[] fileNames = new String[3];

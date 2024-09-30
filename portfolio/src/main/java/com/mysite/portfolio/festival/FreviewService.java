@@ -21,8 +21,7 @@ public class FreviewService {
 
 	@Autowired
 	private final FreviewRepository freviewRepository;
-	private final S3Service s3Service;
-	private final MemberService memberService;
+
 	private final FestivalRepository festivalRepository;
 	private final NotificationService notificationService;
 	
