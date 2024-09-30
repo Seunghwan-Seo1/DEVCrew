@@ -193,7 +193,7 @@
     }
 
     .review-form input[type="submit"]:hover {
-        background-color: #ff7f00; /* 호버 시 어두운 주황색 */
+        background-color: #1A374D; 
         transform: translateY(-2px); /* 약간 위로 이동 */
     }
 
@@ -253,7 +253,7 @@
     }
 
     .review-actions button:hover {
-        background-color: #ff7f00; /* 호버 시 어두운 주황색 */
+        background-color: #1A374D; 
         transform: translateY(-2px); /* 약간 위로 이동 */
     }
 
@@ -268,21 +268,30 @@
 
 
 
-        <div>
-            <a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary" th:data-uri="@{|/festival/vote/${festival.fid}|}">
-                추천
-                <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.voter)}"></span>
-            </a>
-            <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-outline-danger" th:data-uri="@{|/festival/devote/${festival.fid}|}">
-                비추천
-                <span class="badge rounded-pill bg-danger" th:text="${#lists.size(festival.devoter)}"></span>
-            </a>
-            
-            <a th:href="@{|/festival/update/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn btn-success">수정</a> <!-- 등록 버튼 추가 -->
+        <div class="d-flex justify-content-between">
+		  <!-- 추천/비추천 버튼은 가운데 정렬 -->
+		  <div class="text-center" style="flex-grow: 1;">
+		    <a href="javascript:void(0);" class="recommend btn btn-sm btn-success" th:data-uri="@{|/festival/vote/${festival.fid}|}">
+		      추천
+		      <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.voter)}"></span>
+		    </a>
+		    <a href="javascript:void(0);" class="recommend2 btn btn-sm btn-danger" th:data-uri="@{|/festival/devote/${festival.fid}|}">
+		      비추천
+		      <span class="badge rounded-pill bg-danger" th:text="${#lists.size(festival.devoter)}"></span>
+		    </a>
+		  </div>
+		
+		  <!-- 수정/삭제 버튼은 오른쪽 정렬 -->
+		  <div class="text-right">
+		    <a th:href="@{|/festival/update/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn btn-secondary">
+		      수정
+		    </a>
+		    <a th:href="@{|/festival/delete/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn btn-danger">
+		      삭제
+		    </a>
+		  </div>
+		</div>
 
-            <a th:href="@{|/festival/delete/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn btn-success">삭제</a> <!-- 등록 버튼 추가 -->
-            
-        </div>
 		
 
         <div class="review-form">

@@ -9,5 +9,8 @@ import com.mysite.portfolio.member.Member;
 public interface NotificationRepository extends JpaRepository<Notification,Integer> {
 	
     List<Notification> findByRecipient(Member recipient);
+    
+    void deleteByRecipientMid(Integer mid);
+
 
 }

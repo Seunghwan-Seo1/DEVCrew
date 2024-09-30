@@ -1,164 +1,90 @@
 <html layout:decorate="~{admin}">
   <div layout:fragment="content">
-    <button class="btn btn-primary floating-btn" id="openOverlayBtn">
-      <i class="fas fa-comment-dots"></i> GPT 대화하기
-    </button>
-
-    <div class="overlay" id="overlay">
-      <div class="overlay-content">
-        <div class="chat-content tab-content flex-1">
-          <div class="tab-pane h-100 fade active show" id="tab-thread-1" role="tabpanel" aria-labelledby="tab-thread-1">
-            <div class="card flex-1 h-100 phoenix-offcanvas-container">
-              <div class="card-header p-3 p-md-4 d-flex flex-between-center">
-                <div class="d-flex align-items-center">
-                  <button class="btn ps-0 pe-2 text-body-tertiary d-sm-none" data-phoenix-toggle="offcanvas" data-phoenix-target="#chat-sidebar">
-                    <span class="fa-solid fa-chevron-left"></span>
-                  </button>
-                  <div class="d-flex flex-column flex-md-row align-items-md-center">
-                    <button class="btn fs-7 fw-semibold text-body-emphasis d-flex align-items-center p-0 me-3 text-start" data-phoenix-toggle="offcanvas" data-phoenix-target="#thread-details-0">
-                      <span class="line-clamp-1">GPT</span>
-                      <span class="fa-solid fa-chevron-down ms-2 fs-10"></span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 채팅 내용 표시 영역 -->
-              <div class="card-body p-3 p-sm-4 scrollbar" id="chat-container" style="height: 400px; overflow-y: auto;">
-                <!-- 대화 내용이 여기 동적으로 추가됩니다 -->
-              </div>
-
-              <!-- 입력 및 전송 버튼 -->
-              <div class="card-footer">
-                <div class="chat-textarea outline-none scrollbar mb-1">
-                  <input id="question" class="form-control" type="text" placeholder="메시지를 입력하세요" />
-                </div>
-                <div class="d-flex justify-content-between align-items-end">
-                  <div>
-                    <button class="btn btn-primary fs-10" type="button" onclick="askGPT()">질문
-                      <span class="fa-solid fa-paper-plane ms-1"></span>
-                    </button>
-                    <button class="btn btn-danger" id="closeOverlayBtn">닫기</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <script type="text/javascript">
-      // 대화 히스토리 관리
-      let conversationHistory = [];
-
-      // 한 글자씩 타이핑 효과를 주는 함수
-      function typeText(text, element, delay) {
-        let index = 0;
-        function type() {
-          if (index < text.length) {
-            element.innerHTML += text.charAt(index);
-            index++;
-            setTimeout(type, delay);
-          }
-        }
-        type(); // 타이핑 시작
-      }
-
-      // GPT에 질문하고 답변을 출력하는 함수
-      async function askGPT() {
-        const question = document.getElementById('question').value; // 질문 입력값을 가져옴
-        const chatContainer = document.getElementById('chat-container');
-
-        // 입력된 질문이 공백이면 알림을 표시하고 종료
-        if (question.trim() === '') {
-          alert("질문을 입력하세요!");
-          return;
-        }
-
-        // 사용자 질문을 대화창에 추가 (중복 방지)
-        const userMessage = document.createElement('div');
-        userMessage.classList.add('d-flex', 'chat-message', 'justify-content-end'); // 우측 정렬
-        userMessage.innerHTML = `
-          <div class="d-flex mb-2 justify-content-end flex-1">
-            <div class="w-100 w-xxl-75">
-              <div class="d-flex flex-end-center hover-actions-trigger">
-                <div class="chat-message-content me-2">
-                  <div class="mb-1 sent-message-content bg-primary rounded-2 p-3 text-white">
-                    <p class="mb-0">${question}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-        chatContainer.appendChild(userMessage);
-
-        // 질문 입력창 비우기
-        document.getElementById('question').value = '';
-
-        // 서버로 질문 전송 및 응답 받기
-        try {
-          const response = await fetch('/ask', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ question: question }) // 질문을 서버로 보냄
-          });
-
-          // 서버에서 응답 받기
-          const responseData = await response.text();
-
-          // 서버 응답을 대화창에 추가 (중복 방지)
-          const gptMessage = document.createElement('div');
-          gptMessage.classList.add('d-flex', 'chat-message', 'justify-content-start'); // 좌측 정렬
-          gptMessage.innerHTML = `
-            <div class="d-flex mb-2 flex-1">
-              <div class="w-100 w-xxl-75">
-                <div class="d-flex hover-actions-trigger">
-                  <div class="chat-message-content received me-2">
-                    <div class="mb-1 received-m('overlay');essage-content border rounded-2 p-3">
-                      <p class="mb-0">${responseData}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-          chatContainer.appendChild(gptMessage);
-
-          // 스크롤을 하단으로 유지
-          chatContainer.scrollTop = chatContainer.scrollHeight;
-
-        } catch (error) {
-          console.error("에러 발생: ", error);
-          const errorMessage = document.createElement('div');
-          errorMessage.classList.add('d-flex', 'chat-message');
-          errorMessage.innerHTML = `<p class="text-danger">에러 발생: ${error.message}</p>`;
-          chatContainer.appendChild(errorMessage);
-
-          // 스크롤을 하단으로 유지
-          chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-      }
-    </script>
+    
+    <div id="map" style="width: 100%; height: 500px; max-width: 800px; margin: 20px auto;"></div>
+    
+    <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
 
     <script>
-      // 오버레이 열기/닫기 처리
-      const openOverlayBtn = document.getElementById('openOverlayBtn');
-      const closeOverlayBtn = document.getElementById('closeOverlayBtn');
-      const overlay = document.getElementById
+    var mapContainer = document.getElementById('map');
+    var mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 초기 지도 중심 좌표
+        level: 3 // 지도 확대 레벨
+    };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-      // 오버레이 열기
-      openOverlayBtn.addEventListener('click', function () {
-        overlay.style.display = 'block';
-      });
+    // 기준 마커 이미지 설정
+    var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'; // 기준 마커 이미지 경로
+    var markerImageSize = new kakao.maps.Size(24, 35); // 이미지 크기
+    var markerImageOption = { offset: new kakao.maps.Point(12, 35) }; // 마커 좌표의 중점
 
-      // 오버레이 닫기
-      closeOverlayBtn.addEventListener('click', function () {
-        overlay.style.display = 'none';
-      });
-    </script>
+    var markerImage = new kakao.maps.MarkerImage(markerImageSrc, markerImageSize, markerImageOption);
+
+    var marker = new kakao.maps.Marker({
+        position: mapOption.center,
+        image: markerImage // 기준 마커 이미지 적용
+    });
+    marker.setMap(map);
+
+    var address = "대구광역시 동구 아양로 9길 35"; // Thymeleaf에서 받은 축제 위치 정보
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    // 주소 검색을 통해 지도 중심 이동
+    geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+            map.setCenter(newPosition);
+            marker.setPosition(newPosition);
+
+            // 숙박업체 검색 기능 추가
+            searchLodging(newPosition); // 숙박업체 검색 함수 호출
+        } else {
+            alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+        }
+    });
+
+    // 숙박업체 검색 함수
+    function searchLodging(position) {
+        var places = new kakao.maps.services.Places();
+
+        // "숙박업체" 키워드로 검색
+        places.keywordSearch('숙박업체', function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                for (var i = 0; i < result.length; i++) {
+                    displayLodgingMarker(result[i]); // 검색된 숙박업체마다 마커 표시
+                }
+            } else {
+                alert('숙박업체 검색에 실패했습니다.');
+            }
+        }, {
+            location: position, // 검색할 기준 위치 (축제 장소 기준)
+            radius: 2000 // 반경 2km 내 검색
+        });
+    }
+
+    // 숙박업체에 마커 표시
+    function displayLodgingMarker(place) {
+        // 숙박업체 마커 이미지 설정
+        var lodgingMarkerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'; // 숙박업체 마커 이미지 경로
+        var lodgingMarkerImage = new kakao.maps.MarkerImage(lodgingMarkerImageSrc, markerImageSize, markerImageOption);
+
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(place.y, place.x),
+            image: lodgingMarkerImage // 숙박업체 마커 이미지 적용
+        });
+
+        // 마커 클릭 시 숙박업체 이름을 인포윈도우로 표시
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>'
+        });
+
+        kakao.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+        });
+    }
+</script>
+
+    
   </div>
 </html>

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mysite.portfolio.admin.Notification;
 import com.mysite.portfolio.admin.NotificationService;
+import com.mysite.portfolio.festival.FestivalService;
+import com.mysite.portfolio.lodge.LodgeService;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
@@ -28,9 +30,22 @@ public class MainController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private FestivalService festivalService;
+	
+	@Autowired
+	private LodgeService lodgeService;
+	
 	
 	@GetMapping("/")
-	public String index(){
+	public String index(Model model,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "region", required = false, defaultValue = "전체") String region,
+            @RequestParam(value = "category", required = false, defaultValue = "전체") String category) {
+			// 모든 축제를 가져오거나 필터링된 축제를 가져옵니다.
+			model.addAttribute("festivals", festivalService.filterFestivals(search, region, category));
+			model.addAttribute("lodges", lodgeService.getList());
+		
 		return "index";
 	}
 	
