@@ -20,11 +20,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import com.mysite.portfolio.DataNotFoundException;
-import com.mysite.portfolio.admin.NotificationRepository;
+import com.mysite.portfolio.MailService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -37,8 +36,8 @@ public class MemberService implements UserDetailsService {
 
 	private final MemberRepository memberRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final MailService mailService;
 	private final HttpServletRequest req;
-	private final NotificationRepository notificationRepository;
 	
 	//회원 가입
 	public void create(MemberForm memberForm) {
@@ -47,10 +46,16 @@ public class MemberService implements UserDetailsService {
 	    member.setUsername(memberForm.getUsername());
 	    member.setPassword(passwordEncoder.encode(memberForm.getPassword1()));
 	    member.setRole("ROLE_USER");
-	    member.setMdate(LocalDateTime.now());
+	    member.setNickname(memberForm.getNickname());
 	    member.setMaddr(memberForm.getMaddr());
+	    member.setMdate(LocalDateTime.now());
 	    
 	    this.memberRepository.save(member);
+	    
+	    mailService.create("회원 가입 성공", 
+		member.getUsername() + "님의 가입이 성공적으로 처리되었습니다.", 
+		member.getUsername());
+
 	}
 	
 	//회원 가입 시 폼 유효성 검사
@@ -65,6 +70,12 @@ public class MemberService implements UserDetailsService {
 	    // 비밀번호 확인
 	    if (!memberForm.getPassword1().equals(memberForm.getPassword2())) {
 	        throw new IllegalArgumentException("2개의 패스워드가 일치하지 않습니다.");
+	    }
+	    
+	    // 연락처 중복 방지
+	    Optional<Member> existingMemberByNickname = memberRepository.findByNickname(memberForm.getNickname());
+	    if (existingMemberByNickname.isPresent()) {
+	        throw new IllegalArgumentException("이미 등록된 닉네임입니다.");
 	    }
 	    
 	    // 연락처 중복 방지
@@ -83,6 +94,8 @@ public class MemberService implements UserDetailsService {
 	            bindingResult.rejectValue("username", "usernameExists", message);
 	        } else if (message.contains("2개의 패스워드")) {
 	            bindingResult.rejectValue("password2", "passwordMismatch", message);
+	        } else if (message.contains("이미 등록된 닉네임")) {
+	        	bindingResult.rejectValue("nickname", "passwordMismatch", message);
 	        } else if (message.contains("이미 등록된 연락처")) {
 	            bindingResult.rejectValue("maddr", "maddrExists", message);
 	        } else {
@@ -160,18 +173,14 @@ public class MemberService implements UserDetailsService {
 		Optional<Member> _member = memberRepository.findByusername(member.getUsername());
 		
 		Member memberData = _member.get();
+		memberData.setNickname(member.getNickname());
 		memberData.setMaddr(member.getMaddr());
 		this.memberRepository.save(memberData);
 	}
 	
 	//회원 탈퇴
-    @Transactional
-	public void delete(Integer mid) {
-		
-		this.notificationRepository.deleteByRecipientMid(mid);
-		
-		this.memberRepository.deleteById(mid);
-		
+	public void delete(Integer id) {
+		this.memberRepository.deleteById(id);
 	}
 	
 	//아이디 찾기

@@ -24,6 +24,7 @@ public class Member {
 	private boolean enabled;
 	private String role;
 	
+	private String nickname; // 닉네임
 	private String maddr; // 연락처(전화번호)
 	
 	private LocalDateTime mdate;
