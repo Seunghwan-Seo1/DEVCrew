@@ -80,7 +80,7 @@ public class MainController {
         // 알림 목록을 모델에 추가
         model.addAttribute("notifications", notifications);
         
-        return "/ndetail"; 
+        return "ndetail"; 
     }
 	
 	 // 알림 삭제 요청 처리
@@ -92,4 +92,3 @@ public class MainController {
     }
 
 }
-

@@ -5,6 +5,7 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
@@ -33,8 +33,7 @@ public class FestivalController {
     @Autowired
 	private MemberService memberService;
     
-    @Autowired
-    private S3Service s3Service; // S3Service 주입
+
     
     // create
     @GetMapping("/create")
@@ -56,22 +55,30 @@ public class FestivalController {
     @GetMapping("/readlist")
     public String readlist(Model model, 
                            @RequestParam(value = "search", required = false) String search,
-                           @RequestParam(value = "region", required = false, defaultValue = "전체") String region,
-                           @RequestParam(value = "category", required = false, defaultValue = "전체") String category) {
-        List<Festival> festivals = festivalService.filterFestivals(search, region, category); // 필터 메서드 호출
-        model.addAttribute("festivals", festivals);
-        return "festival/readlist";
+                           @RequestParam(value = "region", required = false) String region,
+                           @RequestParam(value = "page", defaultValue = "0") int page,  // 페이지 번호
+                           @RequestParam(value = "size", defaultValue = "8") int size) {  // 페이지 크기
+
+        Page<Festival> festivalPage = festivalService.getFestivalListSortedByVotes(page, size); // 추천수 기준 페이징된 리스트 가져오기
+        model.addAttribute("festivalPage", festivalPage);
+
+        return "festival/readlist";  // 해당 페이지로 이동
     }
     
     //검색 기능 추가
     
     @GetMapping("/find")
-    public String find(@RequestParam("keyword") String keyword, Model model) {
-    	System.out.println("컨트롤러 : " + keyword);
-    	
-    	
-    	model.addAttribute("festivals", festivalService.find(keyword));
-    	return "festival/readlist";
+    public String find(@RequestParam("keyword") String keyword,
+                       @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "size", defaultValue = "10") int size,
+                       Model model) {
+        
+        System.out.println("컨트롤러 : " + keyword);
+        
+        Page<Festival> festivalPage = festivalService.findByKeywordPaged(keyword, page, size); // 페이징된 검색 결과 가져오기
+        model.addAttribute("festivalPage", festivalPage);
+        model.addAttribute("keyword", keyword); // 검색어를 유지하기 위해 추가
+        return "festival/readlist";
     }
 
     // readdetail
@@ -120,6 +127,7 @@ public class FestivalController {
         this.festivalService.devote(festival, member);
         return String.format("redirect:/festival/readdetail/%s", fid);
     }
+    
+   
 
 }
-

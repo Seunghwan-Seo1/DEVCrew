@@ -2,13 +2,6 @@
 <div layout:fragment="content">
 
 
-<style>
-.row {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	align-items: flex-start;
-}
 
 .feature {
 	margin: 10px;
@@ -56,6 +49,7 @@ img {
 }
 </style>
 
+
 	<div class="hero hero-inner">
 		<div class="container">
 			<div class="row align-items-center">
@@ -90,7 +84,7 @@ img {
 		<!-- 사진 및 간단한설명 반복문-->
 		<div class="row g-3 py-5 row-cols-1 row-cols-lg-4">
 			<th:block th:each="lodge : ${lodges}">
-				<div class="feature col lodge-item" data-name="[[${lodge.ㅣname}]]">
+				<div class="feature col lodge-item" data-name="[[${lodge.lname}]]">
 					<div class="feature-icon">
 						<a th:href="@{|/lodge/detail/${lodge.lnum}|}" style="text-decoration: none;">
 						<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${lodge.accomm}|}">

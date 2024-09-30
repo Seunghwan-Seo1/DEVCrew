@@ -16,7 +16,7 @@
 		
 	<form th:action="@{/member/signup}" th:object="${memberForm}" method="post">
 	  <div class="centered-container mt-5 mb-5">
-	    <div class="centered-div" style="width:370px;">
+	    <div class="centered-div" style="width:500px;">
 	      <div class="text-center mb-7">
 	        <h3 class="text-body-highlight">회원 가입</h3>
 	      </div>
@@ -67,6 +67,18 @@
 	        </div>
 	      </div>
 	
+	      <div class="mb-3 text-start">
+	        <label class="form-label" for="nickname">닉네임</label>
+	        <div class="form-icon-container">
+	          <input class="form-control form-icon-input" th:field="*{nickname}" type="text" placeholder="닉네임을 입력해주세요" />
+	          <span class="fas fa-key text-body fs-9 form-icon"></span>
+	        </div>
+	        <!-- Display field-specific errors for nickname -->
+	        <div th:if="${#fields.hasErrors('nickname')}" class="text-danger">
+	          <span th:text="${#fields.errors('nickname')}"></span>
+	        </div>
+	      </div>
+	      
 	      <div class="mb-3 text-start">
 	        <label class="form-label" for="maddr">연락처</label>
 	        <div class="form-icon-container">
