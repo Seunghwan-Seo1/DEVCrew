@@ -47,20 +47,19 @@
 
 					<!-- 사진 및 간단한설명 반복문-->
 					<div class="row g-3 py-5 row-cols-1 row-cols-lg-4">
-     <th:block th:each="festival : ${festivals}">
+     <th:block th:each="festival : ${festivals.content}">
         <div class="feature col festival-item"
-            data-name="[[${festival.fname}]]"
-            data-location="[[${festival.flocation}]]"
-            data-category="[[${festival.category}]]">
+             data-name="[[${festival.fname}]]"
+             data-location="[[${festival.flocation}]]"
+             data-category="[[${festival.fcategory}]]">
             <div class="feature-icon">
                 <a th:href="@{|/festival/readdetail/${festival.fid}|}" style="text-decoration: none;">
-								<img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
-							</a>
-						</div>
-						<h3 class="fs-3 text-body-emphasis festival-name">
-							[[${festival.fname}]]</h3>
-					</div>
-				</th:block>
+                    <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}">
+                </a>
+            </div>
+            <h3 class="fs-3 text-body-emphasis festival-name">[[${festival.fname}]]</h3>
+        </div>
+    </th:block>
 			</div>
 			<!-- 사진 및 간단한설명 반복문-->
 <!-- CSS -->

@@ -187,4 +187,3 @@ public class FestivalService {
         return festivalRepository.findAllByKeyword(keyword); // 수정된 메서드 호출
     }
 }
-

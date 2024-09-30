@@ -33,8 +33,7 @@ public class FestivalController {
     @Autowired
 	private MemberService memberService;
     
-    @Autowired
-    private S3Service s3Service; // S3Service 주입
+
     
     // create
     @GetMapping("/create")
@@ -122,4 +121,3 @@ public class FestivalController {
     }
 
 }
-

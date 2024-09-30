@@ -28,8 +28,7 @@ public class FreviewController {
 	@Autowired
 	private MemberService memberService;
 	
-	@Autowired
-	private FestivalService festivalService;
+
 	
 	
 	//create
