@@ -85,8 +85,7 @@ public class LodgeService {
 		Optional<Lodge> ob = lodgeRepository.findById(lnum);
 		return ob.get();
 	}
-	
-	
+		
 	
 	// 숙소 정보 수정
 	public Lodge lgdetail(Integer lnum) {
@@ -120,12 +119,10 @@ public class LodgeService {
 	
 	
 	// 숙소 정보 검색
-	
-	
-	
 	 public List<Lodge> find(String keyword) {
 	        System.out.println("서비스 : " + keyword);
 	        return lodgeRepository.findAllByKeyword(keyword); // 수정된 메서드 호출
 	    }
+	 
 }
 	

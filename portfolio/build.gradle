@@ -51,14 +51,18 @@ dependencies {
     
     // JSON 처리 (org.json 라이브러리)
     implementation 'org.json:json:20210307'
+
     
     // Spring Reactive Web (WebClient 사용을 위한 비동기 및 반응형 지원)
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     
+
     // OAuth2 로그인
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+
 }
+

@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,14 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.mysite.portfolio.S3Service;
 import com.mysite.portfolio.lodge.LodgeService;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
-
-import jakarta.validation.Valid;
 
 @RequestMapping("/review")
 @Controller
@@ -91,10 +86,10 @@ public class ReviewController {
 //	        this.reviewService.updateRv(review);
 //	        return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
 //	    }
-	
+
 	@PostMapping("/rvupdate")
 	public String rvupdate(@ModelAttribute Review review, @RequestParam("lnum") Integer lnum, Principal principal) {
-		System.out.println("현재 접속자 정보 컨트롤러 : " +  principal.getName());
+		System.out.println("현재 접속자 정보 컨트롤러 : " + principal.getName());
 		this.reviewService.rvupdate(review, lnum, principal);
 		return "redirect:/lodge/detail/" + lnum;
 	}
@@ -109,24 +104,25 @@ public class ReviewController {
 		return "redirect:/lodge/detail/" + lnum;
 	}
 
-//	// 공감
-//	@PreAuthorize("isAuthenticated()")
-//	@GetMapping("/ragree/{rnum}")
-//	public String reviewAgr(Principal principal, @PathVariable("rnum") Integer mid) {
-//		Review review = this.reviewService.getReview(mid);
-//		Member member = this.memberService.getMember(principal.getName());
-//		this.reviewService.agree(review, member);
-//		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
-//	}
-//
-//	// 비공감
-//	@PreAuthorize("isAuthenticated()")
-//	@GetMapping("/rdisagree/{rnum}")
-//	public String reviewDagr(Principal principal, @PathVariable("rnum") Integer mid) {
-//		Review review = this.reviewService.getReview(mid);
-//		Member member = this.memberService.getMember(principal.getName());
-//		this.reviewService.disagree(review, member);
-//		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
-//	}
+	// 공감	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/agree/{rnum}")
+	public String reviewAgr(Principal principal, @PathVariable("rnum") Integer rnum) {
+		Review review = this.reviewService.getReview(rnum);
+		Member member = this.memberService.getMember(principal.getName());
+		this.reviewService.agree(review, member);
+		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
+	}
 
+	// 비공감
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/disagree/{rnum}")
+	public String reviewDagr(Principal principal, @PathVariable("rnum") Integer mid) {
+		Review review = this.reviewService.getReview(mid);
+		Member member = this.memberService.getMember(principal.getName());
+		this.reviewService.disagree(review, member);
+		return String.format("redirect:/lodge/detail/%s", review.getLodge().getLnum());
+	}
+	  
+	 
 }

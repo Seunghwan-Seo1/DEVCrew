@@ -109,9 +109,8 @@ public class LodgeController {
 
 		return "redirect:/lodge/lreadlist";
 	}
-
-	//숙소 검색기능 추가
 	
+	//숙소 검색기능 추가	
 	@GetMapping("/find")
     public String find(@RequestParam("keyword") String keyword, Model model) {
         System.out.println("컨트롤러 : " + keyword);
@@ -124,4 +123,5 @@ public class LodgeController {
         model.addAttribute("lodges", lodgeService.find(queryKeyword)); // 수정된 키워드로 검색
         return "lodge/secondmain"; // lodge 뷰로 반환
     }
+	
 }
