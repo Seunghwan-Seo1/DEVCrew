@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.review.Review;
 
 import jakarta.persistence.CascadeType;
@@ -12,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 
@@ -26,7 +28,9 @@ public class Lodge {
 
 	private String lname; // 숙소 이름
 	private LocalDateTime regiDate; // 숙소 등록 일자
-	private String lwriter; // 작성자
+	
+	@ManyToOne
+	private Member lwriter; // 작성자
 	
 	// 숙소 유형
 	private String motel;
