@@ -73,39 +73,13 @@
                     </style>
 
                 
-        <!-- 지도 -->
-           <div id="map" style="width: 100%; height: 500px; max-width: 800px; margin: 20px auto;"></div>
+       
                 </div>
+                
             </div>
         </section>
         
-        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
-        <script>
-            var mapContainer = document.getElementById('map');
-            var mapOption = {
-                center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3
-            };
-            var map = new kakao.maps.Map(mapContainer, mapOption);
-
-            var marker = new kakao.maps.Marker({
-                position: mapOption.center
-            });
-            marker.setMap(map);
-
-            var address = "[[${festival.flocation}]]";
-            var geocoder = new kakao.maps.services.Geocoder();
-
-            geocoder.addressSearch(address, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
-                    map.setCenter(newPosition);
-                    marker.setPosition(newPosition);
-                } else {
-                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
-                }
-            });
-        </script>
+        
 
         <!-- 추가 사진 -->
         <div class="untree_co-section">
@@ -141,7 +115,18 @@
                     </div>
                 </div>
             </div>
-
+            <div class="untree_co-section">
+		  <div class="container">
+		    <div class="row text-center justify-content-center mb-5">
+		      <div class="col-lg-7">
+		        <h4 class="section-title text-center">찾아 오는 길</h4>
+		      </div>
+		    </div>
+		 <!-- 지도 -->
+           <div id="map" style="width: 100%; height: 500px; max-width: 800px; margin: 20px auto;"></div>
+           </div>
+           </div>
+           
         <style>
             .media-1 img {
                 width: 100%;
@@ -428,6 +413,33 @@
                         location.href = this.dataset.uri;
                     }
                 });
+            });
+        </script>
+        <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
+        <script>
+            var mapContainer = document.getElementById('map');
+            var mapOption = {
+                center: new kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3
+            };
+            var map = new kakao.maps.Map(mapContainer, mapOption);
+
+            var marker = new kakao.maps.Marker({
+                position: mapOption.center
+            });
+            marker.setMap(map);
+
+            var address = "[[${festival.flocation}]]";
+            var geocoder = new kakao.maps.services.Geocoder();
+
+            geocoder.addressSearch(address, function(result, status) {
+                if (status === kakao.maps.services.Status.OK) {
+                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+                    map.setCenter(newPosition);
+                    marker.setPosition(newPosition);
+                } else {
+                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+                }
             });
         </script>
     </div>

@@ -28,6 +28,8 @@
 
     var address = "대구광역시 동구 아양로 9길 35"; // Thymeleaf에서 받은 축제 위치 정보
     var geocoder = new kakao.maps.services.Geocoder();
+    
+    
 
     // 주소 검색을 통해 지도 중심 이동
     geocoder.addressSearch(address, function(result, status) {
@@ -65,7 +67,7 @@
     // 숙박업체에 마커 표시
     function displayLodgingMarker(place) {
         // 숙박업체 마커 이미지 설정
-        var lodgingMarkerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png'; // 숙박업체 마커 이미지 경로
+        var lodgingMarkerImageSrc = 'https://img.icons8.com/?size=150&id=AVe9YeyAXTql&format=png&color=000000'; // 숙박업체 마커 이미지 경로
         var lodgingMarkerImage = new kakao.maps.MarkerImage(lodgingMarkerImageSrc, markerImageSize, markerImageOption);
 
         var marker = new kakao.maps.Marker({
@@ -83,7 +85,7 @@
             infowindow.open(map, marker);
         });
     }
-</script>
+	</script>
 
     
   </div>
