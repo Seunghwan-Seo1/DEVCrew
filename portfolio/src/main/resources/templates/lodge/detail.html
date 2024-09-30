@@ -15,7 +15,7 @@
 	<link rel="canonical" href="https://codepen.io/8happyhee/pen/KKBEEXQ">
 	<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"> -->
-
+	<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
 
 
 <style>
@@ -70,8 +70,8 @@ a {
  	 display: grid;
 /* 	 grid-template-columns: 2fr 1fr 1fr;
 	 grid-template-rows: 1fr 1fr; */
-	 /* width: 80%;
-	 height: 80vh; */
+	 width: 80%;
+	 height: 80vh;
 }
 
 /* .block 1strow {
@@ -124,9 +124,14 @@ resize: none;
 	padding : 10px;
 }
 .twobtn {
-	float : right;
-	display: inline-block;    
+	/* display: inline-block;   */  
     align-self: flex-end;
+    float : right;
+}
+
+.edidel {
+	float : right;
+	text-align: right;
 }
 
 .review-actions {
@@ -142,8 +147,6 @@ resize: none;
     color: #fff;
     display: inline-block;
     align-self: flex-end;
-    justify-content: space-between;
-
 }
 
 </style>
@@ -167,7 +170,7 @@ resize: none;
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<div class="filter-container"></div>
+				<!-- <div class="filter-container"></div> -->
 			</div>
 		</div>
 	</div>  
@@ -179,7 +182,8 @@ resize: none;
 		<div class="col-md-10">
 			<div> <!-- col-lg-6 mb-5 mb-lg-0 -->
 				<form class="contact-form" data-aos="fade-up" data-aos-delay="200">
-					<div class="block 1strow">
+					<div>
+					<h2>[[${lodge.lname}]]</h2>
 					<img th:src="@{|${downpath}/${lodge.accomm}|}" width="400px" height="400px">					
 					</div>
 				</form>
@@ -198,7 +202,7 @@ resize: none;
 		</div>				
 		</div>
 		<div class="block accommlocation">	
-			 <div id="map" style="width: 100%; height: 500px; max-width: 800px; margin: 20px auto;"></div>
+			 <div id="map" style="width: 100%; height: 300px; max-width: 800px; margin: 20px auto;"></div>
 		</div>
 		
 	</div>
@@ -227,16 +231,17 @@ resize: none;
 				</div>
 				
 				<div id="review" class="tab__content">
-					<div id="rvCmt" class="row_txtArea">
-						<form th:action="@{|/review/rvcreate/${lodge.lnum}|}" method="post">
-							<label for="comment">작성 글자 제한</label>
-							<span class="ipt_msg txtLen" id="ipt_msg_txtLen"><strong>0</strong>/200</span>
-							<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width:100%; height:100%;"></textarea>
-							<input type="submit" value="리뷰등록">
-						</form>
-					</div>
 
-					<div class="my-3 p-3 bg-white" style="padding-top: 10px">
+						<div id="rvCmt" class="row_txtArea">
+							<form th:action="@{|/review/rvcreate/${lodge.lnum}|}" method="post">
+								<label for="comment">작성 글자 제한</label>
+								<span class="ipt_msg txtLen" id="ipt_msg_txtLen">0/200</span>
+								<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width: 100%; height: 100%;" maxlength="200"></textarea>
+								<input type="submit" value="리뷰등록">
+							</form>
+						</div>
+
+						<div class="my-3 p-3 bg-white" style="padding-top: 10px">
 						<p style="font-size:20px; text-align:center;">등록된 리뷰 보기</p>
 						<h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(lodge.reviewList)}개의 리뷰가 있습니다.|"></h5>
 
@@ -247,27 +252,68 @@ resize: none;
 										[[${review.rnum}]]번째 후기<br>
 										작성자 : [[${review.username}]]<br>
 										리뷰 : [[${review.rcontent}]]<br>
+										
+										
 
-										<div class="review-actions">
+										<div class="review-actions"> 
+											
+											
+											
 											<!-- 작성자 일 때만 버튼이 보이도록 설정 -->
-											<div th:if="${#authentication.name == review.username}">
+											<!-- <div class="edidel" th:if="${#authentication.name == review.username}">
 												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
 												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>
-											</div>
+											</div> -->
 
-											<div class="twobtn">
-												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.ragree}|}">
+											<!-- <div class="twobtn">
+												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.rnum}|}">
 													공감
 													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
 												</a>
-												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/disagree/${review.rdisagree}|}">
+												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/disagree/${review.rnum}|}">
 													비공감
 													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
 												</a>
-											</div>
+											</div> -->
+											
+											
+										<div class="edidel" th:if="${#authentication.name == review.username}">
+												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>				
 										</div>
+										
+										<div class="twobtn">
+												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.rnum}|}">
+													공감
+													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
+												</a>
+												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/disagree/${review.rnum}|}">
+													비공감
+													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
+												</a>
+										</div>
+											
+											
+										</div>
+										
+										
+										
+									
+				
+											
 									</div>
+									
+									
+									
+									
+									
 								</div>
+								
+								
+								
+								
+								
+								
 							</th:block>
 
 							<!-- 모든 댓글들에서 공용으로 사용할 모달 창 설정 -->
@@ -314,6 +360,7 @@ resize: none;
 								}
 							</script>
 						</div>
+						
 					</div>
 				</div>
 
@@ -378,6 +425,7 @@ $('.row_txtArea textarea').keyup(function(){
 	    $('.row_txtArea .ipt_msg txtLen span').html(200);
 	  }
 	});
+
 	
 	
 //버튼 기능
