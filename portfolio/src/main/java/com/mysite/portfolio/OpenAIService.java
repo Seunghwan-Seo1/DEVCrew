@@ -31,7 +31,7 @@ public class OpenAIService {
     public Mono<String> getChatCompletion(String question, List<Map<String, String>> conversationHistory) {
         // 요청 바디 생성
         JSONObject requestBody = new JSONObject();
-        requestBody.put("model", "gpt-4");  // GPT-4 모델 사용
+        requestBody.put("model", "gpt-4o-mini");  // GPT-4 모델 사용
 
         // 대화 히스토리를 담을 messages 배열 생성
         JSONArray messages = new JSONArray();
