@@ -54,25 +54,6 @@ public class ReviewService {
 
 	}
 
-	// 리뷰 수정
-//	public void rvupdate(Review review) {
-//		reviewRepository.save(review);
-//	}
-
-//	public void modify(Review review, String rcontent) {
-//		review.setRcontent(rcontent);
-//		review.setRdate(LocalDateTime.now());
-//		this.reviewRepository.save(review);
-//	}
-
-//	public void updateRv(Review review) {
-//		Optional<Review> _review = reviewRepository.findById(review.getRnum());
-//		
-//		Review reviewData = _review.get();
-//		reviewData.setRcontent(review.getRcontent());
-//		this.reviewRepository.save(reviewData);
-//	}
-
 	public void rvupdate(Review review, Integer lnum, Principal principal) {
 		System.out.println("현재 접속자 정보 서비스 : " + principal.getName());
 		Optional<Lodge> ol = lodgeRepository.findById(lnum);
