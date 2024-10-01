@@ -133,20 +133,16 @@ resize: none;
 	float : right;
 	text-align: right;
 }
-
+ 
 .review-actions {
-	float : right;
-	text-align : center;
+	/* text-align : center; */
 	display: inline-block;
     align-self: flex-end; 
 }
 
-.edit-btn, .delete-btn {
-	border: 1px solid #83a4ff;
-    background-color: #83a4ff;
-    color: #fff;
-    display: inline-block;
-    align-self: flex-end;
+.review-good {
+        display: flex;
+        gap: 10px; 
 }
 
 </style>
@@ -263,12 +259,7 @@ resize: none;
 										작성자 : [[${review.username}]]<br>
 										리뷰 : [[${review.rcontent}]]<br>
 										
-										
-
-										<div class="review-actions"> 
-											
-											
-											
+																				
 											<!-- 작성자 일 때만 버튼이 보이도록 설정 -->
 											<!-- <div class="edidel" th:if="${#authentication.name == review.username}">
 												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
@@ -287,12 +278,8 @@ resize: none;
 											</div> -->
 											
 											
-										<div class="edidel" th:if="${#authentication.name == review.username}">
-												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>				
-										</div>
-										
 										<div class="twobtn">
+										
 												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.rnum}|}">
 													공감
 													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
@@ -301,10 +288,20 @@ resize: none;
 													비공감
 													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
 												</a>
-										</div>
+										
+										<div class="review-good" th:if="${#authentication.name == review.username}">
+										
 											
-											
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>				
+												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
 										</div>
+										
+										
+										
+										
+										</div>									
+										
+											
 										
 										
 										
