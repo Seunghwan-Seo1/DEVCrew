@@ -1,0 +1,28 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <style>
+       .center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .circular-image {
+            border-radius: 50%; /* 원형으로 만들기 */
+            height: 400px; /* 높이 설정 */
+            width: 400px; /* 너비 설정 (정사각형으로) */
+            object-fit: cover; /* 이미지 비율 유지 */
+        }
+    </style>
+
+    
+        <div class="hero hero-inner">
+            <div class="center">
+                <a href="/">
+                    <img src="/images/500.jpg" height="400px" class="circular-image">
+                </a>
+            </div>
+        </div>
+    </div>
+
+</html>
