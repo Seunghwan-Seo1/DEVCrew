@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,11 +44,21 @@ public class LodgeController {
 
 	// 상세 필터 검색 페이지 (지역별 보기)
 	@GetMapping("/secondmain")
-	public String lsecmain(Model model) {
-		model.addAttribute("lodges", lodgeService.getList());
-		model.addAttribute("downpath", "https://" + downpath);
-		return "lodge/secondmain";
+	public String lsecmain(Model model, 
+	                       @RequestParam(value = "page", defaultValue = "0") int page,
+	                       @RequestParam(value = "size", defaultValue = "8") int size) {
+	    // 페이징 처리된 숙소 목록 가져오기
+	    Page<Lodge> lodges = lodgeService.getLodges(page, size);
+	    
+	    // 모델에 페이징된 숙소 리스트 및 페이지 정보 추가
+	    model.addAttribute("lodges", lodges);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", lodges.getTotalPages());
+	    model.addAttribute("downpath", "https://" + downpath);
+	    
+	    return "lodge/secondmain";
 	}
+
 
 
 	// 숙박 상세 페이지 (정보, 리뷰, 안내사항 포함)

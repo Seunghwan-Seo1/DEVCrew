@@ -20,10 +20,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import com.mysite.portfolio.DataNotFoundException;
 import com.mysite.portfolio.MailService;
+import com.mysite.portfolio.admin.NotificationRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +40,7 @@ public class MemberService implements UserDetailsService {
 	private final PasswordEncoder passwordEncoder;
 	private final MailService mailService;
 	private final HttpServletRequest req;
+	private final NotificationRepository notificationRepository;
 	
 	//회원 가입
 	public void create(MemberForm memberForm) {
@@ -179,7 +182,9 @@ public class MemberService implements UserDetailsService {
 	}
 	
 	//회원 탈퇴
+	@Transactional
 	public void delete(Integer id) {
+		this.notificationRepository.deleteByRecipientMid(id);
 		this.memberRepository.deleteById(id);
 	}
 	
