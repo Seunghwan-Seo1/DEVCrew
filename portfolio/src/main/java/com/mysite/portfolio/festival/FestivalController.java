@@ -59,18 +59,26 @@ public class FestivalController {
                            @RequestParam(value = "page", defaultValue = "0") int page,  // 페이지 번호
                            @RequestParam(value = "size", defaultValue = "8") int size) {  // 페이지 크기
 
-        Page<Festival> festivalPage = festivalService.getFestivalListSortedByVotes(page, size); // 추천수 기준 페이징된 리스트 가져오기
+        Page<Festival> festivalPage = festivalService.getFestivalListSortedByVotes(page, size);
+        
+        // 전체 페이지 수 구하기
+        int totalPages = festivalPage.getTotalPages();
+        
+        // 현재 페이지 값을 모델에 추가
         model.addAttribute("festivalPage", festivalPage);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);  // 현재 페이지 추가
 
-        return "festival/readlist";  // 해당 페이지로 이동
+        return "festival/readlist";
     }
+
     
     //검색 기능 추가
     
     @GetMapping("/find")
     public String find(@RequestParam("keyword") String keyword,
                        @RequestParam(value = "page", defaultValue = "0") int page,
-                       @RequestParam(value = "size", defaultValue = "10") int size,
+                       @RequestParam(value = "size", defaultValue = "8") int size,
                        Model model) {
         
         System.out.println("컨트롤러 : " + keyword);
