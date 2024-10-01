@@ -141,8 +141,9 @@ resize: none;
 }
 
 .review-good {
-        display: flex;
-        gap: 10px; 
+    display: flex;
+    gap: 10px;
+    text-align : right; 
 }
 
 </style>
@@ -241,8 +242,8 @@ resize: none;
 						<div id="rvCmt" class="row_txtArea">
 							<form th:action="@{|/review/rvcreate/${lodge.lnum}|}" method="post">
 								<label for="comment">작성 글자 제한</label>
-								<span class="ipt_msg txtLen" id="ipt_msg_txtLen">0/200</span>
-								<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width: 100%; height: 100%;" maxlength="200"></textarea>
+								<span class="ipt_msg txtLen" id="reCount">0/200</span>
+								<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width: 100%; height: 100%;" onkeyup="counterR(this,200)"></textarea>
 								<input type="submit" value="리뷰등록">
 							</form>
 						</div>
@@ -381,6 +382,8 @@ resize: none;
 			</div>
 		</div>
 	</div>
+	
+
 </div>
 
 
@@ -423,15 +426,16 @@ tabItem.forEach((item, index) => {
 
 <script>
 //글자수 세는 기능
-$('.row_txtArea textarea').keyup(function(){
-	  var content = $(this).val();
-	  $('.row_txtArea .ipt_msg txtLen span').html(rcontent.length);
-	  if (rcontent.length > 200){
-	    alert("최대 200자까지 입력 가능합니다.");
-	    $(this).val(rcontent.substring(0, 200));
-	    $('.row_txtArea .ipt_msg txtLen span').html(200);
-	  }
-	});
+function counterR(text, length) {
+	var limit = length;
+	var str = text.value.length;
+	if(str > limit) {
+		document.getElementById("reCount").innerHTML = "200자 이상 입력했습니다.";
+		text.value=text.value.substring(0, limit);
+		text.focus();
+	}
+	document.getElementById("reCount").innerHTML = text.value.length + " / " + limit;
+}
 
 	
 	

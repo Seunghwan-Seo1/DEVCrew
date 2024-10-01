@@ -45,7 +45,15 @@
 					<h6>[[${lodge.llocation}]]</h6>
 				</div>
 			</th:block>
+			
+	<!-- 페이징 링크 -->
+<!--             <div class="d-flex justify-content-between mt-4">
+                <a th:href="@{/lodge/secondmain(page=${lodgePage.number - 1}, size=${lodgePage.size})}" th:if="${lodgePage.hasPrevious()}" class="btn-sm btn-primary">이전</a>
+                <span>현재 페이지: <span th:text="${festivalPage.number + 1}"></span> / <span th:text="${festivalPage.totalPages}"></span></span>
+                <a th:href="@{/lodge/secondmain(page=${lodgePage.number + 1}, size=${lodgePage.size})}" th:if="${lodgePage.hasNext()}" class="btn-sm btn-primary">다음</a>
+             </div> -->
 		</div>
 	</div>
+
 
 </html>
