@@ -19,6 +19,137 @@
 
 
 
+<style>
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.tab {
+	display: flex;
+	align-items: center;
+	padding: 1rem;
+	list-style-type: none;
+}
+
+.tab__item {
+	padding: 0.6rem 1.3rem;
+	margin-right: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 2rem;
+	cursor: pointer;
+}
+
+.tab__item.active {
+  display: inline-block;
+  border: 1px solid #83a4ff;
+  background-color: #83a4ff;
+  color: #fff;
+}
+
+.tab__content-wrapper {
+	padding: 1rem;
+}
+
+.tab__content {
+	display: none;
+}
+
+.tab__content.active {
+	display: block;
+}
+
+.untree_co-section {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;	
+}
+
+.detailcontainer {
+ 	 display: grid;
+/* 	 grid-template-columns: 2fr 1fr 1fr;
+	 grid-template-rows: 1fr 1fr; */
+	 width: 80%;
+	 height: 80vh;
+}
+
+/* .block 1strow {
+	grid-column: 1 / 2;
+    grid-row: 1 / 3;
+} */
+
+.firstin {
+	grid-column: 1 / 2;
+    grid-row: 1 / 3;
+}
+
+.secondin {
+	grid-column: 3 / 4;
+    grid-row: 1 / 2;
+}
+
+.accommlocation {
+	grid-column: 2 / 4;
+    grid-row: 2 / 3;
+}
+
+.block {
+      display: flex;
+     /*  justify-content: center;
+      align-items: center; */
+}
+
+#linfo, #review, #notice {
+	border : 2px solid  #83a4ff;
+}
+
+#message2 {
+	border: 1px solid #83a4ff;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+#rvCmt {
+ 	border: 1px solid gray;
+	margin : 5px;
+	padding : 10px;
+ }
+
+textarea {
+resize: none;
+}
+
+.comments-list {
+	margin-bottom : 10px;
+	padding : 10px;
+}
+.twobtn {
+	/* display: inline-block;   */  
+    align-self: flex-end;
+    float : right;
+}
+
+.edidel {
+	float : right;
+	text-align: right;
+}
+ 
+.review-actions {
+	/* text-align : center; */
+	display: inline-block;
+    align-self: flex-end; 
+}
+
+.review-good {
+    display: flex;
+    gap: 10px;
+    text-align : right; 
+}
+
+</style>
+
+
 <div class="hero hero-inner">
 	<div class="container">
 		<div class="row align-items-center">
@@ -111,8 +242,8 @@
 						<div id="rvCmt" class="row_txtArea">
 							<form th:action="@{|/review/rvcreate/${lodge.lnum}|}" method="post">
 								<label for="comment">작성 글자 제한</label>
-								<span class="ipt_msg txtLen" id="ipt_msg_txtLen">0/200</span>
-								<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width: 100%; height: 100%;" maxlength="200"></textarea>
+								<span class="ipt_msg txtLen" id="reCount">0/200</span>
+								<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width: 100%; height: 100%;" onkeyup="counterR(this,200)"></textarea>
 								<input type="submit" value="리뷰등록">
 							</form>
 						</div>
@@ -129,12 +260,7 @@
 										작성자 : [[${review.username}]]<br>
 										리뷰 : [[${review.rcontent}]]<br>
 										
-										
-
-										<div class="review-actions"> 
-											
-											
-											
+																				
 											<!-- 작성자 일 때만 버튼이 보이도록 설정 -->
 											<!-- <div class="edidel" th:if="${#authentication.name == review.username}">
 												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
@@ -153,12 +279,8 @@
 											</div> -->
 											
 											
-										<div class="edidel" th:if="${#authentication.name == review.username}">
-												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>				
-										</div>
-										
 										<div class="twobtn">
+										
 												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.rnum}|}">
 													공감
 													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
@@ -167,10 +289,20 @@
 													비공감
 													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
 												</a>
-										</div>
+										
+										<div class="review-good" th:if="${#authentication.name == review.username}">
+										
 											
-											
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>				
+												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
 										</div>
+										
+										
+										
+										
+										</div>									
+										
+											
 										
 										
 										
@@ -250,6 +382,8 @@
 			</div>
 		</div>
 	</div>
+	
+
 </div>
 
 
@@ -292,15 +426,16 @@ tabItem.forEach((item, index) => {
 
 <script>
 //글자수 세는 기능
-$('.row_txtArea textarea').keyup(function(){
-	  var content = $(this).val();
-	  $('.row_txtArea .ipt_msg txtLen span').html(rcontent.length);
-	  if (rcontent.length > 200){
-	    alert("최대 200자까지 입력 가능합니다.");
-	    $(this).val(rcontent.substring(0, 200));
-	    $('.row_txtArea .ipt_msg txtLen span').html(200);
-	  }
-	});
+function counterR(text, length) {
+	var limit = length;
+	var str = text.value.length;
+	if(str > limit) {
+		document.getElementById("reCount").innerHTML = "200자 이상 입력했습니다.";
+		text.value=text.value.substring(0, limit);
+		text.focus();
+	}
+	document.getElementById("reCount").innerHTML = text.value.length + " / " + limit;
+}
 
 	
 	
