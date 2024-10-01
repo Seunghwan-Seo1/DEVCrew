@@ -26,6 +26,6 @@ public interface FestivalRepository extends JpaRepository<Festival, Integer> {
 	@Query("SELECT f FROM Festival f ORDER BY size(f.voter) DESC")
     Page<Festival> findAllByOrderByVoteCountDesc(Pageable pageable); // 추천수 기준 내림차순 + 페이징
 	
-	 @Query("SELECT f FROM Festival f WHERE f.fname LIKE %:keyword% OR f.flocation LIKE %:keyword%")
-	    Page<Festival> findAllByKeyword(@Param("keyword") String keyword, Pageable pageable); // 페이징 적용된 검색 쿼리
+	 @Query("SELECT f FROM Festival f WHERE f.fname LIKE %:keyword% OR f.flocation LIKE :keyword%")
+	 Page<Festival> findAllByKeyword(@Param("keyword") String keyword, Pageable pageable); // 페이징 적용된 검색 쿼리
 }

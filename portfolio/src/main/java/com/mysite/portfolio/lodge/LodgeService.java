@@ -9,6 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -131,6 +134,11 @@ public class LodgeService {
 	 public List<Lodge> find(String keyword) {
 	        System.out.println("서비스 : " + keyword);
 	        return lodgeRepository.findAllByKeyword(keyword); // 수정된 메서드 호출
+	    }
+	 
+	 public Page<Lodge> getLodges(int page, int size) {
+	        Pageable pageable = PageRequest.of(page, size);
+	        return lodgeRepository.findAll(pageable);
 	    }
 	 
 }
