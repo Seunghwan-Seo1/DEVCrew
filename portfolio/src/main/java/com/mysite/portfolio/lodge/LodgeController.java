@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mysite.portfolio.festival.Festival;
+
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("/lodge")
@@ -58,6 +60,20 @@ public class LodgeController {
 	    
 	    return "lodge/secondmain";
 	}
+	
+	@GetMapping("/find")
+    public String find(@RequestParam("keyword") String keyword,
+                       @RequestParam(value = "page", defaultValue = "0") int page,
+                       @RequestParam(value = "size", defaultValue = "8") int size,
+                       Model model) {
+        
+        System.out.println("컨트롤러 : " + keyword);
+        
+        Page<Lodge> lodges = lodgeService.findByKeywordPaged(keyword, page, size); // 페이징된 검색 결과 가져오기
+        model.addAttribute("lodges", lodges);
+        model.addAttribute("keyword", keyword); // 검색어를 유지하기 위해 추가
+        return "lodge/secondmain";
+    }
 
 
 
@@ -122,18 +138,6 @@ public class LodgeController {
 		return "redirect:/lodge/lreadlist";
 	}
 	
-	//숙소 검색기능 추가	
-	@GetMapping("/find")
-    public String find(@RequestParam("keyword") String keyword, Model model) {
-        System.out.println("컨트롤러 : " + keyword);
-        
-        // 앞의 5글자만 추출
-        String processedKeyword = keyword.length() > 5 ? keyword.substring(0, 5) : keyword;
-        String queryKeyword = "%" + processedKeyword + "%"; // % 추가
-        System.out.println("처리된 키워드 : " + queryKeyword);
-
-        model.addAttribute("lodges", lodgeService.find(queryKeyword)); // 수정된 키워드로 검색
-        return "lodge/secondmain"; // lodge 뷰로 반환
-    }
+	
 	
 }

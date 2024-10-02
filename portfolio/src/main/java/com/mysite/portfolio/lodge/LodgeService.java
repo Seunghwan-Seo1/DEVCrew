@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberRepository;
 
@@ -139,6 +140,11 @@ public class LodgeService {
 	 public Page<Lodge> getLodges(int page, int size) {
 	        Pageable pageable = PageRequest.of(page, size);
 	        return lodgeRepository.findAll(pageable);
+	    }
+	 
+	 public Page<Lodge> findByKeywordPaged(String keyword, int page, int size) {
+	        Pageable pageable = PageRequest.of(page, size);
+	        return lodgeRepository.findAllByKeyword(keyword, pageable); // 수정된 메서드 호출
 	    }
 	 
 }
