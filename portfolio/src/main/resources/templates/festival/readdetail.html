@@ -24,39 +24,38 @@
         </div>
 
         <!-- 설명 -->
-        <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
-            <div class="festival-info p-3" style=" white-space: normal !important; border: 1px solid #ccc; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,2);">
+       <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
+    <div class="festival-info p-3" style="white-space: normal; border: 1px solid #ccc; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); overflow: auto; max-height: 600px; width: 100%;">
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">작성자</div>
+            <div class="col-12 col-md-9">
+                <p th:if="${festival.author != null}">[[${festival.author.username}]]</p>
+            </div>
+        </div>
 
-                <div class="row mb-2">
-                    <div class="col-12 col-md-3 font-weight-bold">작성자</div>
-                    <div class="col-12 col-md-9">
-                        <p th:if="${festival.author != null}">[[${festival.author.username}]]</p>
-                    </div>
-                </div>
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">축제이름</div>
+            <div class="col-12 col-md-9">
+                <p>[[${festival.fname}]]</p>
+            </div>
+        </div>
 
-                <div class="row mb-2">
-                    <div class="col-12 col-md-3 font-weight-bold">축제이름</div>
-                    <div class="col-12 col-md-9">
-                        <p>[[${festival.fname}]]</p>
-                    </div>
-                </div>
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">장소</div>
+            <div class="col-12 col-md-9">
+                <p>[[${festival.flocation}]]</p>
+            </div>
+        </div>
 
-                <div class="row mb-2">
-                    <div class="col-12 col-md-3 font-weight-bold">장소</div>
-                    <div class="col-12 col-md-9">
-                        <p>[[${festival.flocation}]]</p>
-                    </div>
-                </div>
-
-                <div class="row mb-2">
-				    <div class="col-12 col-md-3 font-weight-bold">축제설명</div>
-				    <div class="col-12 col-md-9">
-				        <p id="festival-description" th:utext="${festival.fdescription}"></p>
-				    </div>
-				</div>
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">축제설명</div>
+            <div class="col-12 col-md-9">
+                <p id="festival-description" th:utext="${festival.fdescription}" style="white-space: normal;"></p>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- 추가 사진 (2, 3, 4, 5) -->
     <div class="row mt-4">
