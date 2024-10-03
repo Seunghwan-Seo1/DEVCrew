@@ -50,7 +50,12 @@ public class MainController {
 	}
 	
 	@GetMapping("/temp")
-	public String temp() {
+	public String temp(Model model,
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "region", required = false, defaultValue = "전체") String region,
+            @RequestParam(value = "category", required = false, defaultValue = "전체") String category) {
+			// 모든 축제를 가져오거나 필터링된 축제를 가져옵니다.
+			model.addAttribute("festivals", festivalService.filterFestivals(search, region, category));
 		return "temp";
 	}
 	

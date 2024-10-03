@@ -37,12 +37,12 @@
             </div>
                     
             <!-- 소셜 로그인 버튼 -->
-            <div style="display: flex; justify-content: center; align-items: center;">
-			    <div id="naver_id_login"></div>
-			    <a href="javascript:kakaoLogin()" style="margin-left: 15px;">
-			        <img src="/images/kakaoLogin.jpg" style="width:210px;">
-			    </a>
-			</div>
+         <div class="d-flex justify-content-center align-items-center flex-column flex-md-row">
+             <div id="naver_id_login"></div>
+             <a href="javascript:kakaoLogin()">
+				<img src="/images/kakaoLogin.png" class="login-img" alt="Kakao Login">
+             </a>
+         </div>
 			
             <div class="position-relative">
             	<hr class="bg-body-secondary mt-3 mb-4" />
@@ -80,7 +80,7 @@
 	<script type="text/javascript">
 	 	var naver_id_login = new naver_id_login("kz1RZYtgb9yp8QMx5Txp", "https://feststay.site/naverlogin"); // (네이버 Client ID, 네이버 Callback URL)
 	 	var state = naver_id_login.getUniqState();
-	 	naver_id_login.setButton("green", 3, 45); //(버튼 색깔, 형태, 사이즈 설정)
+	 	naver_id_login.setButton("green", 3, 20); //(버튼 색깔, 형태, 사이즈 설정)
 	 	naver_id_login.setDomain("https://feststay.site"); // (네이버 Service URL)	
 	 	naver_id_login.setState(state);
 	 	//naver_id_login.setPopup();

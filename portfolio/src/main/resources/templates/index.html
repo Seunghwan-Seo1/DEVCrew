@@ -28,9 +28,15 @@
 	<link rel="stylesheet" href="/css/daterangepicker.css">
 	<link rel="stylesheet" href="/css/aos.css">
 	<link rel="stylesheet" href="/css/style.css">
-
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+	
 	<title>페이지 이름이 들어가는곳</title>
 	
+
+	
+</head>
+
+<body>
 	<script>
         // 페이지가 로드될 때 방문자 수를 증가시키는 요청을 보냅니다.
         window.onload = function() {
@@ -40,11 +46,6 @@
                 .catch(error => console.error('Error:', error));
         };
     </script>
-	
-</head>
-
-<body>
-
 
 	<div class="site-mobile-menu site-navbar-target">
 		<div class="site-mobile-menu-header">
@@ -59,7 +60,6 @@
 		<div class="container">
 			<div class="site-navigation">
 			
-				<a href="/" class="logo m-0"><img src="/images/feststay.png" class="logo-img"> FestStay <span class="text-primary">.</span></a>
 
 				<ul class="js-clone-nav d-none d-lg-inline-block text-left site-menu float-right">
 					<li><a href="/">홈</a></li>
@@ -93,7 +93,7 @@
 					<li><a sec:authorize="isAuthenticated()" href="/signout">로그아웃</a></li>
 					<li sec:authorize="hasAuthority('ROLE_ADMIN')"><a href="/admin/main">관리자 메뉴</a></li>
 					<li class="nav-item dropdown">
-					  <a class="nav-link" href="#" sec:authorize="isAuthenticated()" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					  <a class="nav-link" sec:authorize="isAuthenticated()" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 					    <i class="bi bi-bell white-icon"></i> <!-- 흰색 아이콘 적용 -->
 					  </a>
 					
@@ -178,8 +178,7 @@
 
 
 
-	<div class="untree_co-section">
-	  <div class="container">
+	  <div class="container mb-5">
 	    <div class="row text-center justify-content-center mb-5">
 	      <div class="col-lg-7">
 	        <h2 class="section-title text-center">추천을 많이 받은 축제 장소!</h2>
@@ -202,12 +201,10 @@
 	      </th:block>
 	    </div>
 	  </div>
-	</div>
 
 	
 	
-		<div class="untree_co-section">
-		  <div class="container">
+		  <div class="container mb-5">
 		    <div class="row text-center justify-content-center mb-5">
 		      <div class="col-lg-7">
 		        <h2 class="section-title text-center">추천을 많이 받은 숙소!</h2>
@@ -230,7 +227,6 @@
 		      </th:block>
 		    </div>
 		  </div>
-		</div>
 
 
 	
@@ -253,83 +249,7 @@
 		</div>
 	</div>
 
-<!-- 	<div class="site-footer">
-		<div class="inner first">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6 col-lg-4">
-						<div class="widget">
-							<h3 class="heading">About Tour</h3>
-							<p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-						</div>
-						<div class="widget">
-							<ul class="list-unstyled social">
-								<li><a href="#"><span class="icon-twitter"></span></a></li>
-								<li><a href="#"><span class="icon-instagram"></span></a></li>
-								<li><a href="#"><span class="icon-facebook"></span></a></li>
-								<li><a href="#"><span class="icon-linkedin"></span></a></li>
-								<li><a href="#"><span class="icon-dribbble"></span></a></li>
-								<li><a href="#"><span class="icon-pinterest"></span></a></li>
-								<li><a href="#"><span class="icon-apple"></span></a></li>
-								<li><a href="#"><span class="icon-google"></span></a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-2 pl-lg-5">
-						<div class="widget">
-							<h3 class="heading">Pages</h3>
-							<ul class="links list-unstyled">
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">About</a></li>
-								<li><a href="#">Contact</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-2">
-						<div class="widget">
-							<h3 class="heading">Resources</h3>
-							<ul class="links list-unstyled">
-								<li><a href="#">Blog</a></li>
-								<li><a href="#">About</a></li>
-								<li><a href="#">Contact</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="col-md-6 col-lg-4">
-						<div class="widget">
-							<h3 class="heading">Contact</h3>
-							<ul class="list-unstyled quick-info links">
-								<li class="email"><a href="#">mail@example.com</a></li>
-								<li class="phone"><a href="#">+1 222 212 3819</a></li>
-								<li class="address"><a href="#">43 Raymouth Rd. Baltemoer, London 3910</a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
 
-
-
-		<div class="inner dark">
-			<div class="container">
-				<div class="row text-center">
-					<div class="col-md-8 mb-3 mb-md-0 mx-auto">
-						<p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co" class="link-highlight">Untree.co</a> License information: https://untree.co/license/
-						</p>
-					</div>
-					
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div id="overlayer"></div>
-	<div class="loader">
-		<div class="spinner-border" role="status">
-			<span class="sr-only">Loading...</span>
-		</div>
-	</div> -->
 	
 	    <button class="btn-sm btn-primary floating-btn" id="openOverlayBtn">
       <i class="fas fa-comment-dots"></i> GPT 대화하기

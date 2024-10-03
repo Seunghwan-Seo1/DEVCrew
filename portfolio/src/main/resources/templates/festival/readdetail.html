@@ -23,8 +23,8 @@
                  style="width: 100%; height: auto; object-fit: contain; margin: 0 auto; display: block;">
         </div>
 
-        <!-- 설명 -->
-       <div class="col-12 col-md-6 d-flex flex-column justify-content-center">
+ <!-- 설명 -->
+<div class="col-12 col-md-6 d-flex flex-column justify-content-center">
     <div class="festival-info p-3" style="white-space: normal; border: 1px solid #ccc; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); overflow: auto; max-height: 600px; width: 100%;">
         <div class="row mb-2">
             <div class="col-12 col-md-3 font-weight-bold">작성자</div>
@@ -101,8 +101,13 @@
     </div>
 </div>
 
-      <div class="untree_co-section">
-		  
+      <div class="container">
+      <div class="row text-center justify-content-center mb-5">
+		      <div class="col-lg-7">
+		        <h4 class="section-title text-center">[[${#strings.substring(festival.flocation, 0, 2)}]] 날씨 정보</h4>
+		      </div>
+		    </div>
+		 <div id="weather-container" class="weather-forecast"></div> 
       </div>
            
 
@@ -295,7 +300,71 @@
             });
         </script>
 	
+    
 
+<script th:inline="javascript">
+    const apiKey = '5ff8c43ab091680fc5bd47b9cb787090';  // 여기에 OpenWeatherMap API 키를 입력하세요.
+    const city = '[[${#strings.substring(festival.flocation, 0, 2)}]]'
+    
+    
+    async function getCoordinates() {
+    	
+        const geocodingUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}&lang=kr`;
+        const response = await fetch(geocodingUrl);
+        const data = await response.json();
+        if (data.length > 0) {
+            return {
+                lat: data[0].lat,
+                lon: data[0].lon
+            };
+        } else {
+            alert('도시를 찾을 수 없습니다.');
+            return null;
+        }
+    }
+
+
+    async function getWeather() {
+    	
+        const coordinates = await getCoordinates();
+        if (!coordinates) return;
+
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&units=metric&lang=kr&appid=${apiKey}`;
+        const response = await fetch(weatherUrl);
+        const data = await response.json();
+        
+        displayWeather(data);
+    }
+
+    function displayWeather(data) {
+        const weatherContainer = document.getElementById('weather-container');
+        weatherContainer.innerHTML = ''; // 이전 결과 초기화
+
+        // 5일 간의 날씨를 표시
+        for (let i = 0; i < data.list.length; i += 8) { // 하루에 8개의 데이터 포인트가 있으므로 8씩 증가
+            const dayData = data.list[i];
+            const date = new Date(dayData.dt_txt).toLocaleDateString('ko-KR');
+            const temp = dayData.main.temp;
+            const description = dayData.weather[0].description;
+            const icon = dayData.weather[0].icon;
+
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('day');
+            dayDiv.innerHTML = `
+                <h3>${date}</h3>
+                <img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
+                <p>온도: ${temp}°C</p>
+                <p>${description}</p>
+            `;
+            weatherContainer.appendChild(dayDiv);
+        }
+    }
+    
+    // 페이지가 로드되면 자동으로 getWeather() 호출
+    document.addEventListener("DOMContentLoaded", function() {
+        getWeather(); // 페이지 로드 시 자동으로 날씨 정보 가져오기
+    });
+</script>
 	
     </div>
 </html>
