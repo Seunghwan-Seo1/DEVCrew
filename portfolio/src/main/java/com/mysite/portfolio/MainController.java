@@ -54,6 +54,11 @@ public class MainController {
 		return "temp";
 	}
 	
+	@GetMapping("/example")
+	public String example() {
+		return "example";
+	}
+	
 	@GetMapping("/csr")
 	public String csr() {
 		return "csr";
