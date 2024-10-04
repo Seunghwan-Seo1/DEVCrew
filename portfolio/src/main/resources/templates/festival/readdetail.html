@@ -274,31 +274,86 @@
             });
         </script>
         <script>
-            var mapContainer = document.getElementById('map');
-            var mapOption = {
-                center: new kakao.maps.LatLng(33.450701, 126.570667),
-                level: 3
-            };
-            var map = new kakao.maps.Map(mapContainer, mapOption);
+    var mapContainer = document.getElementById('map');
+    var mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 초기 지도 중심 좌표
+        level: 3 // 지도 확대 레벨
+    };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-            var marker = new kakao.maps.Marker({
-                position: mapOption.center
-            });
-            marker.setMap(map);
+    // 기준 마커 이미지 설정
+    var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'; // 기준 마커 이미지 경로
+    var markerImageSize = new kakao.maps.Size(24, 35); // 이미지 크기
+    var markerImageOption = { offset: new kakao.maps.Point(12, 35) }; // 마커 좌표의 중점
 
-            var address = "[[${festival.flocation}]]";
-            var geocoder = new kakao.maps.services.Geocoder();
+    var markerImage = new kakao.maps.MarkerImage(markerImageSrc, markerImageSize, markerImageOption);
 
-            geocoder.addressSearch(address, function(result, status) {
-                if (status === kakao.maps.services.Status.OK) {
-                    var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
-                    map.setCenter(newPosition);
-                    marker.setPosition(newPosition);
-                } else {
-                    alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+    var marker = new kakao.maps.Marker({
+        position: mapOption.center,
+        image: markerImage // 기준 마커 이미지 적용
+    });
+    marker.setMap(map);
+
+    var address = "[[${festival.flocation}]]"; // Thymeleaf에서 받은 축제 위치 정보
+    var geocoder = new kakao.maps.services.Geocoder();
+    
+    
+
+    // 주소 검색을 통해 지도 중심 이동
+    geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+            map.setCenter(newPosition);
+            marker.setPosition(newPosition);
+
+            // 숙박업체 검색 기능 추가
+            searchLodging(newPosition); // 숙박업체 검색 함수 호출
+        } else {
+            alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+        }
+    });
+
+    // 숙박업체 검색 함수
+    function searchLodging(position) {
+        var places = new kakao.maps.services.Places();
+
+        // "숙박업체" 키워드로 검색
+        places.keywordSearch('숙박업체', function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                for (var i = 0; i < result.length; i++) {
+                    displayLodgingMarker(result[i]); // 검색된 숙박업체마다 마커 표시
                 }
-            });
-        </script>
+            } else {
+                alert('숙박업체 검색에 실패했습니다.');
+            }
+        }, {
+            location: position, // 검색할 기준 위치 (축제 장소 기준)
+            radius: 2000 // 반경 2km 내 검색
+        });
+    }
+
+    // 숙박업체에 마커 표시
+    function displayLodgingMarker(place) {
+        // 숙박업체 마커 이미지 설정
+        var lodgingMarkerImageSrc = 'https://img.icons8.com/?size=150&id=AVe9YeyAXTql&format=png&color=000000'; // 숙박업체 마커 이미지 경로
+        var lodgingMarkerImage = new kakao.maps.MarkerImage(lodgingMarkerImageSrc, markerImageSize, markerImageOption);
+
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(place.y, place.x),
+            image: lodgingMarkerImage // 숙박업체 마커 이미지 적용
+        });
+
+        // 마커 클릭 시 숙박업체 이름을 인포윈도우로 표시
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>'
+        });
+
+        kakao.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+        });
+    }
+	</script>
 	
     
 
