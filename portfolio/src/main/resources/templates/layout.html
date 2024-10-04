@@ -58,20 +58,26 @@
 						<li><a href="/festival/readlist">축제소개</a></li>
 
 					<li class="has-children">
-						<a href="#">숙박</a>
-						<ul class="dropdown">						
-							<li class="has-children">
-								<a href="/lodge/secondmain">지역별 보기</a>
-								<ul class="dropdown">
-									<li><a href="#">서울/경기/인천</a></li>
-									<li><a href="#">대전/충정</a></li>
-									<li><a href="#">부산/울산</a></li>
-									<li><a href="#">대구/경북</a></li>
-									<li><a href="#">광주/전라</a></li>
-									<li><a href="#">제주</a></li>
-								</ul>
-							</li>
-						</ul>
+						<a href="/lodge/secondmain">숙박</a>
+							<ul class="dropdown">						
+							    <li class="has-children">
+							        <a href="/lodge/secondmain">지역별 보기</a>
+							        <ul class="dropdown">
+							            <li><a onclick="searchByRegion('서울')">서울</a></li>
+							            <li><a  onclick="searchByRegion('경기')">경기</a></li>
+							            <li><a  onclick="searchByRegion('인천')">인천</a></li>
+							            <li><a onclick="searchByRegion('대전')">대전</a></li>
+							            <li><a onclick="searchByRegion('충정')">충정</a></li>
+							            <li><a onclick="searchByRegion('부산')">부산</a></li>
+							            <li><a onclick="searchByRegion('울산')">울산</a></li>
+							            <li><a onclick="searchByRegion('대구')">대구</a></li>
+							            <li><a onclick="searchByRegion('경북')">경북</a></li>
+							            <li><a onclick="searchByRegion('광주')">광주</a></li>
+							            <li><a onclick="searchByRegion('전라')">전라</a></li>
+							            <li><a onclick="searchByRegion('제주')">제주</a></li>
+							        </ul>
+							    </li>
+							</ul>
 					</li>
 
 					<li><a sec:authorize="isAnonymous()" href="/signin">프로필</a></li>
@@ -336,7 +342,12 @@ tabItem.forEach((item, index) => {
 	    overlay.style.display = 'none';
 	  });
 	</script>
-
+		<script>
+		// JavaScript function to dynamically navigate to the search result with the selected region
+		function searchByRegion(region) {
+		    window.location.href = '/lodge/find?keyword=' + encodeURIComponent(region);
+		}
+		</script>
 
 
   <script src="/js/jquery-3.4.1.min.js"></script>
