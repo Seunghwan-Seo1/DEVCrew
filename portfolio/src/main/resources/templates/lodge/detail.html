@@ -130,7 +130,22 @@ img {
 </div>
 
 </div>
-<div class="text-right">
+
+<div class="d-flex justify-content-between align-items-center">
+    <a href="/lodge/secondmain" class="btn-sm btn-secondary festival-list-button">축제 목록</a>
+    
+    <div class="text-center mx-2">
+        <a href="javascript:void(0);" class="recommend btn-sm btn-success" th:data-uri="@{|/lodge/vote/${lodge.lnum}|}">
+            추천
+            <span class="badge rounded-pill bg-success" th:text="${#lists.size(lodge.voter)}"></span>
+        </a>
+        <a href="javascript:void(0);" class="recommend2 btn-sm btn-danger" th:data-uri="@{|/lodge/devote/${lodge.lnum}|}">
+            비추천
+            <span class="badge rounded-pill bg-danger" th:text="${#lists.size(lodge.devoter)}"></span>
+        </a>
+    </div>
+
+	<div class="text-right">
         <a th:href="@{|/lodge/lupdate/${lodge.lnum}|}" sec:authorize="isAuthenticated()" class="btn-sm btn-secondary">
             수정
         </a>
@@ -138,6 +153,8 @@ img {
             삭제
         </a>
     </div>
+</div>
+
     </div>
 
 
@@ -468,6 +485,25 @@ Array.from(disagree_elements).forEach(function(element) {
             alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
         }
     });
+</script>
+<script>
+const recommend_elements = document.getElementsByClassName("recommend");
+Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        }
+    });
+});
+
+const recommend2_elements = document.getElementsByClassName("recommend2");
+Array.from(recommend2_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 비추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        }
+    });
+});
 </script>
 
 </div>

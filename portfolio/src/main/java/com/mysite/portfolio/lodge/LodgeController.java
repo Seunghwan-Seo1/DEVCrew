@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -49,11 +50,13 @@ public class LodgeController {
 
 	// 상세 필터 검색 페이지 (지역별 보기)
 	@GetMapping("/secondmain")
-	public String lsecmain(Model model, 
+	public String lsecmain(Model model,
+							@RequestParam(value = "search", required = false) String search,
+				            @RequestParam(value = "region", required = false) String region,
 	                       @RequestParam(value = "page", defaultValue = "0") int page,
 	                       @RequestParam(value = "size", defaultValue = "8") int size) {
 	    // 페이징 처리된 숙소 목록 가져오기
-	    Page<Lodge> lodges = lodgeService.getLodges(page, size);
+	    Page<Lodge> lodges = lodgeService.getLodgeListSortedByVotes(page, size);
 	    
 	    // 모델에 페이징된 숙소 리스트 및 페이지 정보 추가
 	    model.addAttribute("lodges", lodges);
@@ -138,6 +141,26 @@ public class LodgeController {
     public String delete(@PathVariable("id") Integer id) {
         lodgeService.rvdelete(id);
         return "redirect:/lodge/secondmain";
+    }
+    
+    //추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{lnum}")
+    public String lodgeVote(Principal principal, @PathVariable("lnum") Integer lnum) {
+        Lodge lodge = this.lodgeService.getLodge(lnum);
+        Member member = this.memberService.getMember(principal.getName());
+        this.lodgeService.vote(lodge, member);
+        return String.format("redirect:/lodge/detail/%s", lnum);
+    }
+    
+  //비추천
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/devote/{lnum}")
+    public String lodgeDevote(Principal principal, @PathVariable("lnum") Integer lnum) {
+        Lodge lodge = this.lodgeService.getLodge(lnum);
+        Member member = this.memberService.getMember(principal.getName());
+        this.lodgeService.devote(lodge, member);
+        return String.format("redirect:/lodge/detail/%s", lnum);
     }
 	
 	

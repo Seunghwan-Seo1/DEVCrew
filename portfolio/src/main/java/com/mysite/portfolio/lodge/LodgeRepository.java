@@ -21,4 +21,10 @@ public interface LodgeRepository extends JpaRepository<Lodge, Integer> {
 	 
 	 @Query("SELECT l FROM Lodge l WHERE l.lname LIKE %:keyword% OR l.llocation LIKE :keyword%")
 	 Page<Lodge> findAllByKeyword(@Param("keyword") String keyword, Pageable pageable); // 페이징 적용된 검색 쿼리
+	 
+		@Query("SELECT l FROM Lodge l ORDER BY size(l.voter) DESC")
+	    Page<Lodge> findAllByOrderByVoteCountDesc(Pageable pageable); // 추천수 기준 내림차순 + 페이징
+		
+		@Query("SELECT l FROM Lodge l ORDER BY size(l.voter) DESC")
+	    List<Festival> findAllByOrderByVoteCountDesc(); // 추천 수 기준 내림차순 정렬
 }

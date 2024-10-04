@@ -3,6 +3,7 @@ package com.mysite.portfolio.lodge;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.review.Review;
@@ -13,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
@@ -70,5 +72,16 @@ public class Lodge {
 
     @OneToMany(mappedBy = "lodge", cascade = CascadeType.REMOVE)
     private List<Review> reviewList;
+    
+    @ManyToMany
+    Set<Member> voter;
+    
+    @ManyToMany
+    Set<Member> devoter;
+    
+ // 추천 수에서 비추천 수를 뺀 값 계산
+    public int getVoteScore() {
+        return this.voter.size() - this.devoter.size();
+    }
 
 }

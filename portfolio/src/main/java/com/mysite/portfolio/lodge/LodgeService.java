@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
+import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberRepository;
 
@@ -193,6 +195,42 @@ public class LodgeService {
 	            e.printStackTrace();
 	            throw new RuntimeException("Failed to update lodge data.");
 	        }
+	    }
+	 
+	    public Lodge getLodge(Integer lnum) {
+			Optional<Lodge> lodge  = this.lodgeRepository.findById(lnum);
+			return lodge.get();
+		}
+	    
+	    //추천
+
+	    public void vote(Lodge lodge, Member member) {
+	        lodge.getVoter().add(member);
+	        this.lodgeRepository.save(lodge);
+	    }
+
+	    
+	    //비추천
+	    public void devote(Lodge lodge, Member member) {
+	        lodge.getDevoter().add(member);
+	        this.lodgeRepository.save(lodge);
+	    }
+	    
+	    public List<Lodge> filterlodges(String search, String region) {
+	        List<Lodge> lodges = lodgeRepository.findAll();
+
+	        return lodges.stream()
+	            .filter(lodge -> (search == null || search.isEmpty() || 
+	                                 lodge.getLname().toLowerCase().contains(search.toLowerCase()) || 
+	                                 lodge.getLlocation().toLowerCase().contains(search.toLowerCase())) &&
+	                                (region.equals("전체") || lodge.getLlocation().contains(region)))
+	            .sorted((f1, f2) -> Integer.compare(f2.getVoteScore(), f1.getVoteScore())) // 내림차순 정렬
+	            .collect(Collectors.toList());
+	    }
+	    
+	    public Page<Lodge> getLodgeListSortedByVotes(int page, int size) {
+	        Pageable pageable = PageRequest.of(page, size);
+	        return lodgeRepository.findAllByOrderByVoteCountDesc(pageable);
 	    }
 	 
 }
