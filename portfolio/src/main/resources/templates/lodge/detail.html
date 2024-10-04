@@ -2,19 +2,7 @@
 
 <div layout:fragment="content">
 
-<!-- 	<link rel="apple-touch-icon" type="image/png"
-		href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
-	<meta name="apple-mobile-web-app-title" content="CodePen">
-	<link rel="shortcut icon" type="image/x-icon"
-		href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
-	<link rel="mask-icon" type="image/x-icon"
-		href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-b4b4269c16397ad2f0f7a01bcdf513a1994f4c94b8af2f191c09eb0d601762b1.svg"
-		color="#111" />
-	<script
-		src="https://cpwebassets.codepen.io/assets/common/stopExecutionOnTimeout-2c7831bb44f98c1391d6a4ffda0e1fd302503391ca806e7fcc7b9b87197aec26.js"></script>
-	<link rel="canonical" href="https://codepen.io/8happyhee/pen/KKBEEXQ">
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css"> -->
+
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 
 
@@ -142,22 +130,20 @@ img {
 </div>
 
 </div>
-
+<div class="text-right">
+        <a th:href="@{|/lodge/lupdate/${lodge.lnum}|}" sec:authorize="isAuthenticated()" class="btn-sm btn-secondary">
+            수정
+        </a>
+        <a th:href="@{|/lodge/delete/${lodge.lnum}|}"  sec:authorize="isAuthenticated()" class="btn-sm btn-danger">
+            삭제
+        </a>
+    </div>
     </div>
 
 
 
 
 
-<!--     <div th:if="${#authentication.name == lodge.username}">
-				<a th:href="@{|/lodge/delete/${lodge.lnum}|}" class="btn btn-danger">삭제</a>
-				<button th:href="@{|/lodge/lupdate/${lodge.lnum}|}" type="button" class="btn btn-primary" >수정</button>				
-		</div> -->
-     
-     
-      <!-- [[${#authentication.name}]] -->
-     
-     
      
 <!-- 하단 옵션 -->
 <div class="album py-5">
@@ -184,7 +170,7 @@ img {
 				<div id="review" class="tab__content">
 
 						<div id="rvCmt" class="row_txtArea">
-							<form th:action= "@{|/review/rvcreate/${lodge.lnum}|}" method="post">
+							<form action = "/review/rvcreate" method="post">
 								<input type="hidden" name="lnum" th:value="${lodge.lnum}">
 
 								<label for="comment">작성 글자 제한</label>
@@ -207,24 +193,7 @@ img {
 										리뷰 : [[${review.rcontent}]]<br>
 										
 																				
-											<!-- 작성자 일 때만 버튼이 보이도록 설정 -->
-											<!-- <div class="edidel" th:if="${#authentication.name == review.username}">
-												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
-												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>
-											</div> -->
-
-											<!-- <div class="twobtn">
-												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.rnum}|}">
-													공감
-													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
-												</a>
-												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/disagree/${review.rnum}|}">
-													비공감
-													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
-												</a>
-											</div> -->
-											
-											
+		
 										<div class="twobtn">
 										
 												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.rnum}|}">
@@ -278,7 +247,7 @@ img {
 											<h1 class="modal-title fs-5" id="exampleModalLabel">수정할 내용을 입력하세요</h1>
 											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 										</div>
-										<form th:action="@{|/review/rvupdate{lodge.lnum}|}" method="post">
+										<form action="/review/rvupdate/${lodge.lnum}" method="post">
 											<div class="modal-body">
 												<div class="mb-3">
 													<input type="hidden" name="lnum" class="form-control" th:value="${lodge.lnum}">

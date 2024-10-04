@@ -309,7 +309,7 @@
     
     async function getCoordinates() {
     	
-        const geocodingUrl = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}&lang=kr`;
+        const geocodingUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}&lang=kr`;
         const response = await fetch(geocodingUrl);
         const data = await response.json();
         if (data.length > 0) {
@@ -352,7 +352,7 @@
             dayDiv.classList.add('day');
             dayDiv.innerHTML = `
                 <h3>${date}</h3>
-                <img src="http://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
+                <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
                 <p>온도: ${temp}°C</p>
                 <p>${description}</p>
             `;

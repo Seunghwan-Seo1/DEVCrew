@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.mysite.portfolio.festival.Festival;
+import com.mysite.portfolio.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +30,9 @@ public class LodgeController {
 
 	@Autowired
 	private LodgeService lodgeService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@Value("${cloud.aws.s3.endpoint}")
 	private String downpath;
@@ -125,18 +128,17 @@ public class LodgeController {
 	}
 
 	@PostMapping("/lupdate")
-	public String lupdate(@ModelAttribute Lodge lodge, MultipartFile file) throws IOException {
-		lodgeService.lgupdate(lodge, file);
-		return "lodge/lreaddetail/" + lodge.getLnum();
-				
-	}
+    public String update(@ModelAttribute Lodge lodge, @RequestParam("files") List<MultipartFile> files, Principal principal) throws IOException {
+        lodgeService.update(lodge, files, memberService.getMember(principal.getName()));
+        return "redirect:/lodge/detail/" + lodge.getLnum();
+    }
 
-	// 숙박 delete
-	@GetMapping("/delete/{lnum}")
-	public String delete(@PathVariable("lnum") Integer lnum) {
-
-		return "redirect:/lodge/lreadlist";
-	}
+	// delete
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id) {
+        lodgeService.rvdelete(id);
+        return "redirect:/lodge/secondmain";
+    }
 	
 	
 	

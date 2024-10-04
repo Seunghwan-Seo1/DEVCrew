@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysite.portfolio.S3Service;
-import com.mysite.portfolio.festival.Festival;
 import com.mysite.portfolio.member.Member;
 import com.mysite.portfolio.member.MemberRepository;
 
@@ -145,6 +144,55 @@ public class LodgeService {
 	 public Page<Lodge> findByKeywordPaged(String keyword, int page, int size) {
 	        Pageable pageable = PageRequest.of(page, size);
 	        return lodgeRepository.findAllByKeyword(keyword, pageable); // 수정된 메서드 호출
+	    }
+	 
+	 public void update(Lodge lodge, List<MultipartFile> files, Member author) throws IOException {
+	        
+	        // 기존 lodge 정보 가져오기
+	        Lodge existinglodge = lodgeRepository.findById(lodge.getLnum())
+	                .orElseThrow(() -> new RuntimeException("lodge not found"));
+
+			/*
+			 * // 기존 voter와 devoter 유지 Set<Member> existingVoters =
+			 * existinglodge.getVoter(); Set<Member> existingDevoters =
+			 * existinglodge.getDevoter();
+			 */
+
+			/*
+			 * // 작성자 설정 lodge.setAuthor(author);
+			 */
+	        // 파일 이름을 저장할 배열
+	        String[] fileNames = new String[5];
+
+	        // 파일 업로드 처리
+	        for (int i = 0; i < files.size() && i < 3; i++) {
+	            MultipartFile file = files.get(i);
+	            if (!file.isEmpty()) {
+	                UUID uuid = UUID.randomUUID();
+	                String fileName = uuid + "_" + file.getOriginalFilename();
+	                s3Service.uploadFile(file, fileName);
+	                fileNames[i] = fileName; // 각 이미지 이름 저장
+	            }
+	        }
+
+	        // 이미지 필드 설정 (기존 이미지 유지)
+	        lodge.setAccomm(fileNames[0] != null ? fileNames[0] : existinglodge.getAccomm());
+	        lodge.setFirstaccomm(fileNames[1] != null ? fileNames[1] : existinglodge.getFirstaccomm());
+	        lodge.setSecondaccomm(fileNames[2] != null ? fileNames[2] : existinglodge.getSecondaccomm());
+	        
+
+			/*
+			 * // 기존의 voter와 devoter를 유지 lodge.setVoter(existingVoters);
+			 * lodge.setDevoter(existingDevoters);
+			 */
+
+	        // 데이터베이스에 저장
+	        try {
+	            lodgeRepository.save(lodge);
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            throw new RuntimeException("Failed to update lodge data.");
+	        }
 	    }
 	 
 }

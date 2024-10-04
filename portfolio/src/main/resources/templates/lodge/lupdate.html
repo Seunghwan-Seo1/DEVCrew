@@ -9,7 +9,7 @@
 			<div class="col-lg-6 mx-auto text-center">
 				<div class="intro-wrap">
 
-					<h1 class="mb-0">숙소 등록 페이지</h1>
+					<h1 class="mb-0">숙소 수정 페이지</h1>
 
 					<p class="text-white">축제와 가깝고 편한 숙소를 소개 등록합니다</p>
 				</div>
@@ -32,25 +32,29 @@
 
 	<div class="container">
 
-	<form action="/lodge/lgcreate" method="post" enctype="multipart/form-data">
-	
+	<form action="/lodge/lupdate" th:object="${lodge}" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lnum" th:value="${lodge.lnum}" />
+                <input type="hidden" name="fdate" th:value="${lodge.ldate}" />
+                <input type="hidden" name="accomm" th:value="${lodge.accomm}" />
+                <input type="hidden" name="firstaccomm" th:value="${lodge.firstaccomm}" />
+                <input type="hidden" name="secondaccomm" th:value="${lodge.secondaccomm}" />
 	<div class="container2">
 	
-			<h3 class="m-5">숙소 등록하기</h3>
+			<h3 class="m-5">숙소 수정하기</h3>
 			<div class="row">
 				<div class="col-lg-7 mb-4 mb-lg-0">
 
 					<div class="row g-4">
 						<div class="col-12">
 							<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputName">숙소 이름</label>
-								<input class="form-control" name="lname" type="text" placeholder="필수입력입니다"/>
+								<input class="form-control" name="lname" type="text" th:field="*{lname}" placeholder="필수입력입니다"/>
 						</div>
 						
 						<div class="col-12">
 						<label
 							class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
 							for="inputName">숙소 위치</label> <input class="form-control"
-							name="llocation" type="text" />
+							name="llocation" th:field="*{llocation}" type="text" />
 					</div>
 												
 						<div class="col-12">							
@@ -84,17 +88,17 @@
 					<div class="col-12">
 						<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
 							for="inputCountry">건물 외관, 내부 사진</label>
-						<input class="form-control" type="file" name="files" multiple required>
+						<input class="form-control" type="file" name="files" multiple>
 					</div>
 
 					<div class="col-12">
 						<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputLinfo">숙소 설명</label>
-						<textarea class="form-control" name="linfo" id="summernote" rows="5"></textarea>
+						<textarea class="form-control" name="linfo" th:field="*{linfo}" id="summernote" rows="5"></textarea>
 					</div>
 					
 					<div class="col-12">
 						<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputNotice">안내 사항</label>
-						<textarea class="form-control" name="notice" id="summernote2" rows="5"></textarea>
+						<textarea class="form-control" name="notice" th:field="*{notice}" id="summernote2" rows="5"></textarea>
 					</div>
 					
 					
