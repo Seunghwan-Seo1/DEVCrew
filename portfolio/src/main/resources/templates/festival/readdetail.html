@@ -29,7 +29,7 @@
         <div class="row mb-2">
             <div class="col-12 col-md-3 font-weight-bold">작성자</div>
             <div class="col-12 col-md-9">
-                <p th:if="${festival.author != null}">[[${festival.author.username}]]</p>
+                <p th:if="${festival.author != null}">[[${festival.author.nickname}]]</p>
             </div>
         </div>
 
@@ -160,7 +160,7 @@
     <th:block th:each="freview : ${festival.freviewList}">
         <div class="review-item mt-5">
             <div class="review-header">
-                <span class="review-author" th:if="${freview.author != null}">작성자: [[${freview.author.username}]]</span>
+                <span class="review-author" th:if="${freview.author != null}">작성자: [[${festival.author.nickname}]]</span>
             </div>
             <p class="review-content" th:text="${freview.frcontent}"></p>
             <div class="review-actions">
