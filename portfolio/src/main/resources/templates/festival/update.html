@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>축제 수정</title>
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+</head>
+<body>
+    <div layout:fragment="content">
+        <div class="hero hero-inner">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mx-auto text-center">
+                        <div class="intro-wrap">
+                            <h1 class="mb-0">축제</h1>
+                            <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <form action="/festival/update" th:object="${festival}" method="post" enctype="multipart/form-data">
+                <!-- CSRF 토큰 -->
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                
+                <!-- 기존 파일 이름을 히든 필드로 유지 -->
+                <input type="hidden" name="fid" th:value="${festival.fid}" />
+                <input type="hidden" name="fdate" th:value="${festival.fdate}" />
+				<input type="hidden" name="authorName" th:value="${festival.author.username}" />
+                <input type="hidden" name="fimg" th:value="${festival.fimg}" />
+                <input type="hidden" name="fimg2" th:value="${festival.fimg2}" />
+                <input type="hidden" name="fimg3" th:value="${festival.fimg3}" />
+                <input type="hidden" name="fimg4" th:value="${festival.fimg4}" />
+                <input type="hidden" name="fimg5" th:value="${festival.fimg5}" />
+                
+                <h2 class="m-5">축제 수정</h2>
+                <div class="row">
+                    <div class="col-lg-7 mb-4 mb-lg-0">
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputName">축제이름</label>
+                                <input class="form-control" name="fname" type="text" th:field="*{fname}" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputLocation">축제장소</label>
+                                <input class="form-control" name="flocation" type="text" th:field="*{flocation}" />
+                            </div>
+
+                            <!-- 파일 업로드 필드 -->
+                            <div class="col-12">
+                                <label for="fimg" class="form-label fs-8 text-body-highlight ps-0 text-transform-none">파일 1:</label>
+                                <input type="file" id="files" name="files" />
+                            </div>
+                            
+
+                            <!-- 축제 설명 -->
+                            <div class="col-12">
+                                <label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputDescription">축제설명</label>
+                                <textarea class="form-control" name="fdescription" id="summernote" rows="5" th:field="*{fdescription}"></textarea>
+                            </div>
+                        </div>
+
+                        <br>
+
+                        <div class="col-12">
+                            <input type="submit" class="btn btn-primary px-8 px-sm-11 me-2" value="수정">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Summernote -->
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+        <script>
+            $('#summernote').summernote({
+                placeholder: '축제 설명을 입력하세요.',
+                tabsize: 2,
+                height: 120,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        // 이미지 파일을 전송하지 않도록 비워둠
+                    }
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

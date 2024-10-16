@@ -1,0 +1,510 @@
+<html layout:decorate="~{layout}">
+
+<div layout:fragment="content">
+
+
+	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+
+
+
+<style>
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    list-style-type: none;
+}
+
+.tab__item {
+    padding: 0.6rem 1.3rem;
+    margin-right: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 2rem;
+    cursor: pointer;
+}
+
+.tab__item.active {
+    display: inline-block;
+    border: 1px solid #83a4ff;
+    background-color: #83a4ff;
+    color: #fff;
+}
+
+.tab__content-wrapper {
+    padding: 1rem;
+}
+
+.tab__content {
+    display: none;
+}
+
+.tab__content.active {
+    display: block;
+}
+
+.untree_co-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding-top: 20px;
+}
+
+.hero-inner {
+    position: relative; /* Ensures it stays on top */
+    z-index: 1;
+}
+
+.container {
+    overflow: hidden; /* Prevents image overflow */
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.detailcontainer {
+    display: grid;
+    width: 80%;
+    height: 80vh;
+}
+
+#linfo, #review, #notice {
+    border: 2px solid #83a4ff;
+}
+
+.review-good {
+    display: flex;
+    gap: 10px;
+    text-align: right;
+}
+</style>
+
+<div class="hero hero-inner">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mx-auto text-center">
+                <div class="intro-wrap">
+                    <h1 class="mb-0">내가 찾는 숙소</h1>
+                    <p class="text-white">축제와 가깝고 편한 숙소를 소개합니다</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="container mt-5">
+        <div class="row">
+        	<h1>[[${lodge.lname}]]</h1>
+            <!-- 사진 1 (가장 크게) -->
+            <div class="container mt-5">
+    <div class="image-grid">
+        <!-- 사진 1 (Large image on the left) -->
+        <div class="image-large">
+            <img th:src="@{|${downpath}/${lodge.accomm}|}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+
+        <!-- 사진 2, 3 (Two small images on the top right) -->
+        <div class="image-small">
+            <div class="col-6">
+                <img th:src="@{|${downpath}/${lodge.firstaccomm}|}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="col-6">
+                <img th:src="@{|${downpath}/${lodge.secondaccomm}|}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+        </div>
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
+        <!-- 지도 (Map on the bottom right) -->
+        <div class="image-map">
+            <div id="map" style="width: 100%; height: 100%;"></div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+<div class="d-flex justify-content-between align-items-center">
+    <a href="/lodge/secondmain" class="btn-sm btn-secondary festival-list-button">목록</a>
+    
+    <div class="text-center mx-2">
+        <a href="javascript:void(0);" class="recommend btn-sm btn-success" th:data-uri="@{|/lodge/vote/${lodge.lnum}|}">
+            추천
+            <span class="badge rounded-pill bg-success" th:text="${#lists.size(lodge.voter)}"></span>
+        </a>
+        <a href="javascript:void(0);" class="recommend2 btn-sm btn-danger" th:data-uri="@{|/lodge/devote/${lodge.lnum}|}">
+            비추천
+            <span class="badge rounded-pill bg-danger" th:text="${#lists.size(lodge.devoter)}"></span>
+        </a>
+    </div>
+
+	<div class="text-right">
+        <a th:href="@{|/lodge/lupdate/${lodge.lnum}|}" sec:authorize="isAuthenticated()" class="btn-sm btn-secondary">
+            수정
+        </a>
+        <a th:href="@{|/lodge/delete/${lodge.lnum}|}"  sec:authorize="isAuthenticated()" class="btn-sm btn-danger">
+            삭제
+        </a>
+    </div>
+</div>
+
+    </div>
+
+
+
+
+
+     
+<!-- 하단 옵션 -->
+<div class="album py-5">
+	<div class="container">
+		<div class="container2">
+			<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3"></div>
+
+			<ul class="tab">
+				<li class="tab__item active" id="linfo">숙소 소개</li>
+				<li class="tab__item" id="review">리뷰보기</li>
+				<li class="tab__item" id="notice">안내 사항</li>
+			</ul>
+			
+			<!-- 탭 내용 영역 -->
+			<div class="tab__content-wrapper">
+				<div id="linfo" class="tab__content active">
+					<div class="mt-2.5">
+						<div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+							<a th:utext="${lodge.linfo}"></a>
+						</div>
+					</div>
+				</div>
+				
+				<div id="review" class="tab__content">
+
+						<div id="rvCmt" class="row_txtArea">
+							<form action = "/review/create" method="post">
+								<input type="hidden" name="lnum" th:value="${lodge.lnum}">
+
+								<label for="comment">작성 글자 제한</label>
+								<span class="ipt_msg txtLen" id="reCount">0/200</span>
+								<textarea id="comment" name="rcontent" autocomplete="off" placeholder="숙소 후기를 적어주세요" style="width: 100%; height: 100%;" onkeyup="counterR(this,200)"></textarea>
+								<input type="submit" value="리뷰등록">
+							</form>
+						</div>
+
+						<div class="my-3 p-3 bg-white" style="padding-top: 10px">
+						<p style="font-size:20px; text-align:center;">등록된 리뷰 보기</p>
+						<h5 class="border-bottom my-3 py-2" th:text="|${#lists.size(lodge.reviewList)}개의 리뷰가 있습니다.|"></h5>
+
+						<div id="comments-list">
+							<th:block th:each="review : ${lodge.reviewList}">
+								<div class="mt-2.5">
+									<div id="message2" rows="4" class="block w-full rounded-md border-1 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+										[[${review.rnum}]]번째 후기<br>
+										작성자 : [[${review.member.username}]]<br>
+										리뷰 : [[${review.rcontent}]]<br>
+										
+																				
+		
+										<div class="twobtn">
+										
+												<a href="javascript:void(0);" class="agree btn-two green mini" th:data-uri="@{|/review/agree/${review.rnum}|}">
+													공감
+													<span class="badge rounded-pill bg-success" th:text="${#lists.size(review.ragree)}"></span>
+												</a>
+												<a href="javascript:void(0);" class="disagree btn-two red mini" th:data-uri="@{|/review/disagree/${review.rnum}|}">
+													비공감
+													<span class="badge rounded-pill bg-danger" th:text="${#lists.size(review.rdisagree)}"></span>
+												</a>
+										
+										<div class="review-good" th:if="${#authentication.name == review.username}">
+										
+											
+												<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" th:data-bs-whatever="${review.rnum}" th:data-bs-msg="${review.rcontent}">수정</button>				
+												<a th:href="@{|/review/delete/${review.rnum}|}" class="btn btn-danger">삭제</a>
+										</div>
+										
+										
+										
+										
+										</div>									
+										
+											
+										
+										
+										
+									
+				
+											
+									</div>
+									
+									
+									
+									
+									
+								</div>
+								
+								
+								
+								
+								
+								
+							</th:block>
+
+							<!-- 모든 댓글들에서 공용으로 사용할 모달 창 설정 -->
+							<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h1 class="modal-title fs-5" id="exampleModalLabel">수정할 내용을 입력하세요</h1>
+											<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+										</div>
+										<form action="/review/rvupdate/${lodge.lnum}" method="post">
+											<div class="modal-body">
+												<div class="mb-3">
+													<input type="hidden" name="lnum" class="form-control" th:value="${lodge.lnum}">
+													<input type="text" name="rnum" class="form-control" id="rnum">
+												</div>
+												<div class="mb-3">
+													<label for="message-text" class="col-form-label">수정할 리뷰 내용:</label>
+													<textarea class="form-control" name="rcontent" id="message-text"></textarea>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+												<input type="submit" class="btn btn-primary" value="수정완료">
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+
+							<!-- 모든 댓글들에서 공용으로 사용할 스크립트 설정 -->
+							<script>
+								const exampleModal = document.getElementById('exampleModal');
+								if (exampleModal) {
+									exampleModal.addEventListener('show.bs.modal', event => {
+										const button = event.relatedTarget;
+										const recipient = button.getAttribute('data-bs-whatever');
+										const msg = button.getAttribute('data-bs-msg');
+										const modalBodyInput = exampleModal.querySelector('#rnum');
+										const modalMsg = exampleModal.querySelector('#message-text');
+										modalBodyInput.value = recipient;
+										modalMsg.value = msg;
+									});
+								}
+							</script>
+						</div>
+						
+					</div>
+				</div>
+
+				<div id="notice" class="tab__content">
+					<div class="mt-2.5">
+						<div id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+							<a th:utext="${lodge.notice}"></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+</div>
+
+
+
+
+
+<script id="rendered-js">
+// 1. 탭 버튼과 탭 내용 부분들을 querySelectorAll을 사용해 변수에 담는다.
+const tabItem = document.querySelectorAll(".tab__item");
+const tabContent = document.querySelectorAll(".tab__content");
+
+// 2. 탭 버튼들을 forEach 문을 통해 한번씩 순회한다.
+// 이때 index도 같이 가져온다.
+tabItem.forEach((item, index) => {
+  // 3. 탭 버튼에 클릭 이벤트를 준다.
+  item.addEventListener("click", e => {
+    // 4. 버튼을 a 태그에 만들었기 때문에, 
+    // 태그의 기본 동작(링크 연결) 방지를 위해 preventDefault를 추가한다.
+    e.preventDefault(); // a 
+
+    // 5. 탭 내용 부분들을 forEach 문을 통해 한번씩 순회한다.
+    tabContent.forEach(content => {
+      // 6. 탭 내용 부분들 전부 active 클래스를 제거한다.
+      content.classList.remove("active");
+    });
+
+    // 7. 탭 버튼들을 forEach 문을 통해 한번씩 순회한다.
+    tabItem.forEach(content => {
+      // 8. 탭 버튼들 전부 active 클래스를 제거한다.
+      content.classList.remove("active");
+    });
+
+    // 9. 탭 버튼과 탭 내용 영역의 index에 해당하는 부분에 active 클래스를 추가한다.
+    // ex) 만약 첫번째 탭(index 0)을 클릭했다면, 같은 인덱스에 있는 첫번째 탭 내용 영역에 active 클래스가 추가된다.
+    tabItem[index].classList.add("active");
+    tabContent[index].classList.add("active");
+  });
+});
+</script>
+
+<script>
+//글자수 세는 기능
+function counterR(text, length) {
+	var limit = length;
+	var str = text.value.length;
+	if(str > limit) {
+		document.getElementById("reCount").innerHTML = "200자 이상 입력했습니다.";
+		text.value=text.value.substring(0, limit);
+		text.focus();
+	}
+	document.getElementById("reCount").innerHTML = text.value.length + " / " + limit;
+}
+
+	
+	
+//버튼 기능
+document.querySelectorAll('.edit-btn').forEach(button => {
+     button.addEventListener('click', function() {
+         const rvId = this.getAttribute('data-review-rum');
+         const rnum = document.querySelector('input[name="rnum"]').value; 
+         editReview(rvId, rnum);
+     });
+ });
+
+ document.querySelectorAll('.delete-btn').forEach(button => {
+     button.addEventListener('click', function() {
+         const rvId = this.getAttribute('data-review-rum');
+         const rnum = document.querySelector('input[name="rnum"]').value; 
+         deleteReview(rvId, rnum);
+     });
+ });
+
+ function editReview(rvId, rnum) {
+     const reviewContent = document.querySelector(`[data-review-id="${rvId}"]`).parentElement.previousElementSibling.innerText;
+     const newContent = prompt("작성한 리뷰를 수정하세요:", reviewContent);
+
+     if (newContent !== null) {
+         updateReview(rvId, newContent, rnum);
+     }
+ }
+
+ function updateReview(rvId, newContent, rnum) {
+     const form = document.createElement('form');
+     form.method = 'POST';
+     form.action = `/review/detail/rvupdate/${rvId}`;
+
+     const inputContent = document.createElement('input');
+     inputContent.type = 'hidden';
+     inputContent.name = 'rcontent';
+     inputContent.value = newContent;
+     form.appendChild(inputContent);
+
+     const inputRnum = document.createElement('input');
+     inputRnum.type = 'hidden';
+     inputRnum.name = 'rnum';
+     inputRnum.value = rnum;  
+     form.appendChild(inputRnum);
+
+     
+     document.body.appendChild(form);
+     form.submit();
+ }
+
+ function deleteReview(reviewId, rnum) {
+     if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+         const form = document.createElement('form');
+         form.method = 'POST';
+         form.action = `/review/delete/${mid}`;
+
+                  
+         const inputRnum = document.createElement('input');
+         inputRnum.type = 'hidden';
+         inputRnum.name = 'rnum';
+         inputRnum.value = rnum;  
+         form.appendChild(inputRnum);
+
+         document.body.appendChild(form);
+         form.submit();
+     }
+ }
+
+ </script>
+ 
+<script type='text/javascript'>
+const agree_elements = document.getElementsByClassName("agree");
+Array.from(agree_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("해당 리뷰에 공감하시나요?")) {
+            location.href = this.dataset.uri;
+        }
+    });
+});
+
+const disagree_elements = document.getElementsByClassName("disagree");
+Array.from(disagree_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("해당 리뷰에 비공감하시나요?")) {
+            location.href = this.dataset.uri;
+        }
+    });
+});
+</script>
+
+<!-- 지도 -->
+<script>
+    var mapContainer = document.getElementById('map');
+    var mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3
+    };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    var marker = new kakao.maps.Marker({
+        position: mapOption.center
+    });
+    marker.setMap(map);
+
+    var address = "[[${lodge.llocation}]]";
+    var geocoder = new kakao.maps.services.Geocoder();
+
+    geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+            map.setCenter(newPosition);
+            marker.setPosition(newPosition);
+        } else {
+            alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+        }
+    });
+</script>
+<script>
+const recommend_elements = document.getElementsByClassName("recommend");
+Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        }
+    });
+});
+
+const recommend2_elements = document.getElementsByClassName("recommend2");
+Array.from(recommend2_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 비추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        }
+    });
+});
+</script>
+
+</div>
+</html>

@@ -1,0 +1,63 @@
+<html layout:decorate="~{layout}">
+    <th:block layout:fragment="content">
+
+        <!-- Hero Section -->
+        <div class="hero hero-inner bg-primary text-white py-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mx-auto text-center">
+                        <div class="intro-wrap">
+                            <h1 class="mb-0">축제</h1>
+                            <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Festival List Section -->
+        <div class="container py-5" id="featured-3">
+            <h1 class="visually-hidden">페스티벌</h1>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="pb-2 border-bottom">축제 목록</h2>
+                <a href="/festival/create" sec:authorize="isAuthenticated()" class="btn-sm btn-success">축제등록</a>
+            </div>
+
+            <!-- 검색 폼 -->
+            <form action="/festival/find" method="get" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="keyword" id="search" class="form-control" placeholder="검색...">
+                    <div class="input-group-append">
+                        <input type="submit" class="btn btn-primary" value="검색">
+                    </div>
+                </div>
+            </form>
+
+            <!-- Festival List with Pagination -->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                <th:block th:each="festival : ${festivalPage.content}">
+                    <div class="col">
+                        <div class="card h-100 festival-item" data-name="${festival.fname}" data-location="${festival.flocation}" data-category="${festival.fcategory}">
+                            <a th:href="@{/festival/readdetail/{id}(id=${festival.fid})}">
+                                <img class="card-img-top img-fluid" th:src="@{https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/{file}(file=${festival.fimg})}" th:alt="${festival.fname}">
+                            </a>
+                            <div class="card-body">
+                                <h5 class="card-title text-center" th:text="${festival.fname}"></h5>
+                            </div>
+                        </div>
+                    </div>
+                </th:block>
+            </div>
+
+            <!-- 페이징 링크 -->
+            <div class="d-flex justify-content-between mt-4">
+                <a th:href="@{/festival/readlist(page=${festivalPage.number - 1}, size=${festivalPage.size})}" th:if="${festivalPage.hasPrevious()}" class="btn-sm btn-primary">이전</a>
+                <span>현재 페이지: <span th:text="${festivalPage.number + 1}"></span> / <span th:text="${festivalPage.totalPages}"></span></span>
+                <a th:href="@{/festival/readlist(page=${festivalPage.number + 1}, size=${festivalPage.size})}" th:if="${festivalPage.hasNext()}" class="btn-sm btn-primary">다음</a>
+            </div>
+
+            
+        </div>
+
+    </th:block>
+</html>

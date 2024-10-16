@@ -1,0 +1,153 @@
+<!-- 숙소 정보 수정 페이지 -->
+
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+
+<div class="hero hero-inner">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-lg-6 mx-auto text-center">
+				<div class="intro-wrap">
+
+					<h1 class="mb-0">숙소 수정 페이지</h1>
+
+					<p class="text-white">축제와 가깝고 편한 숙소를 소개 등록합니다</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous">
+	</script>
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+	
+
+<body>
+
+	<div class="container">
+
+	<form action="/lodge/lupdate" th:object="${lodge}" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="lnum" th:value="${lodge.lnum}" />
+                <input type="hidden" name="fdate" th:value="${lodge.ldate}" />
+                <input type="hidden" name="accomm" th:value="${lodge.accomm}" />
+                <input type="hidden" name="firstaccomm" th:value="${lodge.firstaccomm}" />
+                <input type="hidden" name="secondaccomm" th:value="${lodge.secondaccomm}" />
+	<div class="container2">
+	
+			<h3 class="m-5">숙소 수정하기</h3>
+			<div class="row">
+				<div class="col-lg-7 mb-4 mb-lg-0">
+
+					<div class="row g-4">
+						<div class="col-12">
+							<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputName">숙소 이름</label>
+								<input class="form-control" name="lname" type="text" th:field="*{lname}" placeholder="필수입력입니다"/>
+						</div>
+						
+						<div class="col-12">
+						<label
+							class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+							for="inputName">숙소 위치</label> <input class="form-control"
+							name="llocation" th:field="*{llocation}" type="text" />
+					</div>
+												
+						<div class="col-12">							
+						<label for="date">숙소 등록 일자를 선택하세요</label><br>
+						<input type="date"  id="date"  min="1900-01-01" max="2100-12-31" value=newDate()>
+						</div>
+						
+					<div class="col-12">
+					  <label for="type">숙소 유형을 선택하세요</label>
+					  <select name="type" id="type">
+					    <option value="motel">모텔</option>
+					    <option value="hotel">호텔</option>
+					    <option value="resort">리조트</option>
+					    <option value="geha">게스트 하우스</option>
+					  </select>					
+					</div>
+					
+					<div>					
+					<form id="lservice">
+					<label for="serve">제공되는 서비스를 모두 선택하세요</label><br>
+					<input type="checkbox" name="options" value="breakfast"> 조식
+					<input type="checkbox" name="options" value="swim"> 수영장
+					<input type="checkbox" name="options" value="wifi"> 와이파이
+					<input type="checkbox" name="options" value="fitness"> 피트니스
+					<input type="checkbox" name="options" value="bbq"> 바베큐
+					<input type="checkbox" name="options" value="parking"> 주차
+					<input type="checkbox" name="options" value="discount"> 할인
+					</form>
+					</div>
+					
+					<div class="col-12">
+						<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none"
+							for="inputCountry">건물 외관, 내부 사진</label>
+						<input class="form-control" type="file" name="files" multiple>
+					</div>
+
+					<div class="col-12">
+						<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputLinfo">숙소 설명</label>
+						<textarea class="form-control" name="linfo" th:field="*{linfo}" id="summernote" rows="5"></textarea>
+					</div>
+					
+					<div class="col-12">
+						<label class="form-label fs-8 text-body-highlight ps-0 text-transform-none" for="inputNotice">안내 사항</label>
+						<textarea class="form-control" name="notice" th:field="*{notice}" id="summernote2" rows="5"></textarea>
+					</div>
+					
+					
+					<div class="col-12">
+						<input type="submit" class="btn btn-primary px-8 px-sm-11 me-2" value="등록">
+					</div>
+			
+	</div>
+			
+	</div>
+	
+</div>
+</div>
+</form>
+</div>
+</body>
+	
+	<script>
+      $('#summernote').summernote({
+        placeholder: 'Hello stand alone ui',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+      });
+    </script>
+    
+    <script>
+      $('#summernote2').summernote({
+        placeholder: 'Hello stand alone ui',
+        tabsize: 2,
+        height: 120,
+        toolbar: [
+          ['style', ['style']],
+          ['font', ['bold', 'underline', 'clear']],
+          ['color', ['color']],
+          ['para', ['ul', 'ol', 'paragraph']],
+          ['insert', ['link', 'picture', 'video']],
+          ['view', ['fullscreen', 'codeview', 'help']]
+        ]
+      });
+    </script>
+    
+    </div>
+
+</html>

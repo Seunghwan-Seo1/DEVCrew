@@ -1,0 +1,9 @@
+/portfolio/src/main/resources/static/*
+/.metadata/
+/portfolio/.gradle/*
+/portfolio/.project
+/portfolio/bin/*
+/portfolio/.settings/*
+/portfolio/help.md
+/portfolio/build/*
+/portfolio/src/main/resources/application.properties

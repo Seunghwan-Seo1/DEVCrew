@@ -1,0 +1,426 @@
+<html layout:decorate="~{layout}">
+    <div layout:fragment="content">
+        <div class="hero hero-inner">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mx-auto text-center">
+                        <div class="intro-wrap">
+                            <h1 class="mb-0">축제</h1>
+                            <p class="text-white">축제는 혼자가 아닌 함께하는 즐거움! 친구와 함께 즐길 축제를 찾아보세요.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+   
+                   
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- 메인 사진 (사진 1) -->
+        <div class="col-12 col-md-6">
+            <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" 
+                 style="width: 100%; height: auto; object-fit: contain; margin: 0 auto; display: block;">
+        </div>
+
+ <!-- 설명 -->
+<div class="col-12 col-md-6 d-flex flex-column justify-content-center">
+    <div class="festival-info p-3" style="white-space: normal; border: 1px solid #ccc; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.2); overflow: auto; max-height: 600px; width: 100%;">
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">작성자</div>
+            <div class="col-12 col-md-9">
+                <p th:if="${festival.author != null}">[[${festival.author.nickname}]]</p>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">축제이름</div>
+            <div class="col-12 col-md-9">
+                <p>[[${festival.fname}]]</p>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">장소</div>
+            <div class="col-12 col-md-9">
+                <p>[[${festival.flocation}]]</p>
+            </div>
+        </div>
+
+        <div class="row mb-2">
+            <div class="col-12 col-md-3 font-weight-bold">축제설명</div>
+            <div class="col-12 col-md-9">
+                <p id="festival-description" th:utext="${festival.fdescription}" style="white-space: normal;"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- 추가 사진 (2, 3, 4, 5) -->
+    <div class="row mt-4">
+        <div class="col-6 col-md-3">
+            <div class="media-1">
+                <a href="#" class="d-block mb-3">
+                    <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}" alt="Image" class="img-fluid">
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="media-1">
+                <a href="#" class="d-block mb-3">
+                    <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg3}|}" alt="Image" class="img-fluid">
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="media-1">
+                <a href="#" class="d-block mb-3">
+                    <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg4}|}" alt="Image" class="img-fluid">
+                </a>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="media-1">
+                <a href="#" class="d-block mb-3">
+                    <img th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg5}|}" alt="Image" class="img-fluid">
+                </a>
+            </div>
+        </div>
+        <div class="container">
+		    <div class="row text-center justify-content-center mb-5">
+		      <div class="col-lg-7">
+		        <h4 class="section-title text-center">찾아 오는 길</h4>
+		      </div>
+		    </div>
+		 <!-- 지도 -->
+		 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2dfaf20322b033bc10b994c8f32c8e9e&libraries=services"></script>
+		 
+           <div id="map" style="width: 100%; height: 500px; max-width: 800px; margin: 20px auto;"></div>
+           </div>
+    </div>
+    <div class="container">
+      <div class="row text-center justify-content-center mb-5">
+		      <div class="col-lg-7">
+		        <h4 class="section-title text-center">[[${#strings.substring(festival.flocation, 0, 2)}]] 날씨 정보</h4>
+		      </div>
+		    </div>
+		 <div id="weather-container" class="weather-forecast"></div> 
+      </div>
+</div>
+
+      
+           
+
+        <!-- 리뷰 댓글 수정 삭제 별점 기능 추가 -->
+      
+
+
+
+
+
+
+
+<div class="d-flex justify-content-between align-items-center">
+    <a href="/festival/readlist" class="btn-sm btn-secondary festival-list-button">축제 목록</a>
+    
+    <div class="text-center mx-2">
+        <a href="javascript:void(0);" class="recommend btn-sm btn-success" th:data-uri="@{|/festival/vote/${festival.fid}|}">
+            추천
+            <span class="badge rounded-pill bg-success" th:text="${#lists.size(festival.voter)}"></span>
+        </a>
+        <a href="javascript:void(0);" class="recommend2 btn-sm btn-danger" th:data-uri="@{|/festival/devote/${festival.fid}|}">
+            비추천
+            <span class="badge rounded-pill bg-danger" th:text="${#lists.size(festival.devoter)}"></span>
+        </a>
+    </div>
+
+    <div class="text-right">
+        <a th:href="@{|/festival/update/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn-sm btn-secondary">
+            수정
+        </a>
+        <a th:href="@{|/festival/delete/${festival.fid}|}" th:if="${festival.author != null and #authentication.getPrincipal().getUsername() == festival.author.username}" sec:authorize="isAuthenticated()" class="btn-sm btn-danger">
+            삭제
+        </a>
+    </div>
+</div>
+
+
+		
+
+        <div class="review-form">
+            <h2>리뷰 남기기</h2>
+            <form action="/freview/create" method="post">
+                <input type="hidden" name="fid" th:value="${festival.fid}">
+                댓글 : <input type="text" name="frcontent" placeholder="여기에 댓글을 입력하세요" required>
+                <input type="submit" value="등록">
+            </form>
+        </div>
+
+      <div class="review-list">
+    <th:block th:each="freview : ${festival.freviewList}">
+        <div class="review-item mt-5">
+            <div class="review-header">
+                <span class="review-author" th:if="${freview.author != null}">작성자: [[${freview.author.nickname}]]</span>
+            </div>
+            <p class="review-content" th:text="${freview.frcontent}"></p>
+            <div class="review-actions">
+                
+                    <button class="edit-button" th:data-review-id="${freview.frid}" th:if="${freview.author != null and #authentication.getPrincipal().getUsername() == freview.author.username}" sec:authorize="isAuthenticated()">수정</button>
+                    <button class="delete-button" th:data-review-id="${freview.frid}" th:if="${freview.author != null and #authentication.getPrincipal().getUsername() == freview.author.username}" sec:authorize="isAuthenticated()">삭제</button>
+                </div>
+                <div class="review-votes">
+                    <a href="javascript:void(0);" class="recommend btn-sm btn-success" 
+                       th:data-uri="@{|/freview/vote/${freview.frid}|}">
+                        추천
+                        <span class="badge rounded-pill bg-success" th:text="${#lists.size(freview.voter)}"></span>
+                    </a>
+                    <a href="javascript:void(0);" class="recommend2 btn-sm btn-danger" 
+                       th:data-uri="@{|/freview/devote/${freview.frid}|}">
+                        비추천
+                        <span class="badge rounded-pill bg-danger" th:text="${#lists.size(freview.devoter)}"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </th:block>
+
+
+
+
+        <script>
+            document.querySelectorAll('.edit-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reviewId = this.getAttribute('data-review-id');
+                    const fid = document.querySelector('input[name="fid"]').value;  // fid 값을 가져옴
+                    editReview(reviewId, fid);
+                });
+            });
+
+            document.querySelectorAll('.delete-button').forEach(button => {
+                button.addEventListener('click', function() {
+                    const reviewId = this.getAttribute('data-review-id');
+                    const fid = document.querySelector('input[name="fid"]').value;  // fid 값을 가져옴
+                    deleteReview(reviewId, fid);
+                });
+            });
+
+            function editReview(reviewId, fid) {
+                const reviewContent = document.querySelector(`[data-review-id="${reviewId}"]`).parentElement.previousElementSibling.innerText;
+                const newContent = prompt("리뷰를 수정하세요:", reviewContent);
+
+                if (newContent !== null) {
+                    updateReview(reviewId, newContent, fid);
+                }
+            }
+
+            function updateReview(reviewId, newContent, fid) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = `/freview/update/${reviewId}`;
+
+                const inputContent = document.createElement('input');
+                inputContent.type = 'hidden';
+                inputContent.name = 'frcontent';
+                inputContent.value = newContent;
+                form.appendChild(inputContent);
+
+                const inputFid = document.createElement('input');
+                inputFid.type = 'hidden';
+                inputFid.name = 'fid';
+                inputFid.value = fid;  
+                form.appendChild(inputFid);
+
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            function deleteReview(reviewId, fid) {
+                if (confirm('정말로 이 리뷰를 삭제하시겠습니까?')) {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/freview/delete/${reviewId}`;
+
+
+                    
+                    const inputFid = document.createElement('input');
+                    inputFid.type = 'hidden';
+                    inputFid.name = 'fid';
+                    inputFid.value = fid;  
+                    form.appendChild(inputFid);
+
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+
+            const recommend_elements = document.getElementsByClassName("recommend");
+            Array.from(recommend_elements).forEach(function(element) {
+                element.addEventListener('click', function() {
+                    if(confirm("정말로 추천하시겠습니까?")) {
+                        location.href = this.dataset.uri;
+                    }
+                });
+            });
+
+            const recommend2_elements = document.getElementsByClassName("recommend2");
+            Array.from(recommend2_elements).forEach(function(element) {
+                element.addEventListener('click', function() {
+                    if(confirm("정말로 비추천하시겠습니까?")) {
+                        location.href = this.dataset.uri;
+                    }
+                });
+            });
+        </script>
+        <script>
+    var mapContainer = document.getElementById('map');
+    var mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667), // 초기 지도 중심 좌표
+        level: 3 // 지도 확대 레벨
+    };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    // 기준 마커 이미지 설정
+    var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png'; // 기준 마커 이미지 경로
+    var markerImageSize = new kakao.maps.Size(24, 35); // 이미지 크기
+    var markerImageOption = { offset: new kakao.maps.Point(12, 35) }; // 마커 좌표의 중점
+
+    var markerImage = new kakao.maps.MarkerImage(markerImageSrc, markerImageSize, markerImageOption);
+
+    var marker = new kakao.maps.Marker({
+        position: mapOption.center,
+        image: markerImage // 기준 마커 이미지 적용
+    });
+    marker.setMap(map);
+
+    var address = "[[${festival.flocation}]]"; // Thymeleaf에서 받은 축제 위치 정보
+    var geocoder = new kakao.maps.services.Geocoder();
+    
+    
+
+    // 주소 검색을 통해 지도 중심 이동
+    geocoder.addressSearch(address, function(result, status) {
+        if (status === kakao.maps.services.Status.OK) {
+            var newPosition = new kakao.maps.LatLng(result[0].y, result[0].x);
+            map.setCenter(newPosition);
+            marker.setPosition(newPosition);
+
+            // 숙박업체 검색 기능 추가
+            searchLodging(newPosition); // 숙박업체 검색 함수 호출
+        } else {
+            alert('주소 검색에 실패했습니다. 올바른 주소를 확인하세요.');
+        }
+    });
+
+    // 숙박업체 검색 함수
+    function searchLodging(position) {
+        var places = new kakao.maps.services.Places();
+
+        // "숙박업체" 키워드로 검색
+        places.keywordSearch('숙박업체', function(result, status) {
+            if (status === kakao.maps.services.Status.OK) {
+                for (var i = 0; i < result.length; i++) {
+                    displayLodgingMarker(result[i]); // 검색된 숙박업체마다 마커 표시
+                }
+            } else {
+                alert('숙박업체 검색에 실패했습니다.');
+            }
+        }, {
+            location: position, // 검색할 기준 위치 (축제 장소 기준)
+            radius: 2000 // 반경 2km 내 검색
+        });
+    }
+
+    // 숙박업체에 마커 표시
+    function displayLodgingMarker(place) {
+        // 숙박업체 마커 이미지 설정
+        var lodgingMarkerImageSrc = 'https://img.icons8.com/?size=150&id=AVe9YeyAXTql&format=png&color=000000'; // 숙박업체 마커 이미지 경로
+        var lodgingMarkerImage = new kakao.maps.MarkerImage(lodgingMarkerImageSrc, markerImageSize, markerImageOption);
+
+        var marker = new kakao.maps.Marker({
+            map: map,
+            position: new kakao.maps.LatLng(place.y, place.x),
+            image: lodgingMarkerImage // 숙박업체 마커 이미지 적용
+        });
+
+        // 마커 클릭 시 숙박업체 이름을 인포윈도우로 표시
+        var infowindow = new kakao.maps.InfoWindow({
+            content: '<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>'
+        });
+
+        kakao.maps.event.addListener(marker, 'click', function() {
+            infowindow.open(map, marker);
+        });
+    }
+	</script>
+	
+    
+
+<script th:inline="javascript">
+    const apiKey = '5ff8c43ab091680fc5bd47b9cb787090';  // 여기에 OpenWeatherMap API 키를 입력하세요.
+    const city = '[[${#strings.substring(festival.flocation, 0, 2)}]]'
+    
+    
+    async function getCoordinates() {
+    	
+        const geocodingUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}&lang=kr`;
+        const response = await fetch(geocodingUrl);
+        const data = await response.json();
+        if (data.length > 0) {
+            return {
+                lat: data[0].lat,
+                lon: data[0].lon
+            };
+        } else {
+            alert('도시를 찾을 수 없습니다.');
+            return null;
+        }
+    }
+
+
+    async function getWeather() {
+    	
+        const coordinates = await getCoordinates();
+        if (!coordinates) return;
+
+        const weatherUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&units=metric&lang=kr&appid=${apiKey}`;
+        const response = await fetch(weatherUrl);
+        const data = await response.json();
+        
+        displayWeather(data);
+    }
+
+    function displayWeather(data) {
+        const weatherContainer = document.getElementById('weather-container');
+        weatherContainer.innerHTML = ''; // 이전 결과 초기화
+
+        // 5일 간의 날씨를 표시
+        for (let i = 0; i < data.list.length; i += 8) { // 하루에 8개의 데이터 포인트가 있으므로 8씩 증가
+            const dayData = data.list[i];
+            const date = new Date(dayData.dt_txt).toLocaleDateString('ko-KR');
+            const temp = dayData.main.temp;
+            const description = dayData.weather[0].description;
+            const icon = dayData.weather[0].icon;
+
+            const dayDiv = document.createElement('div');
+            dayDiv.classList.add('day');
+            dayDiv.innerHTML = `
+                <h5>${date}</h5>
+                <img src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}">
+                <p>온도: ${temp}°C</p>
+                <p>${description}</p>
+            `;
+            weatherContainer.appendChild(dayDiv);
+        }
+    }
+    
+    // 페이지가 로드되면 자동으로 getWeather() 호출
+    document.addEventListener("DOMContentLoaded", function() {
+        getWeather(); // 페이지 로드 시 자동으로 날씨 정보 가져오기
+    });
+</script>
+	
+    </div>
+</html>

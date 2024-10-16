@@ -1,0 +1,49 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content">
+
+  <div class="hero hero-inner">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mx-auto text-center">
+          <div class="intro-wrap">
+            <h1 class="mb-0">고객센터</h1>
+            <p class="text-white"> 사이트에 대한 불만사항이나, 문의점을 보내주세요 </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="untree_co-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mb-5 mb-lg-0">
+          <form class="contact-form" action="/csr" method="post">
+          
+              
+                <div class="form-group">
+                  <label class="text-black" for="fname">아이디</label>
+                  <input type="text" class="form-control" id="fname" name="title">
+                </div>
+              
+              
+            
+            <div class="form-group">
+              <label class="text-black" for="email">이메일 주소</label>
+              <input type="email" class="form-control" id="email" name = "senderName">
+            </div>
+
+            <div class="form-group">
+              <label class="text-black" for="message">내용</label>
+              <textarea  class="form-control" id="message" cols="30" rows="5" name="content"></textarea>
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="문의 보내기">
+          </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  </div>
+  </html>

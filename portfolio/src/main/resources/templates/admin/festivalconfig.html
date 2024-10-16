@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html layout:decorate="~{admin}">
+<div layout:fragment="content">
+    <div class="content">
+        <div class="mb-9">
+            <div class="row g-3 mb-4">
+                <div class="col-auto">
+                    <h2 class="mt-3">축제 게시물 관리</h2>
+                </div>
+                <table class="table mt-5">
+                    <thead>
+                        <tr>
+                            <th class="sort text-end align-middle pe-0 ps-4" scope="col" style="width:50px;"></th>
+                            <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:200px;" data-sort="customer">글 제목</th>
+                            <th class="sort white-space-nowrap align-middle ps-4" scope="col" style="width:300px;" data-sort="customer">간략한 사진</th>
+                            <th class="sort align-middle ps-4" scope="col" data-sort="category" style="width:300px;">축제 장소</th>
+                            <th class="sort align-middle ps-4" scope="col" data-sort="time" style="width:180px;">작성일</th>
+                            <th class="sort align-middle ps-4" scope="col" style="width:220px;">사진 변경</th>
+                            <th class="sort text-end align-middle pe-0 ps-4" scope="col" style="width:50px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <th:block th:each="festival : ${festivals}">
+                            <tr>
+                                <form action="/admin/festivalconfig" method="post" enctype="multipart/form-data">
+                                    <!-- 사용자 ID를 히든 필드로 전달 -->
+                                    <input type="hidden" name="fid" th:value="${festival.fid}">
+                                    <input type="hidden" name="fimg" th:value="${festival.fimg}">
+
+                                    <th scope="row">[[${festival.fid}]]</th>
+                                    <td class="align-middle">
+                                        <input type="text" class="form-control" th:value="${festival.fname}" name="fname">
+                                    </td>
+                                    <td>
+                                        <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg}|}" style="width:50px">
+                                        <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg2}|}" style="width:50px">
+                                        <img class="img-fluid" th:src="@{|https://bucketimgexamssh.s3.ap-northeast-2.amazonaws.com/${festival.fimg3}|}" style="width:50px">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" th:value="${festival.flocation}" name ="flocation">
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" th:value="${#temporals.format(festival.fdate, 'yy-MM-dd')}" readonly>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="file" name="files" multiple required>
+                                    </td>
+                                    <td>
+                                        <!-- 역할 변경 버튼 -->
+                                        <input type="submit" class="btn btn-primary" value="변경" style="width:100px;">
+                                    </td>
+                                    <td>
+                                        <!-- Button trigger modal -->
+                                        <button type="button" class="btn btn-danger delete-button" data-toggle="modal" data-target="#deleteModal" style="width:100px;">
+										    삭제
+										</button>
+
+                                    </td>
+                                </form>
+                            </tr>
+                        </th:block>
+                    </tbody>
+                </table>
+
+                <!-- Modal for delete confirmation -->
+				<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+				    <div class="modal-dialog" role="document">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				                <h5 class="modal-title" id="deleteModalLabel">정말 삭제하시겠습니까</h5>
+				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                    <span aria-hidden="true">&times;</span>
+				                </button>
+				            </div>
+				            <div class="modal-body">
+				                신중하게 삭제하세요
+				            </div>
+				            <div class="modal-footer">
+				                <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+				                <!-- 삭제 폼은 여기서 직접 전송할 수 있습니다. -->
+				                <form action="/admin/deleteFestival" method="post" id="deleteForm">
+				                    <input type="hidden" name="fid" id="deleteFid">
+				                    <input type="submit" class="btn btn-danger" value="삭제">
+				                </form>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    document.querySelectorAll('.delete-button').forEach(button => {
+        button.addEventListener('click', function() {
+            // 해당 행의 hidden input에서 fid 값을 가져옴
+            const fid = this.closest('tr').querySelector('input[name="fid"]').value;
+            
+            // 모달의 hidden input 필드에 fid 값 설정
+            document.getElementById('deleteFid').value = fid;
+        });
+    });
+
+    
+    </script>
+</html>
